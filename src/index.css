@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1B4D4B;
+  --color-primary-dark: #133836;
+  --color-primary-light: #236260;
+  --color-secondary: #E67E22;
+  --color-secondary-hover: #D35400;
+  --color-bg: #F9F7F2;
+  --color-bg-dark: #EDE9E0;
+  --color-text: #2D2D2D;
+  --color-text-light: #5A5A5A;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Organic leaf decorations */
+.leaf-decoration {
+  position: absolute;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+/* Pill badge */
+.badge {
+  display: inline-block;
+  background: rgba(27,77,75,0.12);
+  color: var(--color-primary);
+  border-radius: 999px;
+  padding: 4px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Ticker animation */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-ticker {
+  animation: ticker 25s linear infinite;
+}
+
+/* Blob/organic shape */
+.blob {
+  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #1B4D4B 0%, #2d7a78 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

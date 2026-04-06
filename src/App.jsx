@@ -131,9 +131,9 @@ function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#EEF0D2]/90 backdrop-blur-md border-b border-[#E2E5BE]">
       <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 sm:py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Leaf className="text-[#0C718B]" size={18} />
-          <span className="font-serif font-bold text-[#448D76] text-base sm:text-lg tracking-tight">
-            Livro Vivo
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion" className="w-[18px] sm:w-[22px] h-[18px] sm:h-[22px] object-contain" />
+          <span className="font-serif font-bold text-[#448D76] text-sm sm:text-lg tracking-tight">
+            Cardápios: Um Livro Vivo
           </span>
         </div>
         <CTAButton href="#checkout" size="sm" className="!px-4 !py-2 !text-xs sm:!px-6 sm:!py-3 sm:!text-sm">

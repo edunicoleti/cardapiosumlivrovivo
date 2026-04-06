@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #1B4D4B;
-  --color-primary-dark: #133836;
-  --color-primary-light: #236260;
-  --color-secondary: #E67E22;
-  --color-secondary-hover: #D35400;
-  --color-bg: #F9F7F2;
-  --color-bg-dark: #EDE9E0;
+  --color-primary: #0C718B;
+  --color-primary-dark: #09596E;
+  --color-primary-light: #448D76; 
+  --color-secondary: #ED8627;
+  --color-secondary-hover: #D67822; /* slightly darker orange */
+  --color-bg: #EEF0D2;
+  --color-bg-dark: #E2E5BE; /* artificially darker variation of bg */
   --color-text: #2D2D2D;
   --color-text-light: #5A5A5A;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-serif: 'League Spartan', sans-serif;
   --font-sans: 'Inter', system-ui, sans-serif;
 }
 
@@ -58,8 +58,8 @@ body {
 /* Pill badge */
 .badge {
   display: inline-block;
-  background: rgba(27,77,75,0.12);
-  color: var(--color-primary);
+  background: rgba(12, 113, 139, 0.12); /* Blue (#0C718B) with 12% opacity */
+  color: #0C718B; /* Blue font */
   border-radius: 999px;
   padding: 4px 16px;
   font-size: 0.8rem;
@@ -84,8 +84,15 @@ body {
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #1B4D4B 0%, #2d7a78 100%);
+  background: linear-gradient(135deg, #448D76 0%, #0C718B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Hide overlapping decorative floating elements on mobile */
+@media (max-width: 767px) {
+  .floating-decor-mobile-hide {
+    display: none !important;
+  }
 }

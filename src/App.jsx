@@ -188,7 +188,7 @@ function HeroSection() {
         {/* ── MOBILE LAYOUT: mockup on top, text below ─────────────────────── */}
         <div className="flex lg:hidden flex-col gap-10">
 
-          {/* Mobile Mockup — top */}
+          {/* Mockup no mobile, no topo */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -204,7 +204,7 @@ function HeroSection() {
                 className="w-full h-auto drop-shadow-[0_16px_40px_rgba(27,77,75,0.4)] object-contain scale-[1.35]"
               />
 
-              {/* Selo do formato — canto superior direito sobre o livro */}
+              {/* Selo do formato, no canto superior direito sobre o livro */}
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
@@ -215,7 +215,7 @@ function HeroSection() {
                 </div>
               </motion.div>
               
-              {/* Floating badge — left side overlapping */}
+              {/* Selo flutuante sobreposto a esquerda */}
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
@@ -224,7 +224,7 @@ function HeroSection() {
                 <div className="text-xs font-bold whitespace-nowrap">1.510 Preparações</div>
               </motion.div>
 
-              {/* Floating badge — bottom-right */}
+              {/* Selo flutuante no canto inferior direito */}
               <motion.div
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
@@ -239,7 +239,7 @@ function HeroSection() {
           {/* Mobile Text */}
           <motion.div {...stagger(0)} className="space-y-5">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">📕 E-book · 320 páginas · 1.510 preparações</span>
+              <span className="badge">📕 E-book · 1.510 preparações em 23 categorias</span>
             </motion.div>
 
             <motion.h1
@@ -283,7 +283,7 @@ function HeroSection() {
           {/* Left: Text */}
           <motion.div {...stagger(0)} className="space-y-7">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">📕 E-book · 320 páginas · 1.510 preparações</span>
+              <span className="badge">📕 E-book · 1.510 preparações em 23 categorias</span>
             </motion.div>
 
             <motion.h1
@@ -451,7 +451,7 @@ function SolutionSection() {
     {
       icon: <BookOpen size={24}/>,
       title: 'Banco de 1.510 preparações',
-      desc: 'De carne bovina a sobremesas elaboradas, em 23 categorias, cada uma com a descrição do preparo — mais um capítulo de preparações típicas das cinco regiões do Brasil.',
+      desc: 'De carne bovina a sobremesas elaboradas, em 23 categorias, cada uma com a descrição do preparo, mais um capítulo de preparações típicas das cinco regiões do Brasil.',
     },
     {
       icon: <ClipboardList size={24}/>,
@@ -466,7 +466,7 @@ function SolutionSection() {
     {
       icon: <Calculator size={24}/>,
       title: 'Ficha técnica e indicadores',
-      desc: 'Receituário padrão, FTP e indicadores culinários para calcular per capita, rendimento e custo — mais os instrumentos de monitoramento da qualidade.',
+      desc: 'Receituário padrão, FTP e indicadores culinários para calcular per capita, rendimento e custo, com os instrumentos de monitoramento da qualidade.',
     },
   ];
 
@@ -500,18 +500,18 @@ function SolutionSection() {
           <motion.div {...fadeUp} className="space-y-5 lg:col-span-2">
             <span className="badge">O que tem dentro</span>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl md:text-5xl font-bold text-[#448D76] leading-tight">
-              1.510 preparações —<br/>
-              <span className="text-[#0C718B]">e o método para escolher entre elas.</span>
+              1.510 preparações.<br/>
+              <span className="text-[#0C718B]">E o método para escolher entre elas.</span>
             </h2>
             <p className="text-[#5A5A5A] text-base md:text-lg leading-relaxed">
               Um banco de receitas não resolve sozinho. O <strong className="text-[#448D76]">Cardápios:
               Um Livro Vivo</strong> traz as duas metades da decisão: as preparações organizadas por
               categoria e os <strong className="text-[#448D76]">onze capítulos</strong> que ensinam a
-              transformá-las em cardápio — planejamento, ficha técnica, custo e controle de qualidade.
+              transformá-las em cardápio: planejamento, ficha técnica, custo e controle de qualidade.
             </p>
             <p className="text-[#5A5A5A] text-sm md:text-base leading-relaxed">
-              São 320 páginas escritas por uma nutricionista com mais de 17 anos entre a sala de aula
-              e a cozinha de hospitais, empresas e restaurantes, com o conteúdo ancorado no
+              Escrito por uma nutricionista com mais de 17 anos entre a sala de aula e a cozinha de
+              hospitais, empresas e restaurantes, com todo o conteúdo ancorado no
               <strong className="text-[#448D76]"> Guia Alimentar para a População Brasileira</strong>.
             </p>
             <CTAButton href="#checkout" size="md" className="w-full sm:w-fit mt-2 shadow-lg shadow-[#ED8627]/20 !py-3.5 !text-sm sm:!py-4 sm:!text-base">
@@ -660,53 +660,75 @@ function ContentsSection() {
   const partes = [
     {
       icon: <Salad size={22} />,
-      etiqueta: 'Capítulos I a IV',
+      capitulos: 'Capítulos I a IV',
       titulo: 'Fundamentos e técnica de cozinha',
-      itens: [
-        'As oito dimensões da qualidade dos alimentos',
-        'Tipologia de UANs comerciais e coletivas e o processo produtivo',
-        'Pré-preparo de vegetais e frutas, cortes clássicos, empanar e marinar',
-        'Ervas, especiarias, pimentas e temperos caseiros',
-        'Fundos, agentes de ligação, molhos básicos, frios e contemporâneos',
-        'Métodos de cocção tradicionais e contemporâneos',
+      resumo: 'Como o alimento se comporta antes de virar preparação.',
+      topicos: [
+        'Dimensões da qualidade',
+        'Tipologia de UANs',
+        'Processo produtivo',
+        'Pré-preparo de vegetais e frutas',
+        'Cortes clássicos',
+        'Empanar e marinar',
+        'Ervas e especiarias',
+        'Fundos e agentes de ligação',
+        'Molhos',
+        'Métodos de cocção',
       ],
     },
     {
       icon: <ClipboardList size={22} />,
-      etiqueta: 'Capítulos V a IX',
+      capitulos: 'Capítulos V a IX',
       titulo: 'Planejamento, custo e qualidade',
-      itens: [
-        'Fatores administrativos, nutricionais, sensoriais e culturais',
-        'Planejamento horizontal e cíclico, e a composição do cardápio',
-        'Tipos de cardápio para UAN comercial e coletiva',
-        'Instrumentos de monitoramento da qualidade na produção',
-        'Consultoria e assessoria na elaboração de cardápios',
-        'Receituário padrão, ficha técnica (FTP) e indicadores culinários',
+      resumo: 'O método que transforma preparações soltas em cardápio.',
+      topicos: [
+        'Fatores de planejamento',
+        'Planejamento horizontal',
+        'Planejamento cíclico',
+        'Composição do cardápio',
+        'Tipos de cardápio para UAN',
+        'Monitoramento da qualidade',
+        'Consultoria e assessoria',
+        'Receituário padrão',
+        'Ficha técnica (FTP)',
+        'Indicadores culinários',
       ],
     },
     {
       icon: <BookOpen size={22} />,
-      etiqueta: 'Capítulo X',
+      capitulos: 'Capítulo X',
       titulo: 'Banco de 1.510 preparações',
-      itens: [
-        'Carnes bovina, de aves, suína, peixes, frutos do mar e embutidos',
-        'Ovos, leguminosas, arroz, massas e acompanhamentos',
-        'Molhos quentes e frios, sopas e saladas',
-        'Sobremesas de frutas e sobremesas elaboradas',
-        'Preparações típicas das cinco regiões do Brasil',
-        'Cada preparação com a descrição do modo de preparo',
+      resumo: 'Cada uma com a descrição do modo de preparo, em 23 categorias.',
+      topicos: [
+        'Carne bovina',
+        'Aves',
+        'Suína',
+        'Peixes e frutos do mar',
+        'Embutidos',
+        'Ovos',
+        'Leguminosas',
+        'Arroz',
+        'Massas',
+        'Molhos quentes e frios',
+        'Sopas',
+        'Saladas',
+        'Sobremesas',
+        'Preparações regionais',
       ],
     },
     {
       icon: <CalendarDays size={22} />,
-      etiqueta: 'Capítulo XI e anexos',
-      titulo: 'Consulta rápida no dia a dia',
-      itens: [
-        'Glossário de técnica dietética e da culinária internacional',
-        'Classificação de vegetais com nome botânico, grupo e nutrientes',
-        'Calendário de sazonalidade mês a mês',
-        'Calendário de datas comemorativas para o cardápio do ano',
-        'Quatro cardápios completos — bufê por peso, trabalhadores, infantil e casa de repouso',
+      capitulos: 'Capítulo XI e anexos',
+      titulo: 'Consulta rápida no expediente',
+      resumo: 'O que você consulta no meio da correria, para tirar uma dúvida.',
+      topicos: [
+        'Glossário de técnica dietética',
+        'Termos da culinária internacional',
+        'Classificação de vegetais',
+        'Calendário de sazonalidade',
+        'Datas comemorativas',
+        '4 cardápios completos',
+        'Referências',
       ],
     },
   ];
@@ -715,13 +737,13 @@ function ContentsSection() {
     <section id="conteudo" className="py-16 md:py-24 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-5">
         <motion.div {...fadeUp} className="text-center mb-10 md:mb-14">
-          <span className="badge">320 páginas</span>
+          <span className="badge">Capítulo a capítulo</span>
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#448D76] leading-tight mt-4">
-            O que você abre quando abre o livro.
+            Da técnica de cozinha ao cardápio fechado.
           </h2>
           <p className="text-[#5A5A5A] text-sm md:text-base leading-relaxed mt-4 max-w-2xl mx-auto">
-            Onze capítulos e três anexos, na ordem em que a decisão acontece: entender o
-            alimento, dominar a técnica, planejar o cardápio e controlar o resultado.
+            Onze capítulos e três anexos, organizados na ordem em que a decisão acontece:
+            entender o alimento, dominar a técnica, planejar o cardápio e controlar o resultado.
           </p>
         </motion.div>
 
@@ -730,26 +752,31 @@ function ContentsSection() {
             <motion.div
               key={parte.titulo}
               {...stagger(i * 0.1)}
-              className="bg-[#EEF0D2]/40 border border-[#E2E5BE] rounded-2xl md:rounded-3xl p-6 md:p-8"
+              className="bg-[#EEF0D2]/40 border border-[#E2E5BE] rounded-2xl md:rounded-3xl p-6 md:p-8 flex flex-col"
             >
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-start gap-3.5 mb-4">
                 <div className="w-11 h-11 rounded-xl bg-white shadow-sm flex items-center justify-center text-[#448D76] shrink-0">
                   {parte.icon}
                 </div>
                 <div>
-                  <div className="text-[#ED8627] text-[11px] font-bold tracking-wider uppercase">
-                    {parte.etiqueta}
+                  <div className="text-[#ED8627] text-[11px] font-bold tracking-wider uppercase mb-0.5">
+                    {parte.capitulos}
                   </div>
                   <h3 className="font-serif text-[#0C718B] font-bold text-lg md:text-xl leading-tight">
                     {parte.titulo}
                   </h3>
                 </div>
               </div>
-              <ul className="space-y-2">
-                {parte.itens.map(item => (
-                  <li key={item} className="flex items-start gap-2.5">
-                    <CheckCircle2 size={15} className="text-[#448D76] mt-1 flex-shrink-0" />
-                    <span className="text-[#5A5A5A] text-sm leading-relaxed">{item}</span>
+
+              <p className="text-[#5A5A5A] text-sm leading-relaxed mb-5">{parte.resumo}</p>
+
+              <ul className="flex flex-wrap gap-2">
+                {parte.topicos.map(topico => (
+                  <li
+                    key={topico}
+                    className="bg-white border border-[#E2E5BE] text-[#448D76] text-xs font-medium rounded-full px-3 py-1.5"
+                  >
+                    {topico}
                   </li>
                 ))}
               </ul>
@@ -777,13 +804,13 @@ function DeliverySection() {
     },
     {
       icon: <Download size={24} />,
-      titulo: 'Baixa na hora',
-      desc: 'O e-book em PDF fica disponível assim que o pagamento é confirmado. É seu para sempre, e abre até sem internet.',
+      titulo: 'Baixa o arquivo na hora',
+      desc: 'Assim que o pagamento é confirmado, o e-book fica disponível para download. Abre no celular, no tablet ou no computador, e funciona sem internet.',
     },
     {
       icon: <Mail size={24} />,
-      titulo: 'Recebe cada nova edição',
-      desc: 'Sempre que o livro ganha uma edição revisada e ampliada, ela chega no seu e-mail. Sem pagar de novo.',
+      titulo: 'Recebe as próximas edições',
+      desc: 'A Lúcia revisa e amplia o livro periodicamente. Cada nova edição chega no seu e-mail, sem você pagar de novo.',
     },
   ];
 
@@ -791,10 +818,14 @@ function DeliverySection() {
     <section id="entrega" className="py-16 md:py-24 bg-[#EEF0D2]/40 border-y border-[#E2E5BE]">
       <div className="max-w-6xl mx-auto px-4 sm:px-5">
         <motion.div {...fadeUp} className="text-center mb-10 md:mb-14">
-          <span className="badge">Como você recebe</span>
+          <span className="badge">Como funciona a entrega</span>
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#448D76] leading-tight mt-4">
-            Do pagamento ao livro na sua mão,<br className="hidden sm:block" /> em poucos minutos.
+            Você compra uma vez<br className="hidden sm:block" /> e continua recebendo.
           </h2>
+          <p className="text-[#5A5A5A] text-sm md:text-base leading-relaxed mt-4 max-w-2xl mx-auto">
+            O Livro Vivo é um e-book. Você baixa o arquivo completo no momento da compra e
+            recebe também as edições que a autora publicar daqui em diante.
+          </p>
         </motion.div>
 
         <ol className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
@@ -872,9 +903,9 @@ function CheckoutSection() {
           </h2>
 
           <p className="text-[#5A5A5A] mb-6 md:mb-8 leading-relaxed text-sm md:text-base">
-            São <strong className="text-[#448D76]">320 páginas</strong>: onze capítulos de fundamentos,
-            técnica e planejamento, um banco com <strong className="text-[#448D76]">1.510 preparações</strong>,
-            glossário, calendário de sazonalidade e quatro cardápios completos prontos para adaptar.
+            Onze capítulos de fundamentos, técnica e planejamento, um banco com
+            <strong className="text-[#448D76]"> 1.510 preparações</strong>, glossário, calendário de
+            sazonalidade e quatro cardápios completos prontos para adaptar ao seu serviço.
           </p>
 
           {/* Price */}

@@ -472,7 +472,10 @@ async function iniciar() {
       `Versão de teste: o assistente está sorteando dentro de ${base.preparacoes.length} preparações, ` +
       `uma amostra do acervo de ${base.meta.totalReal} do livro.`
   } else {
-    $('avisoAmostra').style.display = 'none'
+    $('avisoAmostra').innerHTML =
+      `<strong>Versão interna de teste.</strong> Rodando com o acervo completo do livro ` +
+      `(${base.preparacoes.length} preparações). O link não deve circular fora da equipe ` +
+      `enquanto a forma de distribuição não estiver definida.`
   }
 
   $('mes').addEventListener('change', (e) => { estado.mes = e.target.value; desenhar() })

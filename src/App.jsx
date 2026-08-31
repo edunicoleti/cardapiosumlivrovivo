@@ -4,7 +4,8 @@ import { FeatureCard } from './components/FeatureCard';
 import {
   Clock, TrendingDown, ShieldAlert, CheckCircle2, Smartphone,
   RefreshCw, BookOpen, Star, ChevronDown, Leaf, ExternalLink,
-  CreditCard, Download, Mail
+  CreditCard, Download, Mail, ClipboardList, ChefHat, Calculator,
+  Salad, BookMarked, CalendarDays
 } from 'lucide-react';
 
 // ─── Animation Helpers ───────────────────────────────────────────────────────
@@ -220,7 +221,7 @@ function HeroSection() {
                 transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
                 className="absolute left-2 sm:-left-3 top-[55%] bg-white text-[#ED8627] rounded-xl px-3 py-2 shadow-xl border border-[#E2E5BE] z-20"
               >
-                <div className="text-xs font-bold whitespace-nowrap">+2.000 Receitas</div>
+                <div className="text-xs font-bold whitespace-nowrap">1.510 Preparações</div>
               </motion.div>
 
               {/* Floating badge — bottom-right */}
@@ -238,7 +239,7 @@ function HeroSection() {
           {/* Mobile Text */}
           <motion.div {...stagger(0)} className="space-y-5">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">📕 E-book em PDF · Novas edições</span>
+              <span className="badge">📕 E-book · 320 páginas · 1.510 preparações</span>
             </motion.div>
 
             <motion.h1
@@ -252,7 +253,7 @@ function HeroSection() {
               {...stagger(0.3)}
               className="font-sans text-sm sm:text-base text-[#5A5A5A] leading-relaxed"
             >
-              Decisões que impactam custo, equipe, tempo e qualidade. O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> é uma ferramenta de apoio contínuo para quem leva planejamento alimentar a sério!
+              Decisões que impactam custo, equipe, tempo e qualidade. O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> reúne 1.510 preparações e o método técnico que sustenta cada uma delas.
             </motion.p>
 
             <motion.div {...stagger(0.4)}>
@@ -282,7 +283,7 @@ function HeroSection() {
           {/* Left: Text */}
           <motion.div {...stagger(0)} className="space-y-7">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">📕 E-book em PDF · Novas edições</span>
+              <span className="badge">📕 E-book · 320 páginas · 1.510 preparações</span>
             </motion.div>
 
             <motion.h1
@@ -296,7 +297,7 @@ function HeroSection() {
               {...stagger(0.3)}
               className="font-sans text-xl text-[#5A5A5A] leading-relaxed max-w-lg"
             >
-              Decisões que impactam custo, equipe, tempo e qualidade. O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> é uma ferramenta de apoio contínuo para quem leva planejamento alimentar a sério!
+              Decisões que impactam custo, equipe, tempo e qualidade. O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> reúne 1.510 preparações e o método técnico que sustenta cada uma delas.
             </motion.p>
 
             <motion.div {...stagger(0.4)} className="flex gap-4 items-start">
@@ -447,10 +448,26 @@ function PainPointsSection() {
 // ─── Solution Section ─────────────────────────────────────────────────────────
 function SolutionSection() {
   const features = [
-    { icon: <BookOpen size={24}/>, title: '+2.000 receitas', desc: 'Receitas organizadas, categorizadas e prontas para uso imediato.' },
-    { icon: <Smartphone size={24}/>, title: 'Leia onde quiser', desc: 'PDF que abre no celular, tablet ou computador — e funciona offline.' },
-    { icon: <RefreshCw size={24}/>, title: 'Novas edições grátis', desc: 'Cada edição revisada e ampliada chega até você, sem pagar de novo.' },
-    { icon: <CheckCircle2 size={24}/>, title: 'Guia Alimentar BR', desc: 'Todo conteúdo baseado no Guia Alimentar da População Brasileira.' },
+    {
+      icon: <BookOpen size={24}/>,
+      title: 'Banco de 1.510 preparações',
+      desc: 'De carne bovina a sobremesas elaboradas, em 23 categorias, cada uma com a descrição do preparo — mais um capítulo de preparações típicas das cinco regiões do Brasil.',
+    },
+    {
+      icon: <ClipboardList size={24}/>,
+      title: 'O método de planejamento',
+      desc: 'Fatores administrativos, nutricionais, sensoriais e culturais; planejamento horizontal e cíclico; e os tipos de cardápio para UAN comercial e coletiva.',
+    },
+    {
+      icon: <ChefHat size={24}/>,
+      title: 'Técnica de cozinha aplicada',
+      desc: 'Cortes clássicos, métodos de cocção tradicionais e contemporâneos, fundos, molhos, condimentos e o pré-preparo de vegetais e frutas.',
+    },
+    {
+      icon: <Calculator size={24}/>,
+      title: 'Ficha técnica e indicadores',
+      desc: 'Receituário padrão, FTP e indicadores culinários para calcular per capita, rendimento e custo — mais os instrumentos de monitoramento da qualidade.',
+    },
   ];
 
   return (
@@ -481,19 +498,21 @@ function SolutionSection() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-center">
           {/* Left: Explanation */}
           <motion.div {...fadeUp} className="space-y-5 lg:col-span-2">
-            <span className="badge">A Solução</span>
+            <span className="badge">O que tem dentro</span>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl md:text-5xl font-bold text-[#448D76] leading-tight">
-              Não é um PDF congelado.<br/>
-              <span className="text-[#0C718B]">É um livro em novas edições.</span>
+              1.510 preparações —<br/>
+              <span className="text-[#0C718B]">e o método para escolher entre elas.</span>
             </h2>
             <p className="text-[#5A5A5A] text-base md:text-lg leading-relaxed">
-              O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> é um e-book em PDF que
-              continua vivo: a cada nova edição o conteúdo é <strong className="text-[#448D76]">revisado e ampliado</strong>,
-              e você recebe todas elas sem pagar de novo.
+              Um banco de receitas não resolve sozinho. O <strong className="text-[#448D76]">Cardápios:
+              Um Livro Vivo</strong> traz as duas metades da decisão: as preparações organizadas por
+              categoria e os <strong className="text-[#448D76]">onze capítulos</strong> que ensinam a
+              transformá-las em cardápio — planejamento, ficha técnica, custo e controle de qualidade.
             </p>
             <p className="text-[#5A5A5A] text-sm md:text-base leading-relaxed">
-              Criado por uma nutricionista com décadas de experiência no chão de cozinha, cada receita
-              foi selecionada e testada na prática da alimentação coletiva real.
+              São 320 páginas escritas por uma nutricionista com mais de 17 anos entre a sala de aula
+              e a cozinha de hospitais, empresas e restaurantes, com o conteúdo ancorado no
+              <strong className="text-[#448D76]"> Guia Alimentar para a População Brasileira</strong>.
             </p>
             <CTAButton href="#checkout" size="md" className="w-full sm:w-fit mt-2 shadow-lg shadow-[#ED8627]/20 !py-3.5 !text-sm sm:!py-4 sm:!text-base">
               Quero Meu Livro Vivo Agora
@@ -636,6 +655,118 @@ function AboutAuthorSection() {
   );
 }
 
+// ─── Dentro do Livro ──────────────────────────────────────────────────────────
+function ContentsSection() {
+  const partes = [
+    {
+      icon: <Salad size={22} />,
+      etiqueta: 'Capítulos I a IV',
+      titulo: 'Fundamentos e técnica de cozinha',
+      itens: [
+        'As oito dimensões da qualidade dos alimentos',
+        'Tipologia de UANs comerciais e coletivas e o processo produtivo',
+        'Pré-preparo de vegetais e frutas, cortes clássicos, empanar e marinar',
+        'Ervas, especiarias, pimentas e temperos caseiros',
+        'Fundos, agentes de ligação, molhos básicos, frios e contemporâneos',
+        'Métodos de cocção tradicionais e contemporâneos',
+      ],
+    },
+    {
+      icon: <ClipboardList size={22} />,
+      etiqueta: 'Capítulos V a IX',
+      titulo: 'Planejamento, custo e qualidade',
+      itens: [
+        'Fatores administrativos, nutricionais, sensoriais e culturais',
+        'Planejamento horizontal e cíclico, e a composição do cardápio',
+        'Tipos de cardápio para UAN comercial e coletiva',
+        'Instrumentos de monitoramento da qualidade na produção',
+        'Consultoria e assessoria na elaboração de cardápios',
+        'Receituário padrão, ficha técnica (FTP) e indicadores culinários',
+      ],
+    },
+    {
+      icon: <BookOpen size={22} />,
+      etiqueta: 'Capítulo X',
+      titulo: 'Banco de 1.510 preparações',
+      itens: [
+        'Carnes bovina, de aves, suína, peixes, frutos do mar e embutidos',
+        'Ovos, leguminosas, arroz, massas e acompanhamentos',
+        'Molhos quentes e frios, sopas e saladas',
+        'Sobremesas de frutas e sobremesas elaboradas',
+        'Preparações típicas das cinco regiões do Brasil',
+        'Cada preparação com a descrição do modo de preparo',
+      ],
+    },
+    {
+      icon: <CalendarDays size={22} />,
+      etiqueta: 'Capítulo XI e anexos',
+      titulo: 'Consulta rápida no dia a dia',
+      itens: [
+        'Glossário de técnica dietética e da culinária internacional',
+        'Classificação de vegetais com nome botânico, grupo e nutrientes',
+        'Calendário de sazonalidade mês a mês',
+        'Calendário de datas comemorativas para o cardápio do ano',
+        'Quatro cardápios completos — bufê por peso, trabalhadores, infantil e casa de repouso',
+      ],
+    },
+  ];
+
+  return (
+    <section id="conteudo" className="py-16 md:py-24 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-5">
+        <motion.div {...fadeUp} className="text-center mb-10 md:mb-14">
+          <span className="badge">320 páginas</span>
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#448D76] leading-tight mt-4">
+            O que você abre quando abre o livro.
+          </h2>
+          <p className="text-[#5A5A5A] text-sm md:text-base leading-relaxed mt-4 max-w-2xl mx-auto">
+            Onze capítulos e três anexos, na ordem em que a decisão acontece: entender o
+            alimento, dominar a técnica, planejar o cardápio e controlar o resultado.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+          {partes.map((parte, i) => (
+            <motion.div
+              key={parte.titulo}
+              {...stagger(i * 0.1)}
+              className="bg-[#EEF0D2]/40 border border-[#E2E5BE] rounded-2xl md:rounded-3xl p-6 md:p-8"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 rounded-xl bg-white shadow-sm flex items-center justify-center text-[#448D76] shrink-0">
+                  {parte.icon}
+                </div>
+                <div>
+                  <div className="text-[#ED8627] text-[11px] font-bold tracking-wider uppercase">
+                    {parte.etiqueta}
+                  </div>
+                  <h3 className="font-serif text-[#0C718B] font-bold text-lg md:text-xl leading-tight">
+                    {parte.titulo}
+                  </h3>
+                </div>
+              </div>
+              <ul className="space-y-2">
+                {parte.itens.map(item => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <CheckCircle2 size={15} className="text-[#448D76] mt-1 flex-shrink-0" />
+                    <span className="text-[#5A5A5A] text-sm leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.p {...fadeUp} className="text-center text-[#5A5A5A] text-sm md:text-base mt-10 max-w-2xl mx-auto leading-relaxed">
+          Todo o conteúdo é ancorado no <strong className="text-[#448D76]">Guia Alimentar para a
+          População Brasileira</strong>: comida de verdade, ingredientes in natura e minimamente
+          processados, e preparações culturalmente reconhecíveis por quem come.
+        </motion.p>
+      </div>
+    </section>
+  );
+}
+
 // ─── Como Você Recebe ─────────────────────────────────────────────────────────
 function DeliverySection() {
   const passos = [
@@ -741,8 +872,9 @@ function CheckoutSection() {
           </h2>
 
           <p className="text-[#5A5A5A] mb-6 md:mb-8 leading-relaxed text-sm md:text-base">
-            Mais de <strong className="text-[#448D76]">2.000 receitas</strong> organizadas em um e-book em PDF,
-            com novas edições incluídas e todo o conteúdo baseado no Guia Alimentar da População Brasileira.
+            São <strong className="text-[#448D76]">320 páginas</strong>: onze capítulos de fundamentos,
+            técnica e planejamento, um banco com <strong className="text-[#448D76]">1.510 preparações</strong>,
+            glossário, calendário de sazonalidade e quatro cardápios completos prontos para adaptar.
           </p>
 
           {/* Price */}
@@ -758,12 +890,12 @@ function CheckoutSection() {
           {/* What's included */}
           <div className="text-left mb-6 md:mb-8 space-y-2.5 md:space-y-3">
             {[
-              'Download imediato do e-book em PDF',
-              '+2.000 receitas organizadas e categorizadas',
-              'Novas edições incluídas, sem custo adicional',
+              'Banco com 1.510 preparações numeradas em 23 categorias',
+              'Onze capítulos de técnica, planejamento e controle de qualidade',
+              'Ficha técnica de preparação e indicadores culinários',
+              'Glossário, calendário de sazonalidade e 4 cardápios completos',
               'Embasamento no Guia Alimentar da População Brasileira',
-              'Leia no celular, tablet ou computador — inclusive offline',
-              'Suporte via e-mail',
+              'Download imediato e novas edições incluídas',
             ].map(item => (
               <div key={item} className="flex items-start gap-3">
                 <CheckCircle2 size={18} className="text-[#0C718B] mt-0.5 flex-shrink-0" />
@@ -824,6 +956,7 @@ export default function App() {
         <HeroSection />
         <PainPointsSection />
         <SolutionSection />
+        <ContentsSection />
         <AboutAuthorSection />
         <DeliverySection />
         <CheckoutSection />

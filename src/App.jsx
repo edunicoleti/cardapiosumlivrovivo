@@ -221,7 +221,7 @@ function HeroSection() {
                 transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
                 className="absolute left-2 sm:-left-3 top-[55%] bg-white text-[#ED8627] rounded-xl px-3 py-2 shadow-xl border border-[#E2E5BE] z-20"
               >
-                <div className="text-xs font-bold whitespace-nowrap">2.285 Preparações</div>
+                <div className="text-xs font-bold whitespace-nowrap">2.298 Preparações</div>
               </motion.div>
 
               {/* Selo flutuante no canto inferior direito */}
@@ -239,7 +239,7 @@ function HeroSection() {
           {/* Mobile Text */}
           <motion.div {...stagger(0)} className="space-y-5">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">📕 E-book · 2.285 preparações em 23 categorias</span>
+              <span className="badge">📕 E-book · 2.298 preparações em 23 categorias</span>
             </motion.div>
 
             <motion.h1
@@ -253,7 +253,7 @@ function HeroSection() {
               {...stagger(0.3)}
               className="font-sans text-sm sm:text-base text-[#5A5A5A] leading-relaxed"
             >
-              Decisões que impactam custo, equipe, tempo e qualidade. O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> reúne 2.285 preparações e o método técnico que sustenta cada uma delas.
+              Decisões que impactam custo, equipe, tempo e qualidade. O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> reúne 2.298 preparações e o método técnico que sustenta cada uma delas.
             </motion.p>
 
             <motion.div {...stagger(0.4)}>
@@ -283,7 +283,7 @@ function HeroSection() {
           {/* Left: Text */}
           <motion.div {...stagger(0)} className="space-y-7">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">📕 E-book · 2.285 preparações em 23 categorias</span>
+              <span className="badge">📕 E-book · 2.298 preparações em 23 categorias</span>
             </motion.div>
 
             <motion.h1
@@ -297,7 +297,7 @@ function HeroSection() {
               {...stagger(0.3)}
               className="font-sans text-xl text-[#5A5A5A] leading-relaxed max-w-lg"
             >
-              Decisões que impactam custo, equipe, tempo e qualidade. O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> reúne 2.285 preparações e o método técnico que sustenta cada uma delas.
+              Decisões que impactam custo, equipe, tempo e qualidade. O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> reúne 2.298 preparações e o método técnico que sustenta cada uma delas.
             </motion.p>
 
             <motion.div {...stagger(0.4)} className="flex gap-4 items-start">
@@ -450,7 +450,7 @@ function SolutionSection() {
   const features = [
     {
       icon: <BookOpen size={24}/>,
-      title: 'Banco de 2.285 preparações',
+      title: 'Banco de 2.298 preparações',
       desc: 'De carne bovina a sobremesas elaboradas, cada uma com a descrição do preparo, incluindo as preparações típicas das cinco regiões do Brasil.',
     },
     {
@@ -500,7 +500,7 @@ function SolutionSection() {
           <motion.div {...fadeUp} className="space-y-5 lg:col-span-2">
             <span className="badge">O que tem dentro</span>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl md:text-5xl font-bold text-[#448D76] leading-tight">
-              2.285 preparações.<br/>
+              2.298 preparações.<br/>
               <span className="text-[#0C718B]">E o método para escolher entre elas.</span>
             </h2>
             <p className="text-[#5A5A5A] text-base md:text-lg leading-relaxed">
@@ -697,7 +697,7 @@ function ContentsSection() {
     {
       icon: <BookOpen size={22} />,
       capitulos: 'Capítulo X',
-      titulo: 'Banco de 2.285 preparações',
+      titulo: 'Banco de 2.298 preparações',
       resumo: 'Cada uma com a descrição do modo de preparo, em 23 categorias.',
       topicos: [
         'Carne bovina',
@@ -904,7 +904,7 @@ function CheckoutSection() {
 
           <p className="text-[#5A5A5A] mb-6 md:mb-8 leading-relaxed text-sm md:text-base">
             Onze capítulos de fundamentos, técnica e planejamento, um banco com
-            <strong className="text-[#448D76]"> 2.285 preparações</strong>, glossário, calendário de
+            <strong className="text-[#448D76]"> 2.298 preparações</strong>, glossário, calendário de
             sazonalidade e quatro cardápios completos prontos para adaptar ao seu serviço.
           </p>
 
@@ -921,7 +921,7 @@ function CheckoutSection() {
           {/* What's included */}
           <div className="text-left mb-6 md:mb-8 space-y-2.5 md:space-y-3">
             {[
-              'Banco com 2.285 preparações em 23 categorias',
+              'Banco com 2.298 preparações em 23 categorias',
               'Onze capítulos de técnica, planejamento e controle de qualidade',
               'Ficha técnica de preparação e indicadores culinários',
               'Glossário, calendário de sazonalidade e 4 cardápios completos',

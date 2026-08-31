@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Assistente de Cardápio · Cardápios: Um Livro Vivo</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap">
+<style>
+  :root {
+    --verde: #448D76; --verde-esc: #2F6F5C; --verde-prof: #1F4B3E;
+    --teal: #0C718B; --laranja: #ED8627; --laranja-esc: #B85F10;
+    --creme: #EEF0D2; --creme-cl: #F7F8EC; --creme-md: #E2E5BE;
+    --tinta: #2D2D2D; --tinta-sv: #5A5A5A; --tinta-fr: #8A8A80;
+    --linha: #DDE0C8; --branco: #fff;
+    --display: 'League Spartan', 'Trebuchet MS', sans-serif;
+    --corpo: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--corpo); color: var(--tinta); background: var(--creme-cl);
+         font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px 64px; }
+
+  /* ---------- topo ---------- */
+  header { background: var(--verde-prof); color: #fff; padding: 22px 0 24px; margin-bottom: 0; }
+  header .wrap { padding-bottom: 0; }
+  .marca { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .marca h1 { font-family: var(--display); font-size: 1.55rem; font-weight: 700; letter-spacing: -.01em; }
+  .marca .sub { color: #BFD9CE; font-size: 13.5px; margin-top: 3px; max-width: 62ch; }
+  .btn-ajuda { background: transparent; border: 1px solid rgba(255,255,255,.35); color: #fff;
+               font-family: var(--corpo); font-size: 13px; font-weight: 500; padding: 8px 14px;
+               border-radius: 999px; cursor: pointer; }
+  .btn-ajuda:hover { background: rgba(255,255,255,.12); }
+
+  /* ---------- controles ---------- */
+  .controles { background: var(--branco); border-bottom: 1px solid var(--linha); padding: 14px 0; position: sticky; top: 0; z-index: 20; }
+  .controles .wrap { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; padding-bottom: 0; }
+  .campo { display: flex; flex-direction: column; gap: 5px; }
+  .campo label { font-family: var(--display); font-size: 10.5px; font-weight: 600; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--tinta-fr); }
+  select { font-family: var(--corpo); font-size: 14px; padding: 8px 11px; border: 1px solid var(--linha);
+           border-radius: 8px; background: var(--branco); color: var(--tinta); min-width: 120px; }
+  .btn { font-family: var(--corpo); font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 8px;
+         border: 1px solid transparent; cursor: pointer; }
+  .btn-prim { background: var(--laranja); color: #fff; }
+  .btn-prim:hover { background: var(--laranja-esc); }
+  .btn-sec { background: var(--branco); color: var(--verde-esc); border-color: var(--creme-md); }
+  .btn-sec:hover { background: var(--creme-cl); }
+  .espaco-flex { flex: 1 1 auto; }
+  select:focus-visible, .btn:focus-visible, .btn-ajuda:focus-visible, .prato:focus-visible {
+    outline: 2px solid var(--laranja); outline-offset: 2px; }
+
+  /* ---------- conferência ---------- */
+  .conferencia { display: flex; gap: 10px; flex-wrap: wrap; padding: 18px 0 4px; }
+  .selo { background: var(--branco); border: 1px solid var(--linha); border-radius: 10px;
+          padding: 10px 14px; display: flex; flex-direction: column; gap: 2px; min-width: 190px; }
+  .selo .regra { font-family: var(--display); font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+                 text-transform: uppercase; color: var(--laranja-esc); }
+  .selo .valor { font-size: 13.5px; color: var(--tinta-sv); }
+
+  /* ---------- grade ---------- */
+  .rolagem { overflow-x: auto; margin-top: 18px; border: 1px solid var(--linha); border-radius: 12px; background: var(--branco); }
+  table { border-collapse: collapse; width: 100%; min-width: 900px; }
+  th, td { border-bottom: 1px solid var(--linha); border-right: 1px solid var(--linha); vertical-align: top; }
+  th:last-child, td:last-child { border-right: none; }
+  tr:last-child th, tr:last-child td { border-bottom: none; }
+  thead th { background: var(--verde-esc); color: #fff; font-family: var(--display); font-size: 12px;
+             font-weight: 600; letter-spacing: .07em; text-transform: uppercase; padding: 11px 12px;
+             text-align: left; position: sticky; top: 0; }
+  thead th:first-child { background: var(--verde-prof); }
+  tbody th { background: var(--creme-cl); font-family: var(--display); font-size: 11.5px; font-weight: 600;
+             letter-spacing: .05em; text-transform: uppercase; color: var(--verde-prof);
+             padding: 12px; text-align: left; white-space: nowrap; width: 150px; }
+  td { padding: 0; }
+
+  .prato { width: 100%; text-align: left; background: none; border: none; font-family: var(--corpo);
+           padding: 11px 12px; cursor: pointer; display: block; }
+  .prato:hover { background: var(--creme-cl); }
+  .prato .nome { font-size: 13.6px; color: var(--tinta); font-weight: 500; line-height: 1.4; }
+  .prato .meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 5px; }
+  .tag { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase;
+         padding: 2px 7px; border-radius: 999px; background: var(--creme); color: var(--verde-esc); }
+  .tag.safra { background: #FBEEDF; color: var(--laranja-esc); }
+  .prato .trocar { font-size: 11px; color: var(--tinta-fr); margin-top: 6px; opacity: 0; transition: opacity .12s; }
+  .prato:hover .trocar, .prato:focus-visible .trocar { opacity: 1; }
+  .vazio { padding: 11px 12px; font-size: 13px; color: var(--tinta-fr); font-style: italic; }
+
+  /* ---------- troca ---------- */
+  /* o reset zera a margem de tudo, e o dialog depende de margin:auto para centralizar */
+  dialog { border: none; border-radius: 14px; padding: 0; max-width: 460px; width: calc(100% - 32px);
+           margin: auto; box-shadow: 0 20px 60px rgba(0,0,0,.22); }
+  dialog::backdrop { background: rgba(31,75,62,.42); }
+  .dlg-topo { padding: 20px 22px 14px; border-bottom: 1px solid var(--linha); }
+  .dlg-topo .espaco { font-family: var(--display); font-size: 11px; font-weight: 600; letter-spacing: .08em;
+                      text-transform: uppercase; color: var(--laranja-esc); }
+  .dlg-topo h2 { font-family: var(--display); font-size: 1.2rem; font-weight: 700; color: var(--verde-prof); margin-top: 3px; }
+  .dlg-topo p { font-size: 13px; color: var(--tinta-sv); margin-top: 6px; }
+  .dlg-lista { max-height: 46vh; overflow-y: auto; }
+  .opcao { width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid var(--linha);
+           padding: 13px 22px; cursor: pointer; font-family: var(--corpo); }
+  .opcao:hover { background: var(--creme-cl); }
+  .opcao .n { font-size: 13.8px; color: var(--tinta); font-weight: 500; }
+  .opcao .d { font-size: 12.2px; color: var(--tinta-fr); margin-top: 3px; }
+  .dlg-pe { padding: 14px 22px; display: flex; justify-content: flex-end; }
+
+  /* ---------- onboarding ---------- */
+  .passos { display: grid; gap: 14px; padding: 22px; }
+  .passo { display: grid; grid-template-columns: 30px 1fr; gap: 13px; align-items: start; }
+  .passo .n { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--laranja);
+              background: #FBEEDF; width: 28px; height: 28px; border-radius: 50%;
+              display: flex; align-items: center; justify-content: center; }
+  .passo h3 { font-family: var(--display); font-size: 1rem; font-weight: 600; color: var(--verde-prof); }
+  .passo p { font-size: 13.4px; color: var(--tinta-sv); margin-top: 2px; }
+
+  .creditos { font-size: 12.5px; color: var(--tinta-fr); margin-top: 22px; max-width: 74ch; }
+  .aviso { background: #FBEEDF; border: 1px solid #F0D6B4; color: var(--laranja-esc);
+           border-radius: 10px; padding: 11px 14px; font-size: 12.8px; margin-top: 18px; }
+
+  @media (max-width: 860px) {
+    table, thead, tbody, th, td, tr { display: block; }
+    thead { display: none; }
+    .rolagem { min-width: 0; overflow-x: visible; }
+    table { min-width: 0; }
+    tbody th { background: var(--verde-esc); color: #fff; border-radius: 0; }
+    tbody tr { display: block; border-bottom: 8px solid var(--creme-cl); }
+    td { border-right: none; }
+    td::before { content: attr(data-dia); display: block; font-family: var(--display); font-size: 10.5px;
+                 font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+                 color: var(--tinta-fr); padding: 9px 12px 0; }
+  }
+
+  @media print {
+    header, .controles, .aviso, .prato .trocar, .btn-ajuda { display: none !important; }
+    body { background: #fff; font-size: 11px; }
+    .rolagem { border: 1px solid #999; }
+    table { min-width: 0; }
+    .prato { cursor: default; }
+    thead th { background: #eee !important; color: #000 !important; -webkit-print-color-adjust: exact; }
+    tbody th { background: #f6f6f6 !important; color: #000 !important; -webkit-print-color-adjust: exact; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="marca">
+      <div>
+        <h1>Assistente de Cardápio</h1>
+        <div class="sub">
+          Monta a semana escolhendo dentro das preparações do livro e seguindo as regras
+          de composição do capítulo VI.
+        </div>
+      </div>
+      <button class="btn-ajuda" id="abrirAjuda" type="button">Como funciona</button>
+    </div>
+  </div>
+</header>
+
+<div class="controles">
+  <div class="wrap">
+    <div class="campo">
+      <label for="mes">Mês do cardápio</label>
+      <select id="mes"></select>
+    </div>
+    <div class="campo">
+      <label for="dias">Dias</label>
+      <select id="dias">
+        <option value="5">5 dias (seg a sex)</option>
+        <option value="6">6 dias</option>
+        <option value="7">7 dias</option>
+      </select>
+    </div>
+    <div class="espaco-flex"></div>
+    <button class="btn btn-prim" id="outra" type="button">Gerar outra sugestão</button>
+    <button class="btn btn-sec" id="imprimir" type="button">Imprimir</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="conferencia" id="conferencia"></div>
+  <div class="rolagem"><table id="grade"><thead></thead><tbody></tbody></table></div>
+
+  <div class="aviso" id="avisoAmostra"></div>
+
+  <p class="creditos">
+    Todas as preparações, os índices e as regras de composição vêm de
+    <strong>Cardápios: um livro vivo</strong>, de Lúcia Chaise Borjes. A ferramenta não
+    inventa pratos: ela escolhe dentro do acervo do livro e mostra qual regra determinou
+    cada escolha.
+  </p>
+</div>
+
+<dialog id="dlgTroca">
+  <div class="dlg-topo">
+    <div class="espaco" id="trocaEspaco"></div>
+    <h2 id="trocaAtual"></h2>
+    <p>Estas são as outras opções que o assistente considerou para este espaço.</p>
+  </div>
+  <div class="dlg-lista" id="trocaLista"></div>
+  <div class="dlg-pe"><button class="btn btn-sec" id="fecharTroca" type="button">Cancelar</button></div>
+</dialog>
+
+<dialog id="dlgAjuda">
+  <div class="dlg-topo">
+    <div class="espaco">Antes de começar</div>
+    <h2>Como este assistente funciona</h2>
+  </div>
+  <div class="passos">
+    <div class="passo">
+      <div class="n">1</div>
+      <div>
+        <h3>Ele já começa montado</h3>
+        <p>Você não precisa preencher nada para ver um cardápio. Ao abrir, a semana já está
+           sugerida. Troque o mês ou o número de dias e ela se refaz.</p>
+      </div>
+    </div>
+    <div class="passo">
+      <div class="n">2</div>
+      <div>
+        <h3>Cada escolha tem um motivo</h3>
+        <p>Quando um prato foi escolhido por causa da safra do mês, isso aparece do lado dele.
+           A conferência no topo mostra se a semana respeitou o rodízio de proteína, o limite
+           de fritura e a variedade de cocção.</p>
+      </div>
+    </div>
+    <div class="passo">
+      <div class="n">3</div>
+      <div>
+        <h3>Você tem a palavra final</h3>
+        <p>Clique em qualquer prato para ver as outras opções que o assistente considerou e
+           trocar. Trocar um prato não refaz o resto da semana.</p>
+      </div>
+    </div>
+  </div>
+  <div class="dlg-pe"><button class="btn btn-prim" id="comecar" type="button">Ver meu cardápio</button></div>
+</dialog>
+
+<script type="module">
+const MESES = [
+  ['jan','Janeiro'],['fev','Fevereiro'],['mar','Março'],['abr','Abril'],
+  ['mai','Maio'],['jun','Junho'],['jul','Julho'],['ago','Agosto'],
+  ['set','Setembro'],['out','Outubro'],['nov','Novembro'],['dez','Dezembro'],
+]
+const DIAS = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo']
+
+// Ingrediente que identifica a preparacao, para nao repetir na semana: o item
+// da safra quando houver, senao a primeira palavra significativa do nome.
+const VAZIAS = new Set(['com','sem','ao','aos','de','da','do','em','na','no','uma','para'])
+function ingredienteChave(p, safra) {
+  if (safra) return safra.item
+  const palavra = semAcento(p.nome)
+    .replace(/[^a-z\s-]/g, ' ')
+    .split(/\s+/)
+    .find((t) => t.length > 3 && !VAZIAS.has(t))
+  return palavra ?? null
+}
+
+// Estrutura do dia e rodízio: tirados da matriz de planejamento do capítulo VI.
+const ESTRUTURA = [
+  { espaco: 'Prato principal', slot: 'principal', rodizio: true },
+  { espaco: 'Arroz',           slot: 'base', referencia: 'Arroz' },
+  { espaco: 'Feijão',          slot: 'base', referencia: 'Feijão' },
+  { espaco: 'Acompanhamento',  slot: 'acompanhamento' },
+  { espaco: 'Salada crua',     slot: 'salada', referencias: ['Crua','Mista'] },
+  { espaco: 'Salada cozida',   slot: 'salada', referencias: ['Cozida'] },
+  { espaco: 'Sobremesa',       slot: 'sobremesa' },
+]
+const RODIZIO = ['Carne bovina','Carne de frango','Pescados','Carne suína','Carnes diversas']
+
+let base = null
+let estado = { mes: MESES[new Date().getMonth()][0], dias: 5, semente: 1, cardapio: null }
+
+// ------------------------------------------------------------------ motor
+const semAcento = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()
+const cacheRegex = new Map()
+function regexItem(item) {
+  if (!cacheRegex.has(item)) {
+    const esc = item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    cacheRegex.set(item, new RegExp(`(^|[^a-z])${esc}s?([^a-z]|$)`))
+  }
+  return cacheRegex.get(item)
+}
+function gerador(semente) {
+  let a = semente >>> 0
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+function naSafra(p, itens) {
+  const nome = semAcento(p.nome), desc = semAcento(p.descricao || '')
+  const noNome = itens.find((i) => i.length > 3 && regexItem(i).test(nome))
+  if (noNome) return { item: noNome, peso: 3, mostrar: true }
+  const naDesc = itens.find((i) => i.length > 3 && regexItem(i).test(desc))
+  if (naDesc) return { item: naDesc, peso: 1, mostrar: false }
+  return null
+}
+
+function montar({ mes, dias, semente }) {
+  const sorteio = gerador(semente)
+  const itensSafra = base.sazonalidade.filter((s) => s.meses.includes(mes)).map((s) => semAcento(s.item))
+  const usadas = new Set()
+  const frituras = []
+  // Regra 3.7 vale para a semana inteira, nao so para o prato principal: sem
+  // isto "espinafre" cai em tres acompanhamentos seguidos so por estar na safra.
+  const ingredientePorEspaco = {}
+  const cardapio = []
+
+  for (let d = 0; d < dias; d++) {
+    const dia = { dia: DIAS[d % 7], itens: [] }
+    const metodosDoDia = []
+    // frango no prato principal e frango no arroz, no mesmo dia, quebra a
+    // regra 3.7 tanto quanto repetir na semana
+    const ingredientesDoDia = []
+
+    for (const linha of ESTRUTURA) {
+      const alvo = linha.rodizio ? RODIZIO[d % RODIZIO.length] : linha.referencia
+      const candidatas = base.preparacoes.filter((p) => {
+        if (p.slot !== linha.slot) return false
+        if (alvo && p.referencia !== alvo) return false
+        if (linha.referencias && !linha.referencias.includes(p.referencia)) return false
+        return !usadas.has(p.id)
+      })
+      if (!candidatas.length) { dia.itens.push({ espaco: linha.espaco, vazio: true }); continue }
+
+      const avaliadas = candidatas.map((p) => {
+        let nota = sorteio() * 0.6
+        const safra = naSafra(p, itensSafra)
+        if (safra) nota += safra.peso
+        if (p.metodo && metodosDoDia.includes(p.metodo)) nota -= 2.5
+        if (p.metodo === 'frito' && frituras.length >= 1) nota -= 4
+        const chave = ingredienteChave(p, safra)
+        if (chave && (ingredientePorEspaco[linha.espaco] ?? []).includes(chave)) nota -= 3
+        if (chave && ingredientesDoDia.includes(chave)) nota -= 3.5
+        return { p, nota, safra, chave }
+      }).sort((a, b) => b.nota - a.nota)
+
+      const esc = avaliadas[0]
+      usadas.add(esc.p.id)
+      if (esc.p.metodo) metodosDoDia.push(esc.p.metodo)
+      if (esc.p.metodo === 'frito') frituras.push(d)
+      if (esc.chave) {
+        ;(ingredientePorEspaco[linha.espaco] ??= []).push(esc.chave)
+        ingredientesDoDia.push(esc.chave)
+      }
+
+      dia.itens.push({
+        espaco: linha.espaco, nome: esc.p.nome, metodo: esc.p.metodo,
+        safra: esc.safra?.mostrar ? esc.safra.item : null,
+        alternativas: avaliadas.slice(1, 9).map((a) => ({
+          id: a.p.id, nome: a.p.nome, metodo: a.p.metodo,
+          descricao: a.p.descricao, safra: a.safra?.mostrar ? a.safra.item : null,
+        })),
+      })
+    }
+    cardapio.push(dia)
+  }
+  return cardapio
+}
+
+function conferir(cardapio) {
+  const itens = cardapio.flatMap((d) => d.itens).filter((i) => !i.vazio)
+  const principais = cardapio.map((d) => d.itens.find((i) => i.espaco === 'Prato principal')?.nome)
+  const refs = new Set(cardapio.map((d, i) => RODIZIO[i % RODIZIO.length]).slice(0, cardapio.length))
+  const fritos = itens.filter((i) => i.metodo === 'frito').length
+  const repetido = cardapio.filter((d) => {
+    const m = d.itens.map((i) => i.metodo).filter(Boolean)
+    return new Set(m).size !== m.length
+  }).length
+  return [
+    ['3.7 Variedade de ingredientes', `${refs.size} proteínas distintas em ${cardapio.length} dias`],
+    ['3.2 Variedade de cocção', `${fritos} fritura(s); ${repetido} dia(s) com método repetido`],
+    ['3.1 Estação do ano', `${itens.filter((i) => i.safra).length} pratos com ingrediente da safra`],
+  ]
+}
+
+// ------------------------------------------------------------------ tela
+const $ = (id) => document.getElementById(id)
+
+function desenhar() {
+  estado.cardapio = montar(estado)
+  const c = estado.cardapio
+
+  $('conferencia').innerHTML = conferir(c).map(([regra, valor]) =>
+    `<div class="selo"><span class="regra">${regra}</span><span class="valor">${valor}</span></div>`
+  ).join('')
+
+  $('grade').querySelector('thead').innerHTML =
+    '<tr><th>Espaço</th>' + c.map((d) => `<th>${d.dia}</th>`).join('') + '</tr>'
+
+  $('grade').querySelector('tbody').innerHTML = ESTRUTURA.map((linha, li) => {
+    const celulas = c.map((dia, di) => {
+      const item = dia.itens[li]
+      if (!item || item.vazio) return `<td data-dia="${dia.dia}"><div class="vazio">sem opção disponível</div></td>`
+      const tags = [
+        item.metodo ? `<span class="tag">${item.metodo}</span>` : '',
+        item.safra ? `<span class="tag safra">${item.safra} na safra</span>` : '',
+      ].join('')
+      return `<td data-dia="${dia.dia}">
+        <button class="prato" data-dia="${di}" data-linha="${li}" type="button">
+          <span class="nome">${item.nome}</span>
+          ${tags ? `<span class="meta">${tags}</span>` : ''}
+          <span class="trocar">clique para trocar</span>
+        </button></td>`
+    }).join('')
+    return `<tr><th>${linha.espaco}</th>${celulas}</tr>`
+  }).join('')
+
+  for (const botao of document.querySelectorAll('.prato')) {
+    botao.addEventListener('click', () => abrirTroca(+botao.dataset.dia, +botao.dataset.linha))
+  }
+}
+
+function abrirTroca(di, li) {
+  const item = estado.cardapio[di].itens[li]
+  $('trocaEspaco').textContent = `${ESTRUTURA[li].espaco} · ${estado.cardapio[di].dia}`
+  $('trocaAtual').textContent = item.nome
+  $('trocaLista').innerHTML = item.alternativas.map((a, i) => `
+    <button class="opcao" data-i="${i}" type="button">
+      <div class="n">${a.nome}</div>
+      <div class="d">${[a.metodo, a.safra ? `${a.safra} na safra` : '', a.descricao].filter(Boolean).join(' · ')}</div>
+    </button>`).join('') || '<div class="vazio" style="padding:18px 22px">Não há outras opções neste espaço.</div>'
+
+  for (const opcao of $('trocaLista').querySelectorAll('.opcao')) {
+    opcao.addEventListener('click', () => {
+      const nova = item.alternativas[+opcao.dataset.i]
+      const antigo = { nome: item.nome, metodo: item.metodo, safra: item.safra }
+      item.nome = nova.nome; item.metodo = nova.metodo; item.safra = nova.safra
+      item.alternativas = item.alternativas.filter((_, k) => k !== +opcao.dataset.i)
+      item.alternativas.unshift({ ...antigo, descricao: '' })
+      $('dlgTroca').close()
+      redesenharCelulas()
+    })
+  }
+  $('dlgTroca').showModal()
+}
+
+// redesenha sem remontar o cardápio, para a troca não mexer no resto da semana
+function redesenharCelulas() {
+  const c = estado.cardapio
+  $('conferencia').innerHTML = conferir(c).map(([regra, valor]) =>
+    `<div class="selo"><span class="regra">${regra}</span><span class="valor">${valor}</span></div>`
+  ).join('')
+  document.querySelectorAll('.prato').forEach((botao) => {
+    const item = c[+botao.dataset.dia].itens[+botao.dataset.linha]
+    const tags = [
+      item.metodo ? `<span class="tag">${item.metodo}</span>` : '',
+      item.safra ? `<span class="tag safra">${item.safra} na safra</span>` : '',
+    ].join('')
+    botao.innerHTML = `<span class="nome">${item.nome}</span>
+      ${tags ? `<span class="meta">${tags}</span>` : ''}
+      <span class="trocar">clique para trocar</span>`
+  })
+}
+
+// ------------------------------------------------------------------ início
+async function iniciar() {
+  base = await (await fetch('./base.json')).json()
+
+  $('mes').innerHTML = MESES.map(([v, n]) =>
+    `<option value="${v}"${v === estado.mes ? ' selected' : ''}>${n}</option>`).join('')
+
+  if (base.meta?.amostra) {
+    $('avisoAmostra').textContent =
+      `Versão de teste: o assistente está sorteando dentro de ${base.preparacoes.length} preparações, ` +
+      `uma amostra do acervo de ${base.meta.totalReal} do livro.`
+  } else {
+    $('avisoAmostra').style.display = 'none'
+  }
+
+  $('mes').addEventListener('change', (e) => { estado.mes = e.target.value; desenhar() })
+  $('dias').addEventListener('change', (e) => { estado.dias = +e.target.value; desenhar() })
+  $('outra').addEventListener('click', () => { estado.semente++; desenhar() })
+  $('imprimir').addEventListener('click', () => window.print())
+  $('fecharTroca').addEventListener('click', () => $('dlgTroca').close())
+  $('abrirAjuda').addEventListener('click', () => $('dlgAjuda').showModal())
+  $('comecar').addEventListener('click', () => {
+    $('dlgAjuda').close()
+    try { localStorage.setItem('assistente-visto', '1') } catch (e) {}
+  })
+
+  desenhar()
+
+  let visto = null
+  try { visto = localStorage.getItem('assistente-visto') } catch (e) {}
+  if (!visto) $('dlgAjuda').showModal()
+}
+
+iniciar()
+</script>
+</body>
+</html>

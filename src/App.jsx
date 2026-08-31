@@ -3,7 +3,8 @@ import { CTAButton } from './components/CTAButton';
 import { FeatureCard } from './components/FeatureCard';
 import {
   Clock, TrendingDown, ShieldAlert, CheckCircle2, Smartphone,
-  RefreshCw, BookOpen, Star, ChevronDown, Leaf, ExternalLink
+  RefreshCw, BookOpen, Star, ChevronDown, Leaf, ExternalLink,
+  CreditCard, Download, Mail
 } from 'lucide-react';
 
 // ─── Animation Helpers ───────────────────────────────────────────────────────
@@ -111,7 +112,7 @@ function FloatingDecor({ children, className = '', floatY = 12, floatDuration = 
 
 // ─── Ticker Banner ────────────────────────────────────────────────────────────
 function TickerBanner() {
-  const items = Array(12).fill('✦ Lançamento Oficial · Cardápios: Um Livro Vivo · Notion · Nutricionistas ');
+  const items = Array(12).fill('✦ Lançamento Oficial · Cardápios: Um Livro Vivo · E-book em PDF · Nutricionistas ');
   return (
     <div className="bg-[#ED8627] overflow-hidden py-2.5 border-b border-[#D67822]">
       <div className="flex whitespace-nowrap animate-ticker">
@@ -131,7 +132,7 @@ function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#EEF0D2]/90 backdrop-blur-md border-b border-[#E2E5BE]">
       <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 sm:py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion" className="w-[18px] sm:w-[22px] h-[18px] sm:h-[22px] object-contain" />
+          <BookOpen size={20} className="text-[#448D76] shrink-0" strokeWidth={2.2} aria-hidden="true" />
           <span className="font-serif font-bold text-[#448D76] text-sm sm:text-lg tracking-tight">
             Cardápios: Um Livro Vivo
           </span>
@@ -202,17 +203,15 @@ function HeroSection() {
                 className="w-full h-auto drop-shadow-[0_16px_40px_rgba(27,77,75,0.4)] object-contain scale-[1.35]"
               />
 
-              {/* Floating Notion icon — top-right edge overlapping book */}
+              {/* Selo do formato — canto superior direito sobre o livro */}
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 className="absolute right-4 sm:right-2 top-[12%] bg-white rounded-[14px] p-2 shadow-2xl border border-[#E2E5BE] z-30"
               >
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png"
-                  alt="Notion"
-                  className="w-7 h-7 object-contain"
-                />
+                <div className="w-7 h-7 flex items-center justify-center rounded-md bg-[#448D76]">
+                  <span className="text-white text-[9px] font-bold tracking-wide">PDF</span>
+                </div>
               </motion.div>
               
               {/* Floating badge — left side overlapping */}
@@ -230,8 +229,8 @@ function HeroSection() {
                 transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
                 className="absolute right-3 sm:-right-2 bottom-[6%] bg-white text-[#0C718B] rounded-xl px-3 py-2 shadow-xl border border-[#E2E5BE] z-20"
               >
-                <div className="text-xs font-bold whitespace-nowrap">♾️ Atualização</div>
-                <div className="text-[10px] text-gray-500">Vitalícia</div>
+                <div className="text-xs font-bold whitespace-nowrap">♾️ Novas edições</div>
+                <div className="text-[10px] text-gray-500">Incluídas</div>
               </motion.div>
             </div>
           </motion.div>
@@ -239,7 +238,7 @@ function HeroSection() {
           {/* Mobile Text */}
           <motion.div {...stagger(0)} className="space-y-5">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">📚 E-book Digital no Notion</span>
+              <span className="badge">📕 E-book em PDF · Novas edições</span>
             </motion.div>
 
             <motion.h1
@@ -264,8 +263,8 @@ function HeroSection() {
 
             <motion.div {...stagger(0.5)} className="flex flex-wrap items-center gap-x-4 gap-y-2">
               {[
-                { icon: '⚡', text: 'Acesso Imediato' },
-                { icon: '♾️', text: 'Atualização Vitalícia' },
+                { icon: '⚡', text: 'Download Imediato' },
+                { icon: '♾️', text: 'Novas Edições Grátis' },
                 { icon: '🔒', text: 'Compra Segura' },
               ].map(({ icon, text }) => (
                 <div key={text} className="flex items-center gap-1.5 text-xs text-[#5A5A5A]">
@@ -283,7 +282,7 @@ function HeroSection() {
           {/* Left: Text */}
           <motion.div {...stagger(0)} className="space-y-7">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">📚 E-book Digital no Notion</span>
+              <span className="badge">📕 E-book em PDF · Novas edições</span>
             </motion.div>
 
             <motion.h1
@@ -308,8 +307,8 @@ function HeroSection() {
 
             <motion.div {...stagger(0.5)} className="flex items-center gap-6 pt-2">
               {[
-                { icon: '⚡', text: 'Acesso Imediato' },
-                { icon: '♾️', text: 'Atualização Vitalícia' },
+                { icon: '⚡', text: 'Download Imediato' },
+                { icon: '♾️', text: 'Novas Edições Grátis' },
                 { icon: '🔒', text: 'Compra Segura' },
               ].map(({ icon, text }) => (
                 <div key={text} className="flex items-center gap-1.5 text-sm text-[#5A5A5A]">
@@ -335,17 +334,15 @@ function HeroSection() {
                 className="w-full h-auto drop-shadow-[0_20px_50px_rgba(27,77,75,0.4)] object-contain relative z-10 scale-125 lg:scale-[1.35] transform origin-center"
               />
 
-              {/* Floating Notion Icon */}
+              {/* Selo do formato */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 className="absolute right-4 lg:right-[15%] top-[20%] bg-white rounded-[18px] p-3 shadow-2xl border border-[#E2E5BE] flex items-center justify-center z-30"
               >
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png"
-                  alt="Notion"
-                  className="w-12 h-12 object-contain"
-                />
+                <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-[#448D76]">
+                  <span className="text-white text-xs font-bold tracking-wide">PDF</span>
+                </div>
               </motion.div>
 
               <motion.div
@@ -353,8 +350,8 @@ function HeroSection() {
                 transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
                 className="absolute right-0 bottom-[10%] bg-white text-[#0C718B] rounded-2xl p-4 shadow-xl border border-[#E2E5BE] z-20"
               >
-                <div className="text-base font-bold">♾️ Atualização</div>
-                <div className="text-sm text-gray-500">Vitalícia</div>
+                <div className="text-base font-bold">♾️ Novas edições</div>
+                <div className="text-sm text-gray-500">Incluídas</div>
               </motion.div>
             </div>
           </motion.div>
@@ -451,8 +448,8 @@ function PainPointsSection() {
 function SolutionSection() {
   const features = [
     { icon: <BookOpen size={24}/>, title: '+2.000 receitas', desc: 'Receitas organizadas, categorizadas e prontas para uso imediato.' },
-    { icon: <Smartphone size={24}/>, title: 'Qualquer Dispositivo', desc: 'Acesse pelo celular, tablet ou computador — sempre que precisar.' },
-    { icon: <RefreshCw size={24}/>, title: 'Atualização Vitalícia', desc: 'Receba novas receitas e conteúdos automaticamente, para sempre.' },
+    { icon: <Smartphone size={24}/>, title: 'Leia onde quiser', desc: 'PDF que abre no celular, tablet ou computador — e funciona offline.' },
+    { icon: <RefreshCw size={24}/>, title: 'Novas edições grátis', desc: 'Cada edição revisada e ampliada chega até você, sem pagar de novo.' },
     { icon: <CheckCircle2 size={24}/>, title: 'Guia Alimentar BR', desc: 'Todo conteúdo baseado no Guia Alimentar da População Brasileira.' },
   ];
 
@@ -486,13 +483,13 @@ function SolutionSection() {
           <motion.div {...fadeUp} className="space-y-5 lg:col-span-2">
             <span className="badge">A Solução</span>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl md:text-5xl font-bold text-[#448D76] leading-tight">
-              Não é um PDF.<br/>
-              <span className="text-[#0C718B]">É um organismo digital.</span>
+              Não é um PDF congelado.<br/>
+              <span className="text-[#0C718B]">É um livro em novas edições.</span>
             </h2>
             <p className="text-[#5A5A5A] text-base md:text-lg leading-relaxed">
-              O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> é um e-book dinâmico
-              hospedado no Notion que recebe <strong className="text-[#448D76]">atualizações constantes</strong>.
-              Diferente de um PDF estático, ele cresce com você — e nunca fica desatualizado.
+              O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> é um e-book em PDF que
+              continua vivo: a cada nova edição o conteúdo é <strong className="text-[#448D76]">revisado e ampliado</strong>,
+              e você recebe todas elas sem pagar de novo.
             </p>
             <p className="text-[#5A5A5A] text-sm md:text-base leading-relaxed">
               Criado por uma nutricionista com décadas de experiência no chão de cozinha, cada receita
@@ -639,6 +636,61 @@ function AboutAuthorSection() {
   );
 }
 
+// ─── Como Você Recebe ─────────────────────────────────────────────────────────
+function DeliverySection() {
+  const passos = [
+    {
+      icon: <CreditCard size={24} />,
+      titulo: 'Você compra',
+      desc: 'Pagamento seguro processado pela Caktos, no cartão em até 12x ou à vista.',
+    },
+    {
+      icon: <Download size={24} />,
+      titulo: 'Baixa na hora',
+      desc: 'O e-book em PDF fica disponível assim que o pagamento é confirmado. É seu para sempre, e abre até sem internet.',
+    },
+    {
+      icon: <Mail size={24} />,
+      titulo: 'Recebe cada nova edição',
+      desc: 'Sempre que o livro ganha uma edição revisada e ampliada, ela chega no seu e-mail. Sem pagar de novo.',
+    },
+  ];
+
+  return (
+    <section id="entrega" className="py-16 md:py-24 bg-[#EEF0D2]/40 border-y border-[#E2E5BE]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-5">
+        <motion.div {...fadeUp} className="text-center mb-10 md:mb-14">
+          <span className="badge">Como você recebe</span>
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#448D76] leading-tight mt-4">
+            Do pagamento ao livro na sua mão,<br className="hidden sm:block" /> em poucos minutos.
+          </h2>
+        </motion.div>
+
+        <ol className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+          {passos.map((passo, i) => (
+            <motion.li
+              key={passo.titulo}
+              {...stagger(i * 0.12)}
+              className="bg-white border border-[#E2E5BE] rounded-2xl md:rounded-3xl p-6 md:p-8 flex flex-col gap-4"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-[#EEF0D2] flex items-center justify-center text-[#448D76] shrink-0">
+                  {passo.icon}
+                </div>
+                <span className="font-serif font-bold text-[#ED8627] text-2xl leading-none">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <h3 className="font-serif text-[#0C718B] font-bold text-lg md:text-xl">{passo.titulo}</h3>
+              <p className="text-[#5A5A5A] text-sm leading-relaxed">{passo.desc}</p>
+            </motion.li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
 // ─── Checkout / CTA Section ───────────────────────────────────────────────────
 function CheckoutSection() {
   return (
@@ -689,8 +741,8 @@ function CheckoutSection() {
           </h2>
 
           <p className="text-[#5A5A5A] mb-6 md:mb-8 leading-relaxed text-sm md:text-base">
-            Acesse mais de <strong className="text-[#448D76]">2.000 receitas</strong> organizadas no Notion,
-            com atualização vitalícia e suporte técnico baseado no Guia Alimentar da População Brasileira.
+            Mais de <strong className="text-[#448D76]">2.000 receitas</strong> organizadas em um e-book em PDF,
+            com novas edições incluídas e todo o conteúdo baseado no Guia Alimentar da População Brasileira.
           </p>
 
           {/* Price */}
@@ -706,11 +758,11 @@ function CheckoutSection() {
           {/* What's included */}
           <div className="text-left mb-6 md:mb-8 space-y-2.5 md:space-y-3">
             {[
-              'Acesso imediato ao Livro Vivo no Notion',
+              'Download imediato do e-book em PDF',
               '+2.000 receitas organizadas e categorizadas',
-              'Atualização vitalícia do conteúdo',
+              'Novas edições incluídas, sem custo adicional',
               'Embasamento no Guia Alimentar da População Brasileira',
-              'Acesso de qualquer dispositivo (celular, tablet, PC)',
+              'Leia no celular, tablet ou computador — inclusive offline',
               'Suporte via e-mail',
             ].map(item => (
               <div key={item} className="flex items-start gap-3">
@@ -773,6 +825,7 @@ export default function App() {
         <PainPointsSection />
         <SolutionSection />
         <AboutAuthorSection />
+        <DeliverySection />
         <CheckoutSection />
       </main>
       <Footer />

@@ -136,6 +136,13 @@ abrirTela('Administração', null);
   </form>
 </div>
 
+<div class="aviso" style="margin-bottom:22px">
+  <strong>Para testar sem gastar:</strong>
+  <a href="/app/simular-compra-7d3e5a.php">simulação de compra</a>.
+  Ela monta um payload no formato da Cakto e entrega ao webhook de verdade,
+  então exercita a mesma engrenagem da venda real.
+</div>
+
 <h2>Quem tem acesso</h2>
 <div class="rolagem" style="margin-top:10px">
   <table>

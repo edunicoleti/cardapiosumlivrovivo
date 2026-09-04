@@ -1,0 +1,9 @@
+# Pasta interna da plataforma. Nada aqui e servido pela web:
+# o PHP le os arquivos do disco, o navegador nao alcanca.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>

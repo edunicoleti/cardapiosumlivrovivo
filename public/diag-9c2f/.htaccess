@@ -1,0 +1,2 @@
+# sonda temporaria, fora do indice
+Header set X-Robots-Tag "noindex, nofollow"

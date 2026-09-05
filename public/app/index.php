@@ -30,53 +30,34 @@ if ($usuario === null) {
     if ($retorno === '' || $retorno[0] !== '/' || str_starts_with($retorno, '//')) {
         $retorno = '/app/';
     }
-    abrirTela('Entrar', null);
-    ?>
-    <h1 style="text-align:center">Sua área do Livro Vivo</h1>
-    <p class="sub" style="text-align:center;margin:0 auto 26px">
-      Entre com o e-mail da compra e o código de acesso que você recebeu.
-    </p>
-    <form class="caixa" method="post" action="/app/?retorno=<?= e(rawurlencode($retorno)) ?>">
-      <?php if ($erro !== ''): ?><div class="erro"><?= e($erro) ?></div><?php endif; ?>
-      <label for="email">E-mail da compra</label>
-      <input type="email" id="email" name="email" required autocomplete="email"
-             value="<?= e((string) ($_POST['email'] ?? '')) ?>">
-      <label for="codigo">Código de acesso</label>
-      <input type="text" id="codigo" name="codigo" required autocomplete="one-time-code"
-             placeholder="XXXXXXXX" maxlength="16">
-      <button type="submit">Entrar</button>
-    </form>
-    <p style="text-align:center;font-size:13px;color:var(--tinta-fr);margin-top:18px">
-      Perdeu o código? Responda o e-mail da compra que reenviamos.
-    </p>
-    <?php
-    fecharTela();
+    $recado = $erro === '' ? '' :
+        '<div class="recado erro"><svg aria-hidden="true"><use href="#i-atencao"></use></svg>'
+        . '<span>' . e($erro) . '</span></div>';
+
+    renderizarTela([
+        'titulo' => 'Entrar',
+        'usuario' => null,
+        'classeCasca' => ' sem-trilho limpa',
+        'classeMain' => 'colado nu',
+        'conteudo' => tela('entrar', [
+            'RETORNO' => e(rawurlencode($retorno)),
+            'EMAIL' => e((string) ($_POST['email'] ?? '')),
+            'ERRO' => $recado,
+        ]),
+    ]);
     exit;
 }
 
 // ---------------------------------------------------------------- logado
-abrirTela('Início', $usuario, 'inicio');
 $primeiroNome = trim(explode(' ', (string) $usuario['nome'])[0] ?? '');
-?>
-<h1>Olá<?= $primeiroNome !== '' ? ', ' . e($primeiroNome) : '' ?>.</h1>
-<p class="sub">
-  Tudo o que você comprou fica aqui. O livro completo para consultar e o assistente
-  que monta o cardápio da semana seguindo as regras do capítulo VI.
-</p>
 
-<div class="cartoes">
-  <div class="cartao">
-    <h3>O livro</h3>
-    <p>Os onze capítulos, o glossário e os anexos, com busca em todo o conteúdo.
-       Encontre um fator de correção ou um termo técnico sem folhear nada.</p>
-    <a class="acao" href="/app/livro/">Abrir o livro</a>
-  </div>
-  <div class="cartao">
-    <h3>Assistente de cardápio</h3>
-    <p>Monta a semana a partir do seu serviço, escolhendo dentro das preparações
-       do livro e mostrando qual regra determinou cada prato.</p>
-    <a class="acao" href="/app/assistente/">Montar um cardápio</a>
-  </div>
-</div>
-<?php
-fecharTela();
+renderizarTela([
+    'titulo' => 'Início',
+    'chave' => 'inicio',
+    'usuario' => $usuario,
+    'topoTitulo' => 'Sua área',
+    'conteudo' => tela('inicio', [
+        'NOME' => $primeiroNome !== '' ? ', ' . e($primeiroNome) : '',
+        'VERSAO' => e(versaoDosAssets()),
+    ]),
+]);

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1F4B3E">
+<meta name="color-scheme" content="light">
+<title>{{TITULO}} · Cardápios: Um Livro Vivo</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="/app/assets/plataforma.css?v={{VERSAO}}">
+<link rel="stylesheet" href="/app/assets/telas.css?v={{VERSAO}}">
+{{CABECA}}
+</head>
+<body>
+<a class="pular-para" href="#conteudo">Pular para o conteúdo</a>
+
+<svg class="so-leitor" aria-hidden="true" focusable="false">
+<symbol id="i-casa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.2 12 3.5l9 6.7"/><path d="M5.5 9.4V20h13V9.4"/><path d="M9.8 20v-5.4h4.4V20"/></symbol>
+<symbol id="i-livro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5h5.2c1.6 0 2.8 1 2.8 2.4V20c0-1.2-1.1-2-2.6-2H4z"/><path d="M20 4.5h-5.2c-1.6 0-2.8 1-2.8 2.4V20c0-1.2 1.1-2 2.6-2H20z"/></symbol>
+<symbol id="i-cardapio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="5" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8 3v4M16 3v4"/><path d="m9.2 15 2 2 3.6-3.6"/></symbol>
+<symbol id="i-busca" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.6 15.6 4 4"/></symbol>
+<symbol id="i-lista" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6.5h11M9 12h11M9 17.5h11M4.3 6.5h.01M4.3 12h.01M4.3 17.5h.01"/></symbol>
+<symbol id="i-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></symbol>
+<symbol id="i-esq" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></symbol>
+<symbol id="i-dir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5 16 12l-6.5 6.5"/></symbol>
+<symbol id="i-imprimir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3.8h10V9"/><path d="M7 17H5.2A2.2 2.2 0 0 1 3 14.8v-3.6A2.2 2.2 0 0 1 5.2 9h13.6A2.2 2.2 0 0 1 21 11.2v3.6a2.2 2.2 0 0 1-2.2 2.2H17"/><rect x="7" y="14" width="10" height="6.2" rx="1.2"/></symbol>
+<symbol id="i-salvar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.8h11a1 1 0 0 1 1 1v15.4l-6.5-3.7-6.5 3.7V4.8a1 1 0 0 1 1-1Z"/></symbol>
+<symbol id="i-copiar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="8.6" y="8.6" width="11.4" height="11.4" rx="2.2"/><path d="M15.4 5.4a2.2 2.2 0 0 0-2.2-2.2H6.2A3 3 0 0 0 3.2 6.2v7a2.2 2.2 0 0 0 2.2 2.2"/></symbol>
+<symbol id="i-ajuste" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/></symbol>
+<symbol id="i-ajuda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.7"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.6"/><path d="M12 17.2h.01"/></symbol>
+<symbol id="i-atualizar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20.2 4.2v4.4h-4.4"/></symbol>
+<symbol id="i-sair" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5h3.8A2.2 2.2 0 0 1 20 6.7v10.6a2.2 2.2 0 0 1-2.2 2.2H14"/><path d="M10 8.2 6.2 12l3.8 3.8M6.6 12H15"/></symbol>
+<symbol id="i-folha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5c-1.8-6 1.5-13 11-14.6.6 4.2.8 12.4-11 14.6Z"/><path d="M8.5 15.5c1.6-3 4-5 7-6.2"/><path d="M4.5 19.5c-.7 0-1.3.6-1.3 1.3"/></symbol>
+<symbol id="i-atencao" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.4 21 19.6H3Z"/><path d="M12 10v4"/><path d="M12 16.8h.01"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.6 4.6 4.6L19 6.6"/></symbol>
+<symbol id="i-relogio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.7"/><path d="M12 7.2V12l3.2 2"/></symbol>
+<symbol id="i-troca" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.4h13.4l-3-3"/><path d="M20 15.6H6.6l3 3"/></symbol>
+<symbol id="i-mais" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5.5v13M5.5 12h13"/></symbol>
+</svg>
+
+<div class="casca{{CLASSE_CASCA}}">
+
+  <aside class="trilho">
+    <a class="marca" href="/app/">
+      <span class="selo"><svg aria-hidden="true"><use href="#i-folha"></use></svg></span>
+      <span class="nome">Livro Vivo<i>Sua área</i></span>
+    </a>
+    <nav aria-label="Seções da plataforma">
+      {{NAV_TRILHO}}
+    </nav>
+    <div class="rodape">
+      {{QUEM}}
+    </div>
+  </aside>
+
+  <div class="palco">
+    <header class="topo">
+      <span class="titulo">{{TOPO_TITULO}}</span>
+      <div class="acoes">{{TOPO_ACOES}}</div>
+    </header>
+    <main id="conteudo" class="{{CLASSE_MAIN}}">
+{{CONTEUDO}}
+    </main>
+  </div>
+
+  <nav class="abas" aria-label="Navegação principal">
+    {{NAV_ABAS}}
+  </nav>
+
+</div>
+
+<div class="torrada" id="torrada" role="status" aria-live="polite"></div>
+<script src="/app/assets/plataforma.js?v={{VERSAO}}" type="module"></script>
+{{RODAPE}}
+</body>
+</html>
+
+<!--{item-trilho}-->
+<a class="item" href="{{URL}}"{{ATUAL}}><svg aria-hidden="true"><use href="#{{ICONE}}"></use></svg><span>{{ROTULO}}<span class="desc">{{DESC}}</span></span></a>
+<!--{/item-trilho}-->
+
+<!--{item-abas}-->
+<a href="{{URL}}"{{ATUAL}}><svg aria-hidden="true"><use href="#{{ICONE}}"></use></svg><span>{{CURTO}}</span></a>
+<!--{/item-abas}-->
+
+<!--{quem}-->
+<div class="quem">
+  <span class="inicial" aria-hidden="true">{{INICIAL}}</span>
+  <span class="dados">
+    <span class="nome">{{NOME}}</span>
+    <a class="sair" href="/app/sair.php">Sair da conta</a>
+  </span>
+</div>
+<!--{/quem}-->

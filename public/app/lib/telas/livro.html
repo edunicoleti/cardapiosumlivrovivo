@@ -1,0 +1,95 @@
+<div class="barra-progresso" aria-hidden="true"><span id="progresso"></span></div>
+
+<div class="faixa">
+  <div class="leitor">
+
+    <aside class="sumario-lateral" aria-label="Sumário do livro">
+      <div class="sumario-cabeca">
+        <span class="olho">Sumário</span>
+        <button class="bt-icone" type="button" data-abre="leitura" aria-label="Tamanho do texto">
+          <span class="aa" aria-hidden="true">Aa</span>
+        </button>
+      </div>
+      <div class="caixa-busca">
+        <svg class="lupa" aria-hidden="true"><use href="#i-busca"></use></svg>
+        <input type="search" id="busca" placeholder="Buscar no livro inteiro"
+               autocomplete="off" aria-label="Buscar no livro inteiro">
+        <button class="bt-icone limpar" id="limparBusca" type="button" hidden aria-label="Limpar busca">
+          <svg aria-hidden="true"><use href="#i-fechar"></use></svg>
+        </button>
+      </div>
+      <div id="navegacao">
+        <div class="carregando"><span class="giro"></span>Carregando o sumário…</div>
+      </div>
+    </aside>
+
+    <article class="leitura" id="leitura" data-tamanho="m">
+      <div class="carregando"><span class="giro"></span>Abrindo o livro…</div>
+    </article>
+
+  </div>
+</div>
+
+<div class="achados" id="achados" hidden>
+  <span class="conta" id="achadosConta"></span>
+  <button class="bt-icone" id="achadoAnterior" type="button" aria-label="Achado anterior">
+    <svg aria-hidden="true"><use href="#i-esq"></use></svg>
+  </button>
+  <button class="bt-icone" id="achadoProximo" type="button" aria-label="Próximo achado">
+    <svg aria-hidden="true"><use href="#i-dir"></use></svg>
+  </button>
+  <button class="bt-icone" id="acharFim" type="button" aria-label="Sair da busca">
+    <svg aria-hidden="true"><use href="#i-fechar"></use></svg>
+  </button>
+</div>
+
+<dialog class="modal folha-sumario" id="folhaSumario" aria-label="Sumário e busca">
+  <div class="modal-topo">
+    <span class="olho">O livro</span>
+    <h2>Sumário e busca</h2>
+  </div>
+  <div class="modal-corpo">
+    <div class="caixa-busca">
+      <svg class="lupa" aria-hidden="true"><use href="#i-busca"></use></svg>
+      <input type="search" id="buscaFolha" placeholder="Buscar no livro inteiro"
+             autocomplete="off" aria-label="Buscar no livro inteiro">
+      <button class="bt-icone limpar" id="limparBuscaFolha" type="button" hidden aria-label="Limpar busca">
+        <svg aria-hidden="true"><use href="#i-fechar"></use></svg>
+      </button>
+    </div>
+    <div id="navegacaoFolha"></div>
+  </div>
+  <div class="modal-pe">
+    <button class="bt bt-sec" type="button" data-fechar>Fechar</button>
+  </div>
+</dialog>
+
+<dialog class="modal" id="dlgLeitura" aria-label="Ajustes de leitura">
+  <div class="modal-topo">
+    <span class="olho">Leitura</span>
+    <h2>Tamanho do texto</h2>
+    <p>Fica salvo neste aparelho para as próximas vezes.</p>
+  </div>
+  <div class="modal-corpo">
+    <div class="opcoes-tamanho" id="opcoesTamanho">
+      <button type="button" data-t="p" aria-pressed="false"><span class="a">Aa</span><span class="q">Pequeno</span></button>
+      <button type="button" data-t="m" aria-pressed="true"><span class="a">Aa</span><span class="q">Médio</span></button>
+      <button type="button" data-t="g" aria-pressed="false"><span class="a">Aa</span><span class="q">Grande</span></button>
+    </div>
+  </div>
+  <div class="modal-pe">
+    <button class="bt bt-prim" type="button" data-fechar>Pronto</button>
+  </div>
+</dialog>
+
+<!--{topo-acoes}-->
+<button class="bt-icone" id="btBusca" type="button" aria-label="Buscar no livro">
+  <svg aria-hidden="true"><use href="#i-busca"></use></svg>
+</button>
+<button class="bt-icone" type="button" data-abre="leitura" aria-label="Tamanho do texto">
+  <span class="aa" aria-hidden="true">Aa</span>
+</button>
+<button class="bt-icone contornado" id="btSumario" type="button" aria-label="Abrir o sumário">
+  <svg aria-hidden="true"><use href="#i-lista"></use></svg>
+</button>
+<!--{/topo-acoes}-->

@@ -1,0 +1,305 @@
+/* ==========================================================================
+   Telas simples: entrada, painel inicial e as páginas internas de
+   administração, que continuam usando a marcação antiga.
+   ========================================================================== */
+
+/* casca sem navegação (login, administração, simulação de compra) */
+.casca.sem-trilho { grid-template-columns: 1fr; }
+.casca.sem-trilho .trilho,
+.casca.sem-trilho .abas { display: none; }
+.casca.sem-trilho .topo { justify-content: center; }
+.casca.sem-trilho main { padding-bottom: 56px; }
+
+/* ==========================================================================
+   Entrada
+   ========================================================================== */
+
+.entrada {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.entrada .vitrine {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  padding: 46px 44px;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(158deg, var(--verde-prof) 0%, var(--verde-noite) 100%);
+  color: #fff;
+}
+.entrada .vitrine .folhagem {
+  position: absolute;
+  inset: auto -70px -90px auto;
+  width: 420px;
+  opacity: .13;
+  pointer-events: none;
+}
+.entrada .vitrine .marca-alta {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--display); font-size: 1.05rem; font-weight: 700; color: #fff;
+}
+.entrada .vitrine .marca-alta .selo {
+  width: 40px; height: 40px; display: grid; place-items: center;
+  border-radius: 12px; background: rgba(238, 240, 210, .14);
+  border: 1px solid rgba(238, 240, 210, .22);
+}
+.entrada .vitrine .marca-alta svg { width: 22px; height: 22px; }
+.entrada .vitrine .fala {
+  position: relative;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 1.1rem + 1.5vw, 2.3rem);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -.015em;
+  color: #fff;
+  max-width: 17ch;
+}
+.entrada .vitrine .fala b { color: var(--creme); font-weight: 700; }
+.entrada .vitrine .numeros { position: relative; display: flex; gap: 26px; flex-wrap: wrap; }
+.entrada .vitrine .numeros div { min-width: 90px; }
+.entrada .vitrine .numeros .n {
+  font-family: var(--display); font-size: 1.5rem; font-weight: 700; color: var(--laranja);
+  line-height: 1;
+}
+.entrada .vitrine .numeros .q {
+  font-size: var(--t-xs); letter-spacing: .1em; text-transform: uppercase;
+  color: #8FB6A7; margin-top: 6px;
+}
+
+.entrada .lado {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 34px 20px calc(34px + var(--seguro-b));
+  background:
+    radial-gradient(700px 340px at 50% -10%, rgba(68, 141, 118, .09), transparent 65%),
+    var(--creme-cl);
+}
+.entrada .caixa { width: min(400px, 100%); }
+.entrada .caixa .marca-baixa {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-bottom: 24px; color: var(--verde-prof);
+  font-family: var(--display); font-weight: 700; font-size: 1.02rem;
+}
+.entrada .caixa .marca-baixa .selo {
+  width: 36px; height: 36px; display: grid; place-items: center;
+  border-radius: 11px; background: var(--verde-prof); color: #fff;
+}
+.entrada .caixa .marca-baixa svg { width: 20px; height: 20px; }
+.entrada h1 { font-size: 1.6rem; text-align: center; }
+.entrada .linha-apoio { text-align: center; margin: 8px auto 24px; font-size: var(--t-md); }
+.entrada form {
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sombra-2);
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.entrada form .bt { width: 100%; }
+.entrada input[name=codigo] {
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  font-weight: 600;
+  font-family: var(--mono);
+}
+.entrada .ajuda-pe {
+  text-align: center; font-size: var(--t-sm); color: var(--tinta-fr); margin-top: 18px;
+  line-height: 1.6;
+}
+
+@media (min-width: 900px) {
+  .entrada { grid-template-columns: 1.05fr 1fr; }
+  .entrada .vitrine { display: flex; }
+  .entrada .caixa .marca-baixa { display: none; }
+  .entrada h1, .entrada .linha-apoio { text-align: left; }
+  .entrada .lado { align-items: flex-start; padding: 40px 56px; }
+}
+
+/* ==========================================================================
+   Painel inicial
+   ========================================================================== */
+
+.saudacao { margin-bottom: 26px; }
+.saudacao h1 { margin: 6px 0 8px; }
+
+.portais {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 760px) { .portais { grid-template-columns: 1fr 1fr; } }
+
+.portal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sombra-1);
+  transition: transform var(--mov), box-shadow var(--mov), border-color var(--mov);
+  color: inherit;
+}
+.portal:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sombra-3);
+  border-color: var(--creme-md);
+  color: inherit;
+}
+.portal .capa {
+  height: 132px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(140deg, #EAF1EC 0%, var(--creme) 100%);
+}
+.portal.laranja .capa { background: linear-gradient(140deg, #FDF1E3 0%, #F7EFD9 100%); }
+.portal .capa > svg { width: 54px; height: 54px; color: var(--verde-prof); position: relative; }
+.portal.laranja .capa > svg { color: var(--laranja-esc); }
+.portal .capa .ornamento {
+  position: absolute; inset: auto -28px -34px auto; width: 170px; opacity: .35;
+  color: var(--verde); pointer-events: none;
+}
+.portal.laranja .capa .ornamento { color: var(--laranja); opacity: .28; }
+.portal .miolo { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+.portal h2 { font-size: 1.22rem; }
+.portal p { font-size: var(--t-md); color: var(--tinta-sv); line-height: 1.55; }
+.portal .fichas { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 2px; }
+.portal .bt { margin-top: auto; align-self: flex-start; }
+
+.retomar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 18px;
+  margin-bottom: 18px;
+  border-radius: var(--r-lg);
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  box-shadow: var(--sombra-1);
+  transition: border-color var(--mov-rap), box-shadow var(--mov-rap);
+  color: inherit;
+}
+.retomar:hover { border-color: var(--verde); box-shadow: var(--sombra-2); color: inherit; }
+.retomar .marcador {
+  width: 40px; height: 40px; flex: none; display: grid; place-items: center;
+  border-radius: 12px; background: var(--creme); color: var(--verde-prof);
+}
+.retomar .marcador svg { width: 20px; height: 20px; }
+.retomar .texto { min-width: 0; flex: 1; }
+.retomar .olho { display: block; }
+.retomar .onde {
+  display: block; font-size: var(--t-md); font-weight: 600; color: var(--verde-prof);
+  margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.retomar > svg { width: 20px; height: 20px; color: var(--tinta-fr); flex: none; }
+
+.rodape-autora {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--linha);
+  font-size: var(--t-sm);
+  color: var(--tinta-fr);
+  line-height: 1.6;
+  max-width: 74ch;
+}
+
+/* ==========================================================================
+   Telas de administração — marcação antiga, visual novo
+   ========================================================================== */
+
+main.legado h1 { margin-bottom: 8px; }
+main.legado h2 { margin: 26px 0 10px; }
+main.legado .sub { color: var(--tinta-sv); font-size: var(--t-md); max-width: 68ch; margin-bottom: 20px; }
+main.legado p { margin-bottom: 10px; }
+
+main.legado form.caixa {
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sombra-2);
+  padding: 24px;
+  max-width: 430px;
+  margin: 0 auto;
+}
+main.legado label {
+  display: block;
+  font-family: var(--display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--tinta-fr);
+  margin-bottom: 6px;
+}
+main.legado input { margin-bottom: 16px; }
+main.legado button {
+  font-family: var(--corpo);
+  font-size: var(--t-md);
+  font-weight: 600;
+  min-height: 44px;
+  padding: 11px 18px;
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: var(--laranja);
+  color: #fff;
+  width: 100%;
+}
+main.legado button:hover { background: var(--laranja-esc); }
+main.legado button.secundario {
+  background: var(--branco); color: var(--verde-prof);
+  border-color: var(--linha); width: auto;
+}
+main.legado button.secundario:hover { background: var(--papel); }
+
+main.legado .erro, main.legado .ok, main.legado .aviso {
+  border-radius: var(--r-md); padding: 12px 15px; font-size: var(--t-sm);
+  margin-bottom: 16px; border: 1px solid;
+}
+main.legado .erro { background: var(--risco-cl); border-color: #EBC8C0; color: var(--risco); }
+main.legado .ok { background: #EAF2ED; border-color: #C7DDCC; color: var(--verde-esc); }
+main.legado .aviso { background: var(--laranja-cl); border-color: #F2DCC0; color: var(--laranja-esc); }
+
+main.legado code {
+  font-family: var(--mono); background: var(--creme-cl); border: 1px solid var(--linha);
+  border-radius: 5px; padding: 2px 6px; font-size: .9em;
+}
+main.legado .rolagem {
+  overflow-x: auto; border: 1px solid var(--linha); border-radius: var(--r-lg);
+  background: var(--branco); box-shadow: var(--sombra-1);
+}
+main.legado table { border-collapse: collapse; width: 100%; font-size: var(--t-sm); }
+main.legado th, main.legado td {
+  text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--linha-fr); vertical-align: top;
+}
+main.legado thead th {
+  font-family: var(--display); font-size: var(--t-xs); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--tinta-fr); background: var(--creme-cl);
+}
+main.legado tr:last-child td { border-bottom: none; }
+
+main.legado .cartoes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+main.legado .cartao { padding: 22px; }
+main.legado .cartao h3 { color: var(--teal); margin-bottom: 6px; }
+main.legado .cartao p { font-size: var(--t-md); color: var(--tinta-sv); }
+main.legado .cartao a.acao {
+  display: inline-flex; align-items: center; min-height: 44px; margin-top: 14px;
+  background: var(--laranja); color: #fff; font-weight: 600; font-size: var(--t-md);
+  padding: 10px 18px; border-radius: var(--r-md);
+}
+main.legado .cartao a.acao:hover { background: var(--laranja-esc); color: #fff; }
+
+/* login: sem topo e sem respiro, a tela ocupa tudo */
+.casca.limpa .topo { display: none; }
+.casca.limpa main.nu { padding: 0; }
+.casca.limpa .palco { background: none; }

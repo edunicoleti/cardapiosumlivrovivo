@@ -1,0 +1,203 @@
+<div class="faixa">
+
+  <header class="cabeca-assistente">
+    <div class="cabeca-texto">
+      <span class="olho">Assistente de cardápio</span>
+      <h1>A semana montada pelo método do livro</h1>
+      <p class="linha-apoio">
+        O assistente escolhe dentro das preparações do livro e mostra qual regra
+        do capítulo VI determinou cada prato. Toque em qualquer prato para trocar.
+      </p>
+    </div>
+    <div class="perfil-tira" id="perfil"></div>
+  </header>
+
+  <div class="controles">
+    <div class="campo">
+      <label class="rot" for="mes">Mês</label>
+      <select id="mes"></select>
+    </div>
+    <div class="campo">
+      <label class="rot" for="dias">Dias</label>
+      <select id="dias">
+        <option value="5">5 dias (seg a sex)</option>
+        <option value="6">6 dias</option>
+        <option value="7">7 dias</option>
+      </select>
+    </div>
+    <div class="empurra"></div>
+    <button class="bt bt-prim" id="outra" type="button">
+      <svg aria-hidden="true"><use href="#i-atualizar"></use></svg>Gerar outra
+    </button>
+    <button class="bt bt-sec" id="salvar" type="button" aria-label="Salvar este cardápio">
+      <svg aria-hidden="true"><use href="#i-salvar"></use></svg><span>Salvar</span>
+    </button>
+    <button class="bt-icone contornado" id="copiar" type="button" aria-label="Copiar o cardápio como texto">
+      <svg aria-hidden="true"><use href="#i-copiar"></use></svg>
+    </button>
+    <button class="bt-icone contornado" id="imprimir" type="button" aria-label="Imprimir o cardápio">
+      <svg aria-hidden="true"><use href="#i-imprimir"></use></svg>
+    </button>
+  </div>
+
+  <div id="avisos" class="avisos"></div>
+
+  <div class="semana-larga">
+    <div class="rolagem-grade">
+      <table id="grade"><thead></thead><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="semana-estreita">
+    <div class="tira-dias" id="tiraDias" role="tablist" aria-label="Dias da semana"></div>
+    <div class="cartoes-dia" id="cartoesDia"></div>
+  </div>
+
+  <section class="conferencia" id="conferencia" aria-label="Conferência das regras do capítulo VI"></section>
+
+  <p class="creditos">
+    Todas as preparações, os índices e as regras de composição vêm de
+    <b>Cardápios: um livro vivo</b>, de Lúcia Chaise Borjes. As perguntas do perfil
+    são os fatores administrativos do capítulo VI. A ferramenta não inventa pratos:
+    escolhe dentro do acervo do livro.
+  </p>
+
+</div>
+
+<!-- ---------------------------------------------------------- perfil -->
+<dialog class="modal largo" id="dlgPerfil" aria-label="Perfil do serviço">
+  <div class="modal-topo">
+    <span class="olho">Antes de montar</span>
+    <h2 id="perfilTitulo">Me conta sobre o seu serviço</h2>
+    <p id="perfilAjuda">Cinco perguntas rápidas. Não são invenção da ferramenta: são os
+       fatores administrativos que o capítulo VI manda considerar antes de fechar um cardápio.</p>
+    <div class="trilha-passos" id="trilhaPassos" aria-hidden="true"></div>
+  </div>
+
+  <div class="modal-corpo">
+    <form id="formPerfil">
+      <fieldset class="grupo" data-passo="1">
+        <legend>Que serviço você atende?</legend>
+        <p class="origem">Define a estrutura do dia e o que costuma entrar em cada refeição</p>
+        <div class="opcoes" data-campo="servico" data-tipo="unico"></div>
+      </fieldset>
+
+      <fieldset class="grupo" data-passo="2" hidden>
+        <legend>Qual o padrão do cardápio?</legend>
+        <p class="origem">Fator 1.1 do capítulo VI</p>
+        <div class="opcoes" data-campo="padrao" data-tipo="unico"></div>
+      </fieldset>
+
+      <fieldset class="grupo" data-passo="3" hidden>
+        <legend>Quantas refeições por dia?</legend>
+        <p class="origem">Fator 1.8: o volume influencia o método de preparo possível</p>
+        <div class="numero">
+          <button class="bt-icone contornado" type="button" data-passo-num="-50" aria-label="Diminuir">
+            <svg aria-hidden="true" style="transform:rotate(90deg)"><use href="#i-mais"></use></svg>
+          </button>
+          <input type="number" id="refeicoes" min="10" max="5000" step="10" value="200"
+                 inputmode="numeric" aria-label="Refeições por dia">
+          <button class="bt-icone contornado" type="button" data-passo-num="50" aria-label="Aumentar">
+            <svg aria-hidden="true"><use href="#i-mais"></use></svg>
+          </button>
+          <span class="unidade">refeições por dia</span>
+        </div>
+        <p class="nota" id="notaVolume"></p>
+      </fieldset>
+
+      <fieldset class="grupo" data-passo="4" hidden>
+        <legend>O que você tem na cozinha?</legend>
+        <p class="origem">Fator 1.6: o equipamento disponível limita os métodos de cocção</p>
+        <div class="opcoes" data-campo="equipamentos" data-tipo="multiplo"></div>
+      </fieldset>
+
+      <fieldset class="grupo" data-passo="5" hidden>
+        <legend>Alguma restrição alimentar?</legend>
+        <p class="origem">O que não pode entrar no cardápio deste serviço</p>
+        <div class="opcoes" data-campo="restricoes" data-tipo="multiplo"></div>
+        <p class="nota">A exclusão lê o nome e a descrição de cada preparação, não uma ficha
+           de ingredientes. Confira antes de servir.</p>
+      </fieldset>
+    </form>
+  </div>
+
+  <div class="modal-pe">
+    <button class="bt bt-fantasma esquerda" id="perfilVoltar" type="button">Voltar</button>
+    <button class="bt bt-fantasma" id="pularPerfil" type="button">Pular</button>
+    <button class="bt bt-prim" id="perfilAvancar" type="button">Continuar</button>
+  </div>
+</dialog>
+
+<!-- ---------------------------------------------------------- troca -->
+<dialog class="modal" id="dlgTroca" aria-label="Trocar preparação">
+  <div class="modal-topo">
+    <span class="olho" id="trocaEspaco"></span>
+    <h2 id="trocaAtual"></h2>
+    <p>Outras opções que o assistente considerou para este espaço.</p>
+    <div class="caixa-filtro">
+      <input type="search" id="filtroTroca" placeholder="Filtrar por nome ou ingrediente"
+             autocomplete="off" aria-label="Filtrar as opções">
+    </div>
+  </div>
+  <div class="modal-corpo" id="trocaLista"></div>
+  <div class="modal-pe"><button class="bt bt-sec" type="button" data-fechar>Cancelar</button></div>
+</dialog>
+
+<!-- ---------------------------------------------------------- salvos -->
+<dialog class="modal" id="dlgSalvos" aria-label="Meus cardápios">
+  <div class="modal-topo">
+    <span class="olho">Neste aparelho</span>
+    <h2>Meus cardápios</h2>
+    <p>Os cardápios que você salvou ficam guardados neste navegador.</p>
+  </div>
+  <div class="modal-corpo" id="listaSalvos"></div>
+  <div class="modal-pe"><button class="bt bt-sec" type="button" data-fechar>Fechar</button></div>
+</dialog>
+
+<!-- ---------------------------------------------------------- ajuda -->
+<dialog class="modal" id="dlgAjuda" aria-label="Como funciona">
+  <div class="modal-topo">
+    <span class="olho">Como funciona</span>
+    <h2>Três coisas para saber</h2>
+  </div>
+  <div class="modal-corpo">
+    <div class="passo-ajuda">
+      <span class="num">1</span>
+      <div>
+        <h3>Ele monta a partir do seu serviço</h3>
+        <p>O padrão, o volume, o equipamento e as restrições que você informou entram na
+           escolha de cada prato. Dá para ajustar isso a qualquer momento.</p>
+      </div>
+    </div>
+    <div class="passo-ajuda">
+      <span class="num">2</span>
+      <div>
+        <h3>Cada escolha tem um motivo</h3>
+        <p>Quando um prato entrou pela safra do mês, isso aparece na célula. A conferência
+           mostra se a semana respeitou o rodízio de proteína, o limite de fritura e a
+           variedade de cocção.</p>
+      </div>
+    </div>
+    <div class="passo-ajuda">
+      <span class="num">3</span>
+      <div>
+        <h3>Você tem a palavra final</h3>
+        <p>Toque em qualquer prato para ver as outras opções e trocar. Trocar um prato não
+           refaz o resto da semana.</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-pe"><button class="bt bt-prim" type="button" data-fechar>Entendi</button></div>
+</dialog>
+
+<!--{topo-acoes}-->
+<button class="bt-icone" id="btAjuda" type="button" aria-label="Como funciona">
+  <svg aria-hidden="true"><use href="#i-ajuda"></use></svg>
+</button>
+<button class="bt-icone" id="btSalvos" type="button" aria-label="Meus cardápios">
+  <svg aria-hidden="true"><use href="#i-salvar"></use></svg>
+</button>
+<button class="bt-icone contornado" id="btPerfil" type="button" aria-label="Ajustar o perfil do serviço">
+  <svg aria-hidden="true"><use href="#i-ajuste"></use></svg>
+</button>
+<!--{/topo-acoes}-->

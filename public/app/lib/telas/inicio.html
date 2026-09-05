@@ -1,0 +1,87 @@
+<div class="faixa">
+
+  <div class="saudacao">
+    <span class="olho">Sua área</span>
+    <h1>Olá{{NOME}}.</h1>
+    <p class="linha-apoio">
+      Tudo o que você comprou fica aqui: o livro completo para consultar e o assistente
+      que monta o cardápio da semana seguindo as regras do capítulo VI.
+    </p>
+  </div>
+
+  <a class="retomar" id="retomar" href="/app/livro/" hidden>
+    <span class="marcador"><svg aria-hidden="true"><use href="#i-relogio"></use></svg></span>
+    <span class="texto">
+      <span class="olho">Continuar lendo</span>
+      <span class="onde" id="retomarOnde"></span>
+    </span>
+    <svg aria-hidden="true"><use href="#i-dir"></use></svg>
+  </a>
+
+  <div class="portais">
+
+    <a class="portal" href="/app/livro/">
+      <span class="capa">
+        <svg aria-hidden="true"><use href="#i-livro"></use></svg>
+        <svg class="ornamento" viewBox="0 0 160 90" fill="none" aria-hidden="true">
+          <path d="M10 75C40 70 80 55 150 15" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M40 68c-2-14 2-26 12-33-4 13-8 25-5 35Z" fill="currentColor"/>
+          <path d="M65 58c-3-14 2-28 13-36-5 14-10 28-6 38Z" fill="currentColor"/>
+          <path d="M88 46c-2-14 4-28 15-36-6 14-11 28-6 38Z" fill="currentColor"/>
+          <path d="M110 32c-1-13 6-26 17-32-7 13-12 27-6 36Z" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="miolo">
+        <h2>O livro</h2>
+        <p>Os onze capítulos, o glossário e os anexos, com busca em todo o conteúdo.
+           Ache um fator de correção ou um termo técnico sem folhear nada.</p>
+        <span class="fichas">
+          <span class="etiq">11 capítulos</span>
+          <span class="etiq">Busca completa</span>
+          <span class="etiq">Tabelas e anexos</span>
+        </span>
+        <span class="bt bt-prim">Abrir o livro <svg aria-hidden="true"><use href="#i-dir"></use></svg></span>
+      </span>
+    </a>
+
+    <a class="portal laranja" href="/app/assistente/">
+      <span class="capa">
+        <svg aria-hidden="true"><use href="#i-cardapio"></use></svg>
+        <svg class="ornamento" viewBox="0 0 130 130" fill="none" aria-hidden="true">
+          <path d="M65 120s-5-30-10-50C48 45 30 30 20 20c15 8 32 20 42 45" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M65 120s5-30 10-50c7-25 25-40 35-50-15 8-32 20-42 45" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="20" cy="20" r="7" fill="currentColor"/>
+          <circle cx="110" cy="20" r="7" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="miolo">
+        <h2>Assistente de cardápio</h2>
+        <p>Monta a semana a partir do seu serviço, escolhendo dentro das preparações
+           do livro e mostrando qual regra determinou cada prato.</p>
+        <span class="fichas">
+          <span class="etiq safra">2.298 preparações</span>
+          <span class="etiq safra">Safra do mês</span>
+          <span class="etiq safra">Salva e imprime</span>
+        </span>
+        <span class="bt bt-prim">Montar um cardápio <svg aria-hidden="true"><use href="#i-dir"></use></svg></span>
+      </span>
+    </a>
+
+  </div>
+
+  <p class="rodape-autora">
+    Todo o conteúdo vem de <b>Cardápios: um livro vivo</b>, de Lúcia Chaise Borjes.
+    O assistente não inventa pratos: escolhe dentro do acervo do livro e mostra
+    qual regra do capítulo VI determinou cada escolha.
+  </p>
+
+</div>
+
+<script type="module">
+  import { memoria, $ } from '/app/assets/plataforma.js?v={{VERSAO}}'
+  const marca = memoria.ler('livro-posicao')
+  if (marca && marca.titulo) {
+    $('retomarOnde').textContent = marca.titulo
+    $('retomar').hidden = false
+  }
+</script>

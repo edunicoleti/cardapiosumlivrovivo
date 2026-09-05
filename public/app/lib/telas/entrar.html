@@ -1,0 +1,58 @@
+<div class="entrada">
+
+  <div class="vitrine">
+    <svg class="folhagem" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+      <path d="M20 220c-8-70 22-140 130-168 8 48 12 142-130 168Z" stroke="#EEF0D2" stroke-width="3"/>
+      <path d="M70 176c18-36 46-60 84-74" stroke="#EEF0D2" stroke-width="3" stroke-linecap="round"/>
+      <path d="M98 200c6-46 26-84 60-108" stroke="#EEF0D2" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="150" cy="52" r="7" fill="#EEF0D2"/>
+      <circle cx="182" cy="86" r="5" fill="#EEF0D2"/>
+    </svg>
+
+    <a class="marca-alta" href="/">
+      <span class="selo"><svg aria-hidden="true"><use href="#i-folha"></use></svg></span>
+      Cardápios: Um Livro Vivo
+    </a>
+
+    <p class="fala">O livro inteiro e o <b>assistente de cardápio</b>, no mesmo lugar.</p>
+
+    <div class="numeros">
+      <div><div class="n">2.298</div><div class="q">preparações</div></div>
+      <div><div class="n">11</div><div class="q">capítulos</div></div>
+      <div><div class="n">23</div><div class="q">categorias</div></div>
+    </div>
+  </div>
+
+  <div class="lado">
+    <div class="caixa">
+      <div class="marca-baixa">
+        <span class="selo"><svg aria-hidden="true"><use href="#i-folha"></use></svg></span>
+        Cardápios: Um Livro Vivo
+      </div>
+
+      <h1>Sua área do Livro Vivo</h1>
+      <p class="linha-apoio">Entre com o e-mail da compra e o código de acesso que você recebeu.</p>
+
+      <form method="post" action="/app/?retorno={{RETORNO}}">
+        {{ERRO}}
+        <div>
+          <label class="rot" for="email">E-mail da compra</label>
+          <input type="email" id="email" name="email" required autocomplete="email"
+                 inputmode="email" autocapitalize="off" spellcheck="false" value="{{EMAIL}}">
+        </div>
+        <div>
+          <label class="rot" for="codigo">Código de acesso</label>
+          <input type="text" id="codigo" name="codigo" required autocomplete="one-time-code"
+                 placeholder="XXXXXXXX" maxlength="16" autocapitalize="characters" spellcheck="false">
+        </div>
+        <button class="bt bt-prim" type="submit">Entrar na plataforma</button>
+      </form>
+
+      <p class="ajuda-pe">
+        Perdeu o código? Responda o e-mail da compra que a gente reenvia.<br>
+        Ainda não tem acesso? <a href="/">Conheça o livro</a>.
+      </p>
+    </div>
+  </div>
+
+</div>

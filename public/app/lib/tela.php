@@ -15,6 +15,26 @@ function e(?string $texto): string
     return htmlspecialchars((string) $texto, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+/**
+ * Primeira letra do nome, em maiuscula, para a bolinha do usuario.
+ * Nao assume mbstring: e a unica extensao que este codigo usaria e ela nao
+ * esta garantida nesta hospedagem. Sem ela, cai no PCRE em modo UTF-8.
+ */
+function primeiraLetra(string $nome): string
+{
+    $nome = trim($nome);
+    if ($nome === '') {
+        return '?';
+    }
+    if (function_exists('mb_substr')) {
+        return mb_strtoupper(mb_substr($nome, 0, 1, 'UTF-8'), 'UTF-8');
+    }
+    if (preg_match('/^./u', $nome, $achado) === 1) {
+        return strtoupper($achado[0]);
+    }
+    return strtoupper($nome[0]);
+}
+
 /** Muda quando o CSS ou o JS mudam, para o navegador não servir versão velha. */
 function versaoDosAssets(): string
 {
@@ -63,7 +83,8 @@ function pedacoDoGabarito(string $html, string $nome): string
 /** Remove do HTML os pedacos marcados com <!--{nome}--> ... <!--{/nome}-->. */
 function semPedacos(string $html): string
 {
-    return (string) preg_replace('/<!--\{[^}]*\}-->.*?<!--\{\/[^}]*\}-->/s', '', $html);
+    $limpo = preg_replace('/<!--\{[^}]*\}-->.*?<!--\{\/[^}]*\}-->/s', '', $html);
+    return $limpo ?? $html;
 }
 
 /** Carrega o corpo de uma tela (telas/<nome>.html) já com os tokens trocados. */
@@ -100,7 +121,7 @@ function renderizarTela(array $opcoes): void
     $modeloTrilho = pedacoDoGabarito($gabarito, 'item-trilho');
     $modeloAbas = pedacoDoGabarito($gabarito, 'item-abas');
     $modeloQuem = pedacoDoGabarito($gabarito, 'quem');
-    $gabarito = (string) preg_replace('/<!--\{[^}]*\}-->.*?<!--\{\/[^}]*\}-->/s', '', $gabarito);
+    $gabarito = semPedacos($gabarito);
 
     $navTrilho = '';
     $navAbas = '';
@@ -127,7 +148,7 @@ function renderizarTela(array $opcoes): void
         }
     }
     $quem = $usuario === null ? '' : trocarTokens($modeloQuem, [
-        'INICIAL' => e(mb_strtoupper(mb_substr($nome, 0, 1))),
+        'INICIAL' => e(primeiraLetra($nome)),
         'NOME' => e($nome),
     ]);
 

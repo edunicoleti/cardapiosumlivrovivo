@@ -5,3 +5,6 @@ Sitemap: https://www.cardapiosumlivrovivo.com.br/sitemap.xml
 # ferramenta em teste, fora do indice
 Disallow: /assistente-4b91e7/
 Disallow: /app/
+
+# documento de cliente, fora do indice
+Disallow: /estrategiatrafego/

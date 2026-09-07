@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Plano de tráfego pago no Instagram e Facebook para o e-book Cardápios: Um Livro Vivo. Documento preparado para Lúcia Chaise Borjes.">
+<meta name="theme-color" content="#EEF0D2">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+<!--
+  Plano de trafego pago, preparado para a reuniao com a Lucia.
+  Pagina autonoma: nao passa pelo React nem depende do build da aplicacao,
+  o Vite so copia public/ para dist/. Esta e a copia canonica do documento.
+  Fora do indice por meta robots e por robots.txt.
+-->
+
+<title>Plano de Tráfego · Cardápios: Um Livro Vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+
+<style>
+/* ============================================================
+   Cores da landing page do Cardapios: Um Livro Vivo.
+   Tema claro unico: a apresentacao precisa ter a mesma cara
+   da pagina de venda em qualquer tela.
+   ============================================================ */
+:root {
+  --cream:       #EEF0D2;
+  --cream-soft:  #F5F6E4;
+  --white:       #FFFFFF;
+  --border:      #DDE2BC;
+  --border-soft: #E8EBD3;
+
+  --ink:         #24291F;
+  --ink-2:       #4A5344;
+  --ink-3:       #737C6B;
+
+  --verde:       #448D76;
+  --verde-dark:  #2F6B57;
+  --laranja:     #ED8627;
+  --laranja-ink: #9A5108;
+
+  --chart-a:     #1E8C6A;
+  --chart-b:     #ED8627;
+
+  --shadow:      0 1px 2px rgba(36,41,31,.05), 0 8px 26px rgba(36,41,31,.07);
+  --radius:      16px;
+  --maxw:        1080px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: 'League Spartan', 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  text-wrap: balance;
+  margin: 0;
+}
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--laranja); outline-offset: 3px; border-radius: 5px; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+.num { font-variant-numeric: tabular-nums; }
+
+/* ── topo ─────────────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(238,240,210,.94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar__inner {
+  max-width: var(--maxw); margin: 0 auto;
+  padding: .65rem 1.5rem; display: flex; align-items: center; gap: 1.4rem;
+}
+.topbar__brand {
+  font-family: 'League Spartan', sans-serif; font-weight: 700;
+  font-size: .95rem; color: var(--verde-dark); white-space: nowrap;
+}
+.topbar__nav { display: flex; gap: .15rem; overflow-x: auto; }
+.topbar__nav a {
+  font-size: .78rem; font-weight: 600; color: var(--ink-2);
+  text-decoration: none; padding: .3rem .6rem; border-radius: 8px;
+  white-space: nowrap; transition: background .15s, color .15s;
+}
+.topbar__nav a:hover { background: var(--white); color: var(--verde-dark); }
+@media (max-width: 860px) { .topbar__nav { display: none; } }
+
+/* ── layout ───────────────────────────────────────────── */
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 3.6rem 0; }
+.band-white { background: var(--white); }
+.band-soft  { background: var(--cream-soft); }
+
+.eyebrow {
+  display: flex; align-items: baseline; gap: .6rem;
+  font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: .75rem;
+}
+.eyebrow b {
+  font-family: 'League Spartan', sans-serif;
+  color: var(--laranja-ink); font-size: .85rem; letter-spacing: .03em;
+}
+h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); color: var(--verde-dark); }
+.lede { font-size: 1.06rem; color: var(--ink-2); max-width: 62ch; margin-top: .9rem; }
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.15rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.15rem; }
+@media (max-width: 900px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+.mt { margin-top: 1.8rem; }
+.mt-sm { margin-top: 1rem; }
+.span-all { grid-column: 1 / -1; }
+
+/* ── capa ─────────────────────────────────────────────── */
+.hero { padding: 3.4rem 0 3.8rem; }
+.hero__kicker {
+  display: inline-block; background: var(--white); color: var(--verde-dark);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: .35rem .9rem; font-size: .75rem; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 6.4vw, 3.7rem); color: var(--verde);
+  margin-top: 1.15rem; font-weight: 800; letter-spacing: -0.033em;
+}
+.hero h1 em { font-style: normal; color: var(--laranja-ink); }
+.hero__sub { font-size: 1.14rem; color: var(--ink-2); max-width: 56ch; margin-top: 1.05rem; }
+.hero__meta {
+  display: flex; flex-wrap: wrap; gap: .9rem 2.4rem;
+  margin-top: 2.1rem; padding-top: 1.35rem; border-top: 1px solid var(--border);
+  font-size: .8rem; color: var(--ink-3); font-weight: 500;
+}
+.hero__meta b { display: block; color: var(--ink); font-weight: 700; font-size: .95rem; margin-top: .1rem; }
+
+/* ── cards ────────────────────────────────────────────── */
+.card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.35rem 1.45rem;
+}
+.band-white .card { background: var(--cream-soft); border-color: var(--border-soft); }
+.card--lift { box-shadow: var(--shadow); }
+.card h3 { font-size: 1.08rem; color: var(--verde-dark); margin-bottom: .5rem; }
+.card p { font-size: .93rem; color: var(--ink-2); }
+.card__tag {
+  display: block; font-size: .69rem; font-weight: 700; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--laranja-ink); margin-bottom: .55rem;
+}
+
+/* ── listas ───────────────────────────────────────────── */
+.lista { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .55rem; }
+.lista li { font-size: .93rem; color: var(--ink-2); padding-left: 1.1rem; position: relative; }
+.lista li::before {
+  content: ''; position: absolute; left: 0; top: .58em;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--laranja);
+}
+.lista li b { color: var(--ink); font-weight: 700; }
+.lista--check li::before {
+  top: .42em; width: 9px; height: 9px; border-radius: 2px; background: var(--verde);
+}
+
+.pills { display: flex; flex-wrap: wrap; gap: .38rem; margin-top: .8rem; }
+.pills span {
+  font-size: .78rem; font-weight: 600; color: var(--verde-dark);
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 999px; padding: .22rem .65rem;
+}
+
+/* ── tabelas ──────────────────────────────────────────── */
+.tablewrap {
+  overflow-x: auto; border: 1px solid var(--border);
+  border-radius: var(--radius); background: var(--white);
+}
+table { border-collapse: collapse; width: 100%; min-width: 500px; }
+th, td { text-align: left; padding: .72rem .95rem; font-size: .92rem; border-bottom: 1px solid var(--border-soft); }
+thead th {
+  font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-2); background: var(--cream); white-space: nowrap;
+}
+tbody tr:last-child td, tbody tr:last-child th { border-bottom: none; }
+tbody th { font-weight: 700; color: var(--ink); background: var(--cream-soft); white-space: nowrap; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ── figura / diagrama ────────────────────────────────── */
+figure { margin: 0; }
+.figura {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.5rem 1.5rem 1.2rem;
+  overflow-x: auto;
+}
+.band-white .figura { background: var(--cream-soft); border-color: var(--border-soft); }
+.figura svg { display: block; width: 100%; min-width: 700px; max-width: 100%; height: auto; }
+/* escopada na figura do diagrama: os cards de peca usam figcaption tambem */
+.figura > figcaption {
+  font-size: .88rem; color: var(--ink-2); margin-top: 1.1rem;
+  padding-top: 1rem; border-top: 1px solid var(--border-soft); max-width: 72ch;
+}
+.figura > figcaption b { color: var(--ink); font-weight: 700; }
+
+/* ── destaque ─────────────────────────────────────────── */
+.callout {
+  border-radius: var(--radius); padding: 1.4rem 1.55rem;
+  display: flex; flex-direction: column; gap: .6rem;
+  background: var(--white); border: 1px solid var(--border);
+}
+.band-white .callout { background: var(--cream); border-color: var(--border); }
+.callout h3 { font-size: 1.2rem; color: var(--verde-dark); }
+.callout p { font-size: .96rem; color: var(--ink-2); }
+
+.figure__n {
+  display: block; font-family: 'League Spartan', sans-serif; font-weight: 800;
+  font-size: 2.3rem; line-height: 1; letter-spacing: -0.035em;
+  color: var(--verde); font-variant-numeric: tabular-nums;
+}
+.figure__lab { display: block; font-size: .8rem; color: var(--ink-3); font-weight: 600; margin-top: .25rem; }
+
+/* ── etapas ───────────────────────────────────────────── */
+.funnel { display: grid; grid-template-columns: repeat(3, 1fr); gap: .9rem; margin-top: 1.3rem; }
+@media (max-width: 760px) { .funnel { grid-template-columns: 1fr; } }
+.fstep {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: .45rem;
+}
+.band-white .fstep { background: var(--cream-soft); border-color: var(--border-soft); }
+.fstep__n { font-size: .71rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--laranja-ink); }
+.fstep h3 { font-size: 1.05rem; }
+.fstep p { font-size: .91rem; color: var(--ink-2); }
+
+/* ── niveis de verba ──────────────────────────────────── */
+.nivel {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.3rem 1.4rem;
+  display: flex; flex-direction: column; gap: .9rem;
+}
+.nivel--rec { border: 2px solid var(--verde); box-shadow: var(--shadow); }
+.nivel__topo { display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; }
+.nivel__nome { font-family: 'League Spartan', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--verde-dark); }
+.nivel__selo {
+  font-size: .66rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+  background: var(--verde); color: #fff; border-radius: 999px; padding: .2rem .6rem;
+}
+.nivel__valor {
+  font-family: 'League Spartan', sans-serif; font-weight: 800;
+  font-size: 2rem; line-height: 1; color: var(--ink); letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.nivel__valor small { font-size: .85rem; font-weight: 600; color: var(--ink-3); letter-spacing: 0; }
+.nivel dl { margin: 0; display: flex; flex-direction: column; gap: .5rem; }
+.nivel dl div { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; border-top: 1px solid var(--border-soft); padding-top: .5rem; }
+.nivel dt { font-size: .84rem; color: var(--ink-2); }
+.nivel dd { margin: 0; font-size: .9rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ── pecas de anuncio (mockups) ───────────────────────── */
+.angulos { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.3rem; }
+.angulos span {
+  font-size: .8rem; font-weight: 600; color: var(--verde-dark);
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 999px; padding: .3rem .8rem;
+}
+.angulos span b { color: var(--laranja-ink); font-weight: 700; }
+
+.pecas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.15rem; margin-top: 1.5rem; }
+@media (max-width: 900px) { .pecas { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .pecas { grid-template-columns: 1fr; } }
+
+.peca {
+  margin: 0; background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.band-white .peca { background: var(--cream-soft); border-color: var(--border-soft); }
+.peca__palco {
+  height: 284px; background: var(--cream); padding: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid var(--border-soft);
+}
+.peca__info { padding: .95rem 1.15rem 1.2rem; display: flex; flex-direction: column; gap: .28rem; }
+.peca__formato {
+  font-size: .67rem; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--laranja-ink);
+}
+.peca__info h3 { font-size: 1rem; color: var(--verde-dark); margin: 0; }
+.peca__info p { font-size: .86rem; color: var(--ink-2); }
+
+/* o mock respeita a proporcao real do formato do anuncio */
+.mock {
+  height: 100%; max-width: 100%; position: relative; overflow: hidden;
+  border-radius: 10px; display: flex; flex-direction: column;
+  box-shadow: 0 6px 18px rgba(36,41,31,.18);
+}
+.mock--916 { aspect-ratio: 9 / 16; }
+.mock--11  { aspect-ratio: 1 / 1; }
+
+/* padding-right maior no primeiro bloco: a pilha de duracao ocupa o canto */
+.mock__pad { padding: .8rem 2.6rem 0 .75rem; display: flex; flex-direction: column; gap: .12rem; }
+.mock__pad ~ .mock__pad { padding-right: .75rem; }
+.mock__eyebrow { font-size: .55rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.mock__big {
+  font-family: 'League Spartan', sans-serif; font-weight: 800;
+  font-size: 2.15rem; line-height: .95; letter-spacing: -0.035em;
+}
+.mock__mid {
+  font-family: 'League Spartan', sans-serif; font-weight: 700;
+  font-size: 1.05rem; line-height: 1.06; letter-spacing: -0.015em;
+}
+.mock__txt { font-size: .7rem; line-height: 1.32; font-weight: 500; }
+.mock__fill { flex: 1; display: flex; align-items: center; justify-content: center; padding: .55rem; min-height: 0; }
+.mock__fill svg { max-height: 100%; width: auto; }
+.mock__rodape { padding: .55rem .75rem .75rem; font-size: .56rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+
+.mock__pill {
+  position: absolute; top: .5rem; right: .5rem; z-index: 2;
+  display: inline-flex; align-items: center; gap: .22rem;
+  background: rgba(255,255,255,.92); color: #24291F;
+  border-radius: 999px; padding: .12rem .38rem .12rem .3rem;
+  font-size: .53rem; font-weight: 700; letter-spacing: .02em;
+}
+.mock__pill svg { width: 7px; height: 7px; display: block; }
+
+/* faixa do proximo cartao do carrossel */
+.mock__peek {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 15%;
+  background: #DCE4C4; border-left: 2px solid rgba(255,255,255,.85);
+}
+.mock__conteudo { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
+
+/* botao falso de chamada para acao */
+.mock__cta {
+  display: inline-block; align-self: flex-start;
+  background: #ED8627; color: #fff; border-radius: 999px;
+  padding: .25rem .6rem; font-size: .6rem; font-weight: 700;
+}
+
+/* ── rodape ───────────────────────────────────────────── */
+footer { background: var(--verde); color: rgba(255,255,255,.85); padding: 2.4rem 0 2.8rem; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 1.2rem; justify-content: space-between; align-items: flex-end; }
+footer p { font-size: .84rem; }
+footer b { color: #fff; font-weight: 700; }
+
+.nota { font-size: .84rem; line-height: 1.6; color: var(--ink-3); max-width: 74ch; }
+.nota b { color: var(--ink-2); font-weight: 700; }
+
+/* ============================================================
+   IMPRESSAO / PDF
+   Cada secao vira uma pagina, e nenhum componente parte no meio.
+   ============================================================ */
+@media print {
+  /* margem zero na pagina e recuo no .wrap, para o creme sangrar ate a borda */
+  @page { size: A4 portrait; margin: 0; }
+
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html, body { background: var(--cream); font-size: 12.4px; }
+  .topbar { display: none; }
+  .wrap { max-width: 100%; padding: 13mm 12mm; }
+
+  section { padding: 0; break-before: page; }
+  /* a capa e um .wrap.hero, entao precisa do recuo dela mesma */
+  .hero { break-after: page; padding: 26mm 12mm 0; }
+  .hero h1 { font-size: 2.6rem; }
+  .hero__sub { font-size: 1.05rem; }
+
+  /* nada parte no meio */
+  .card, .peca, .nivel, .fstep, .figura, .callout, .tablewrap,
+  tr, figure, .angulos { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+  .eyebrow { break-after: avoid; }
+
+  /* faixas de fundo nao existem em pagina: tudo no creme */
+  .band-white, .band-soft { background: transparent; }
+  .band-white .card, .band-white .peca, .band-white .figura, .band-white .fstep {
+    background: var(--white); border-color: var(--border);
+  }
+  .band-white .callout { background: var(--white); }
+
+  /* o diagrama precisa caber na largura util da pagina */
+  .figura { overflow: visible; padding: 1.1rem; }
+  .figura svg { min-width: 0; width: 100%; }
+
+  .pecas { grid-template-columns: repeat(3, 1fr); gap: .7rem; margin-top: 1rem; }
+  .peca__palco { height: 226px; padding: .6rem; }
+  .peca__info { padding: .6rem .75rem .8rem; }
+  /* o mock em 9:16 fica estreito no papel: a tipografia acompanha */
+  .mock__pad { padding: .55rem 1.9rem 0 .55rem; }
+  .mock__pad ~ .mock__pad { padding-right: .55rem; }
+  .mock__eyebrow { font-size: .46rem; letter-spacing: .09em; }
+  .mock__big { font-size: 1.55rem; }
+  .mock__mid { font-size: .84rem; }
+  .mock__txt { font-size: .56rem; }
+  .mock__rodape { font-size: .46rem; padding: .4rem .55rem .55rem; }
+  .mock__pill { font-size: .45rem; top: .35rem; right: .35rem; }
+  .mock__cta { font-size: .5rem; padding: .18rem .45rem; }
+  .mock--11 .mock__mid { font-size: .92rem; }
+  .mock--11 .mock__big { font-size: 1.35rem; }
+
+  .card { padding: .95rem 1.05rem; }
+  .callout { padding: 1rem 1.15rem; }
+  .fstep { padding: .9rem 1rem; }
+  .nivel { padding: 1rem 1.1rem; gap: .7rem; }
+  th, td { padding: .5rem .8rem; }
+
+  .grid-2, .grid-3 { gap: .75rem; }
+  .mt { margin-top: 1rem; }
+  .mt-sm { margin-top: .7rem; }
+  .lede { margin-top: .55rem; }
+  .eyebrow { margin-bottom: .5rem; }
+
+  a { text-decoration: none; }
+}
+
+/* ── cards de decisao, com icone ──────────────────────── */
+.dec__head { display: flex; gap: .95rem; align-items: flex-start; margin-bottom: .8rem; }
+.dec__head h3 { margin-bottom: 0; }
+.dec__head .card__tag { margin-bottom: .3rem; }
+.dec__icone {
+  flex: 0 0 auto; width: 46px; height: 46px; border-radius: 13px;
+  background: var(--cream); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--verde-dark);
+}
+.dec--destaque .dec__icone { background: var(--verde); border-color: var(--verde); color: #fff; }
+.dec__icone svg { width: 24px; height: 24px; display: block; }
+</style>
+<style>
+/* o esqueleto que o hospedeiro do Artifact fornecia, aqui explicito */
+html { color-scheme: light; }
+body { margin: 0; }
+img, svg { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar__inner">
+    <span class="topbar__brand">Livro Vivo · Plano de Mídia</span>
+    <nav class="topbar__nav" aria-label="Seções">
+      <a href="#hoje">Onde estamos</a>
+      <a href="#estrategia">Estratégia</a>
+      <a href="#campanhas">Campanhas</a>
+      <a href="#publicos">Público</a>
+      <a href="#anuncios">Anúncios</a>
+      <a href="#metas">Metas e verba</a>
+      <a href="#prazos">90 dias</a>
+      <a href="#decisoes">Decisões</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════ CAPA ═══════════ -->
+<div class="wrap hero">
+  <span class="hero__kicker">Reunião de estratégia · Setembro de 2026</span>
+  <h1>Como vamos levar o Livro Vivo <em>a quem precisa dele</em>.</h1>
+  <p class="hero__sub">
+    O e-book está pronto e a página de venda está no ar. Agora começa a parte de fazer o livro
+    aparecer para as nutricionistas certas, todos os dias, de forma constante. Este é o plano
+    para os próximos 90 dias.
+  </p>
+  <div class="hero__meta">
+    <div>Produto<b>E-book em PDF, R$ 160</b></div>
+    <div>Canal<b>Instagram e Facebook</b></div>
+    <div>Prazo<b>90 dias de campanha</b></div>
+  </div>
+</div>
+
+<!-- ═══════════ 01 ONDE ESTAMOS ═══════════ -->
+<section id="hoje" class="band-white">
+  <div class="wrap">
+    <div class="eyebrow"><b>01</b> Onde estamos</div>
+    <h2>A base está pronta. Falta ligar o motor.</h2>
+    <p class="lede">
+      Tudo que o cliente precisa para comprar já existe e já funciona. O que vamos construir agora
+      é o caminho que traz esse cliente até a página.
+    </p>
+
+    <div class="grid-2 mt">
+      <div class="card">
+        <span class="card__tag">Já está pronto</span>
+        <ul class="lista lista--check">
+          <li><b>E-book em PDF</b>, com 2.298 preparações e 11 capítulos</li>
+          <li><b>Página de venda no ar</b>, em cardapiosumlivrovivo.com.br</li>
+          <li><b>Checkout funcionando</b> pela Cakto, em até 12x</li>
+          <li><b>Três meses de conteúdo</b> no @cardapioslivrovivo</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card__tag">O que vamos construir</span>
+        <ul class="lista">
+          <li><b>Um público que já te conhece.</b> Nutricionistas que demonstraram interesse e que a gente vai poder alcançar de novo, quantas vezes for preciso.</li>
+          <li><b>Anúncios rodando todo dia.</b> Levando o livro para quem tem o perfil certo, mesmo enquanto você trabalha.</li>
+          <li><b>Depoimentos de quem já usa.</b> Nada convence mais uma nutricionista do que outra nutricionista.</li>
+          <li><b>Números para decidir.</b> Quanto custa alcançar cada pessoa, o que funciona e o que não funciona.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 02 ESTRATÉGIA ═══════════ -->
+<section id="estrategia">
+  <div class="wrap">
+    <div class="eyebrow"><b>02</b> A estratégia</div>
+    <h2>Primeiro a gente se apresenta. Depois convida para comprar.</h2>
+    <p class="lede">
+      Pedir R$ 160 para alguém que nunca ouviu falar de você é como pedir a alguém que compre um
+      livro no primeiro minuto de conversa. Poucas pessoas dizem sim, e o anúncio fica caro.
+      Então invertemos a ordem.
+    </p>
+
+    <div class="funnel">
+      <div class="fstep">
+        <span class="fstep__n">Primeiro</span>
+        <h3>A pessoa recebe algo útil</h3>
+        <p>
+          O anúncio oferece um material de graça, tirado do próprio livro. Ela baixa na hora, sem
+          cadastro e sem custo. Nesse momento ainda não pedimos nada em troca.
+        </p>
+      </div>
+      <div class="fstep">
+        <span class="fstep__n">Depois</span>
+        <h3>Ela passa a te ver com frequência</h3>
+        <p>
+          Quem baixou a amostra, assistiu ao vídeo ou visitou a página fica guardada como público
+          seu dentro do Instagram. A partir daí você aparece para ela outras vezes, mostrando o
+          método por dentro e a sua trajetória.
+        </p>
+      </div>
+      <div class="fstep">
+        <span class="fstep__n">Aí sim</span>
+        <h3>Vem o convite para comprar</h3>
+        <p>
+          Quando ela já sabe quem você é, o anúncio de venda aparece. É a mesma pessoa, mas agora
+          a conversa começa de um lugar muito melhor.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout mt">
+      <h3>O ganho está em quem fica</h3>
+      <p>
+        Quem demonstra interesse não some. Se ela não comprar em setembro, continua vendo você e
+        pode comprar em novembro, sem que a gente pague de novo o preço de um primeiro contato.
+        Esse público é o ativo mais valioso que os 90 dias vão deixar, e ele só cresce.
+      </p>
+    </div>
+    <p class="nota mt-sm">
+      Tudo isso acontece dentro do próprio Instagram, sem nenhuma ferramenta nova para você
+      aprender ou contratar.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ 03 CAMPANHAS ═══════════ -->
+<section id="campanhas" class="band-white">
+  <div class="wrap">
+    <div class="eyebrow"><b>03</b> As campanhas</div>
+    <h2>Três campanhas, cada uma com um trabalho.</h2>
+    <p class="lede">
+      Elas não funcionam soltas: a primeira alimenta as outras duas. É essa engrenagem que faz o
+      resultado melhorar mês a mês.
+    </p>
+
+    <figure class="figura mt">
+      <svg viewBox="0 0 960 300" role="img"
+           aria-label="A campanha de amostra atrai pessoas que ainda não conhecem o livro. Quem demonstra interesse fica guardado como público dentro do Instagram. Esse público vira o alvo da campanha de venda, que junto com a campanha para seguidores gera as vendas.">
+        <defs>
+          <marker id="seta-verde" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#1E8C6A"/>
+          </marker>
+          <marker id="seta-cinza" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#737C6B"/>
+          </marker>
+        </defs>
+
+        <!-- rotulos de estagio -->
+        <g font-size="10.5" font-weight="700" letter-spacing="1.1" fill="#737C6B" text-anchor="middle">
+          <text x="114" y="20">QUEM AINDA NÃO CONHECE</text>
+          <text x="362" y="20">QUEM DEMONSTROU INTERESSE</text>
+          <text x="610" y="20">O CONVITE PARA COMPRAR</text>
+          <text x="867" y="20">RESULTADO</text>
+        </g>
+
+        <!-- Campanha 1: amostra -->
+        <rect x="16" y="44" width="196" height="88" rx="11" fill="#FFFFFF" stroke="#C2CBA4" stroke-width="1.5"/>
+        <text x="114" y="68" font-size="9.5" font-weight="700" letter-spacing="1" fill="#737C6B" text-anchor="middle">CAMPANHA 1</text>
+        <text x="114" y="92" font-size="17" font-weight="700" fill="#24291F" text-anchor="middle">Amostra</text>
+        <text x="114" y="114" font-size="11.5" fill="#4A5344" text-anchor="middle">65% da verba</text>
+
+        <!-- Publico aquecido, guardado dentro da Meta -->
+        <rect x="264" y="44" width="196" height="88" rx="11" fill="#E4F1EA" stroke="#1E8C6A" stroke-width="2"/>
+        <text x="362" y="68" font-size="9.5" font-weight="700" letter-spacing="1" fill="#2F6B57" text-anchor="middle">O ATIVO QUE FICA</text>
+        <text x="362" y="92" font-size="17" font-weight="700" fill="#24291F" text-anchor="middle">Seu público</text>
+        <text x="362" y="114" font-size="11.5" fill="#4A5344" text-anchor="middle">baixou, assistiu ou visitou</text>
+        <text x="362" y="152" font-size="11" fill="#2F6B57" font-weight="600" text-anchor="middle">cresce todo mês</text>
+
+        <!-- Campanha 2: venda -->
+        <rect x="512" y="44" width="196" height="88" rx="11" fill="#FFFFFF" stroke="#C2CBA4" stroke-width="1.5"/>
+        <text x="610" y="68" font-size="9.5" font-weight="700" letter-spacing="1" fill="#737C6B" text-anchor="middle">CAMPANHA 2</text>
+        <text x="610" y="92" font-size="17" font-weight="700" fill="#24291F" text-anchor="middle">Venda</text>
+        <text x="610" y="114" font-size="11.5" fill="#4A5344" text-anchor="middle">25% da verba</text>
+
+        <!-- Campanha 3: seguidores -->
+        <rect x="512" y="164" width="196" height="88" rx="11" fill="#FFFFFF" stroke="#C2CBA4" stroke-width="1.5"/>
+        <text x="610" y="188" font-size="9.5" font-weight="700" letter-spacing="1" fill="#737C6B" text-anchor="middle">CAMPANHA 3</text>
+        <text x="610" y="212" font-size="17" font-weight="700" fill="#24291F" text-anchor="middle">Seguidores</text>
+        <text x="610" y="234" font-size="11.5" fill="#4A5344" text-anchor="middle">10% da verba</text>
+
+        <!-- Resultado -->
+        <rect x="790" y="104" width="154" height="88" rx="11" fill="#FDF0E1" stroke="#ED8627" stroke-width="2"/>
+        <text x="867" y="145" font-size="19" font-weight="700" fill="#24291F" text-anchor="middle">Vendas</text>
+        <text x="867" y="167" font-size="11.5" fill="#4A5344" text-anchor="middle">e novos depoimentos</text>
+
+        <!-- setas -->
+        <line x1="212" y1="88" x2="254" y2="88" stroke="#1E8C6A" stroke-width="2" marker-end="url(#seta-verde)"/>
+        <text x="233" y="76" font-size="10.5" fill="#2F6B57" font-weight="600" text-anchor="middle">interesse</text>
+
+        <line x1="460" y1="88" x2="502" y2="88" stroke="#1E8C6A" stroke-width="2" marker-end="url(#seta-verde)"/>
+        <text x="481" y="76" font-size="10.5" fill="#2F6B57" font-weight="600" text-anchor="middle">vira alvo</text>
+
+        <path d="M 708 88 L 748 88 L 748 138 L 780 138" fill="none" stroke="#737C6B" stroke-width="2" marker-end="url(#seta-cinza)"/>
+        <path d="M 708 208 L 748 208 L 748 158 L 780 158" fill="none" stroke="#737C6B" stroke-width="2" marker-end="url(#seta-cinza)"/>
+        <text x="728" y="76" font-size="10.5" fill="#4A5344" font-weight="600" text-anchor="middle">compra</text>
+      </svg>
+
+      <figcaption>
+        <b>A campanha 1 é a que alimenta as outras.</b> Cada pessoa que baixa a amostra, assiste
+        ao vídeo ou visita a página fica guardada como seu público dentro do Instagram, e esse
+        público vira o alvo da campanha 2. Como ele só cresce, a campanha de venda tem mais gente
+        para conversar a cada mês, e falar com quem já te conhece custa bem menos do que falar com
+        quem nunca ouviu seu nome. A campanha 3 é um atalho: quem já segue o @cardapioslivrovivo
+        também já te conhece, então entra direto na etapa de venda.
+      </figcaption>
+    </figure>
+
+    <div class="grid-3 mt">
+      <div class="card">
+        <span class="card__tag">Campanha 1 · Amostra</span>
+        <p>Fala com nutricionistas que nunca ouviram falar do livro e convida a baixar o material gratuito. É a campanha que abastece tudo o resto.</p>
+      </div>
+      <div class="card">
+        <span class="card__tag">Campanha 2 · Venda</span>
+        <p>Volta a aparecer para quem baixou a amostra, assistiu ao vídeo ou visitou a página. Como já existe contexto, é a campanha com o melhor retorno.</p>
+      </div>
+      <div class="card">
+        <span class="card__tag">Campanha 3 · Seguidores</span>
+        <p>Fala com quem já curte e comenta no seu Instagram. Público pequeno hoje, mas o mais fácil de converter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 04 PÚBLICO ═══════════ -->
+<section id="publicos">
+  <div class="wrap">
+    <div class="eyebrow"><b>04</b> Quem vamos alcançar</div>
+    <h2>Cinco perfis, em ordem de prioridade.</h2>
+    <p class="lede">
+      O Livro Vivo não é para todo nutricionista. É para quem planeja cardápio em volume, com
+      custo apertado e pouco tempo. Os anúncios só vão aparecer para esses perfis.
+    </p>
+
+    <div class="grid-2 mt">
+      <div class="card card--lift">
+        <span class="card__tag">1 · O coração do público</span>
+        <h3>Nutricionista de alimentação coletiva</h3>
+        <p>Trabalha em hospital, empresa, escola ou restaurante coletivo. Monta cardápio toda semana e responde por custo e desperdício.</p>
+        <div class="pills"><span>26 a 50 anos</span><span>Brasil</span><span>Já formada e atuando</span></div>
+      </div>
+      <div class="card card--lift">
+        <span class="card__tag">2 · O que mais valoriza</span>
+        <h3>Nutricionista autônoma, de consultoria e assessoria</h3>
+        <p>Atende restaurantes, escolas e empresas como prestadora de serviço. Precisa entregar cardápio, ficha técnica e orientação de equipe para vários clientes ao mesmo tempo, então o livro vira ferramenta de trabalho que se paga já no primeiro contrato.</p>
+        <div class="pills"><span>26 a 50 anos</span><span>Brasil</span><span>Consultoria em nutrição</span><span>Profissional autônoma</span></div>
+      </div>
+      <div class="card card--lift">
+        <span class="card__tag">3 · O maior volume</span>
+        <h3>Estudante de Nutrição</h3>
+        <p>Do terceiro ano em diante, entrando em estágio. A dor dela é insegurança técnica. É o público mais barato de alcançar, e o parcelamento em 12x pesa bastante na decisão.</p>
+        <div class="pills"><span>20 a 28 anos</span><span>Brasil</span><span>Cursando Nutrição</span></div>
+      </div>
+      <div class="card card--lift">
+        <span class="card__tag">4 · A ser testado</span>
+        <h3>Proprietário de cozinha industrial e de restaurante médio</h3>
+        <p>Restaurante que não tem chefe de cozinha, tem cozinheira. Quem decide o cardápio e sente o custo é o próprio dono, e ele não tem formação técnica para isso. Com esse perfil o argumento é padronizar a produção e cortar desperdício, não atualização profissional.</p>
+        <div class="pills"><span>30 a 60 anos</span><span>Brasil</span><span>Proprietário de restaurante</span><span>Cozinha industrial</span></div>
+      </div>
+      <div class="card card--lift span-all">
+        <span class="card__tag">5 · O que multiplica</span>
+        <h3>Professor de curso de Nutrição</h3>
+        <p>Público pequeno, mas quem adota o livro na disciplina leva uma turma inteira junto. Esse aqui não se resolve só por anúncio, precisa de um contato direto seu.</p>
+        <div class="pills"><span>30 a 60 anos</span><span>Brasil</span><span>Ensino superior</span></div>
+      </div>
+    </div>
+
+    <div class="callout mt">
+      <h3>Um caminho a mais para o perfil 4</h3>
+      <p>
+        Proprietários de restaurante e de cozinha industrial se reúnem em torno dos sindicatos de
+        hotéis, bares e restaurantes e das associações do setor. Isso dá um endereço bem preciso
+        para segmentar os anúncios, e abre uma conversa que não depende só de mídia paga: uma
+        parceria com o sindicato da região coloca o livro na frente de dezenas de estabelecimentos
+        de uma vez. Vale considerarmos isso a partir do segundo mês, quando as campanhas já
+        estiverem estáveis.
+      </p>
+    </div>
+
+    <p class="nota mt-sm">
+      Além desses cinco, o Instagram vai montando sozinho listas de quem visitou a página, de quem
+      abriu o checkout sem finalizar e de quem baixou a amostra. A partir do terceiro mês, com
+      volume suficiente, ele passa a procurar pessoas parecidas com quem já demonstrou interesse,
+      e é aí que o alcance começa a ficar mais preciso e mais barato.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ 05 ANÚNCIOS ═══════════ -->
+<section id="anuncios" class="band-white">
+  <div class="wrap">
+    <div class="eyebrow"><b>05</b> Os anúncios</div>
+    <h2>Seis peças no ar, testando mensagens diferentes.</h2>
+    <p class="lede">
+      Nunca dá para saber de antemão qual mensagem funciona melhor. Colocamos as seis no ar ao
+      mesmo tempo, medimos e vamos ficando só com as que trazem resultado. Abaixo, uma prévia de
+      como cada uma seria.
+    </p>
+
+    <div class="angulos">
+      <span><b>Mensagem 1</b> · o tamanho do material</span>
+      <span><b>Mensagem 2</b> · o tempo que você perde</span>
+      <span><b>Mensagem 3</b> · a segurança técnica</span>
+      <span><b>Mensagem 4</b> · a sua autoridade</span>
+    </div>
+
+    <div class="pecas">
+
+      <!-- 1 · folheando o livro -->
+      <figure class="peca">
+        <div class="peca__palco">
+          <div class="mock mock--916" style="background:#448D76">
+            <span class="mock__pill"><svg viewBox="0 0 10 10" fill="#24291F"><path d="M2 1l7 4-7 4z"/></svg>25s</span>
+            <div class="mock__pad">
+              <span class="mock__eyebrow" style="color:rgba(255,255,255,.75)">E-book em PDF</span>
+              <span class="mock__big" style="color:#EEF0D2">2.298</span>
+              <span class="mock__mid" style="color:#FFFFFF">preparações,<br>uma por uma</span>
+            </div>
+            <div class="mock__fill">
+              <svg viewBox="0 0 120 96" role="img" aria-label="Páginas do livro sendo folheadas">
+                <rect x="10" y="20" width="72" height="66" rx="4" fill="#EEF0D2" opacity=".45" transform="rotate(-8 46 53)"/>
+                <rect x="20" y="16" width="72" height="66" rx="4" fill="#EEF0D2" opacity=".7" transform="rotate(-3 56 49)"/>
+                <rect x="30" y="12" width="72" height="66" rx="4" fill="#FFFFFF"/>
+                <g fill="#448D76" opacity=".55">
+                  <rect x="38" y="22" width="46" height="4" rx="2"/>
+                  <rect x="38" y="32" width="56" height="3" rx="1.5"/>
+                  <rect x="38" y="40" width="52" height="3" rx="1.5"/>
+                  <rect x="38" y="48" width="56" height="3" rx="1.5"/>
+                  <rect x="38" y="56" width="44" height="3" rx="1.5"/>
+                  <rect x="38" y="64" width="50" height="3" rx="1.5"/>
+                </g>
+              </svg>
+            </div>
+            <span class="mock__rodape" style="color:rgba(255,255,255,.85)">23 categorias · 11 capítulos</span>
+          </div>
+        </div>
+        <figcaption class="peca__info">
+          <span class="peca__formato">Vídeo · vertical · 25s</span>
+          <h3>Folheando o livro</h3>
+          <p>A tela mostra as páginas passando. Testa a mensagem 1.</p>
+        </figcaption>
+      </figure>
+
+      <!-- 2 · a ficha tecnica na tela -->
+      <figure class="peca">
+        <div class="peca__palco">
+          <div class="mock mock--916" style="background:#EEF0D2">
+            <span class="mock__pill"><svg viewBox="0 0 10 10" fill="#24291F"><path d="M2 1l7 4-7 4z"/></svg>25s</span>
+            <div class="mock__pad">
+              <span class="mock__eyebrow" style="color:#9A5108">Sem calculadora</span>
+              <span class="mock__mid" style="color:#2F6B57;font-size:1.1rem">Per capita, rendimento e custo</span>
+            </div>
+            <div class="mock__fill">
+              <svg viewBox="0 0 120 92" role="img" aria-label="Modelo de ficha técnica preenchida">
+                <rect x="8" y="6" width="104" height="80" rx="6" fill="#FFFFFF" stroke="#DDE2BC" stroke-width="1.5"/>
+                <rect x="8" y="6" width="104" height="15" rx="6" fill="#448D76"/>
+                <rect x="8" y="15" width="104" height="6" fill="#448D76"/>
+                <rect x="16" y="10" width="42" height="4" rx="2" fill="#EEF0D2"/>
+                <g stroke="#DDE2BC" stroke-width="1">
+                  <line x1="8" y1="34" x2="112" y2="34"/><line x1="8" y1="47" x2="112" y2="47"/>
+                  <line x1="8" y1="60" x2="112" y2="60"/><line x1="8" y1="73" x2="112" y2="73"/>
+                  <line x1="66" y1="21" x2="66" y2="86"/><line x1="89" y1="21" x2="89" y2="86"/>
+                </g>
+                <g fill="#4A5344" opacity=".55">
+                  <rect x="15" y="26" width="38" height="3.5" rx="1.75"/>
+                  <rect x="15" y="39" width="32" height="3.5" rx="1.75"/>
+                  <rect x="15" y="52" width="40" height="3.5" rx="1.75"/>
+                  <rect x="15" y="65" width="30" height="3.5" rx="1.75"/>
+                  <rect x="15" y="78" width="36" height="3.5" rx="1.75"/>
+                </g>
+                <g fill="#ED8627">
+                  <rect x="71" y="26" width="13" height="3.5" rx="1.75"/>
+                  <rect x="71" y="39" width="13" height="3.5" rx="1.75"/>
+                  <rect x="71" y="52" width="13" height="3.5" rx="1.75"/>
+                  <rect x="71" y="65" width="13" height="3.5" rx="1.75"/>
+                  <rect x="71" y="78" width="13" height="3.5" rx="1.75"/>
+                </g>
+                <g fill="#0C718B">
+                  <rect x="94" y="26" width="13" height="3.5" rx="1.75"/>
+                  <rect x="94" y="39" width="13" height="3.5" rx="1.75"/>
+                  <rect x="94" y="52" width="13" height="3.5" rx="1.75"/>
+                  <rect x="94" y="65" width="13" height="3.5" rx="1.75"/>
+                  <rect x="94" y="78" width="13" height="3.5" rx="1.75"/>
+                </g>
+              </svg>
+            </div>
+            <span class="mock__rodape" style="color:#4A5344">Ficha técnica pronta no livro</span>
+          </div>
+        </div>
+        <figcaption class="peca__info">
+          <span class="peca__formato">Vídeo · vertical · 25s</span>
+          <h3>A ficha técnica na tela</h3>
+          <p>Mostra a tabela preenchida de verdade. Testa a mensagem 3.</p>
+        </figcaption>
+      </figure>
+
+      <!-- 3 · voce contando a historia -->
+      <figure class="peca">
+        <div class="peca__palco">
+          <div class="mock mock--916" style="background:#0C718B">
+            <span class="mock__pill"><svg viewBox="0 0 10 10" fill="#24291F"><path d="M2 1l7 4-7 4z"/></svg>40s</span>
+            <div class="mock__fill" style="padding:0">
+              <svg viewBox="0 0 90 120" role="img" aria-label="Vídeo com a autora falando para a câmera" style="width:100%;height:100%">
+                <rect width="90" height="120" fill="#0C718B"/>
+                <circle cx="45" cy="46" r="19" fill="#EEF0D2" opacity=".9"/>
+                <circle cx="45" cy="40" r="7.5" fill="#0C718B" opacity=".55"/>
+                <path d="M31 58c0-7.7 6.3-11 14-11s14 3.3 14 11z" fill="#0C718B" opacity=".55"/>
+                <path d="M0 78h90v42H0z" fill="#0A5F76" opacity=".55"/>
+              </svg>
+            </div>
+            <div class="mock__pad" style="position:absolute;bottom:.2rem;left:0;right:0;padding-bottom:.8rem">
+              <span class="mock__eyebrow" style="color:rgba(255,255,255,.75)">Lúcia Chaise Borjes</span>
+              <span class="mock__txt" style="color:#FFFFFF;font-weight:600">
+                “17 anos entre a sala de aula e a cozinha.”
+              </span>
+            </div>
+          </div>
+        </div>
+        <figcaption class="peca__info">
+          <span class="peca__formato">Vídeo · vertical · 40s</span>
+          <h3>Você contando a história</h3>
+          <p>Você fala direto com a câmera, com legenda. Testa a mensagem 4.</p>
+        </figcaption>
+      </figure>
+
+      <!-- 4 · quanto tempo isso toma -->
+      <figure class="peca">
+        <div class="peca__palco">
+          <div class="mock mock--916" style="background:#ED8627">
+            <span class="mock__pill"><svg viewBox="0 0 10 10" fill="#24291F"><path d="M2 1l7 4-7 4z"/></svg>30s</span>
+            <div class="mock__pad">
+              <span class="mock__eyebrow" style="color:rgba(255,255,255,.85)">Toda segunda</span>
+              <span class="mock__mid" style="color:#FFFFFF;font-size:1.15rem">Quantas horas você perde por semana?</span>
+            </div>
+            <div class="mock__fill">
+              <svg viewBox="0 0 90 90" role="img" aria-label="Relógio marcando o tempo gasto">
+                <circle cx="45" cy="45" r="31" fill="none" stroke="#FFFFFF" stroke-width="4" opacity=".45"/>
+                <path d="M45 14a31 31 0 0 1 26.8 46.5" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+                <path d="M45 27v19l12 7" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="mock__rodape" style="color:rgba(255,255,255,.9)">O método já está pronto</span>
+          </div>
+        </div>
+        <figcaption class="peca__info">
+          <span class="peca__formato">Vídeo · vertical · 30s</span>
+          <h3>Quanto tempo isso toma</h3>
+          <p>Abre com a pergunta e você responde. Testa a mensagem 2.</p>
+        </figcaption>
+      </figure>
+
+      <!-- 5 · carrossel das partes -->
+      <figure class="peca">
+        <div class="peca__palco">
+          <div class="mock mock--11" style="background:#F5F6E4">
+            <div class="mock__peek" aria-hidden="true"></div>
+            <div class="mock__conteudo">
+              <div class="mock__pad">
+                <span class="mock__eyebrow" style="color:#9A5108">Cartão 1 de 5</span>
+                <span class="mock__mid" style="color:#2F6B57;font-size:1.1rem">O que tem<br>dentro do livro</span>
+              </div>
+              <div class="mock__fill" style="align-items:flex-start;padding:.7rem .75rem 0">
+                <svg viewBox="0 0 100 56" role="img" aria-label="As quatro partes do livro em lista" style="width:85%">
+                  <g font-size="7" fill="#24291F" font-family="Inter, sans-serif">
+                    <rect x="0" y="1" width="4" height="4" rx="1" fill="#448D76"/>
+                    <text x="9" y="5.5">Técnica de cozinha</text>
+                    <rect x="0" y="15" width="4" height="4" rx="1" fill="#ED8627"/>
+                    <text x="9" y="19.5">Planejamento</text>
+                    <rect x="0" y="29" width="4" height="4" rx="1" fill="#0C718B"/>
+                    <text x="9" y="33.5">Banco de preparações</text>
+                    <rect x="0" y="43" width="4" height="4" rx="1" fill="#448D76"/>
+                    <text x="9" y="47.5">Consulta rápida</text>
+                  </g>
+                </svg>
+              </div>
+              <span class="mock__rodape" style="color:#4A5344">Arraste para o lado</span>
+            </div>
+          </div>
+        </div>
+        <figcaption class="peca__info">
+          <span class="peca__formato">Carrossel · quadrado · 5 cartões</span>
+          <h3>As partes do livro</h3>
+          <p>Um cartão por parte, na ordem do índice. Testa a mensagem 3.</p>
+        </figcaption>
+      </figure>
+
+      <!-- 6 · a oferta -->
+      <figure class="peca">
+        <div class="peca__palco">
+          <div class="mock mock--11" style="background:#EEF0D2">
+            <div class="mock__conteudo" style="flex-direction:row;align-items:center;gap:.6rem;padding:.85rem .8rem">
+              <svg viewBox="0 0 62 84" role="img" aria-label="Capa do e-book" style="height:78%;width:auto;flex:0 0 auto">
+                <rect x="1" y="1" width="60" height="82" rx="4" fill="#448D76"/>
+                <rect x="1" y="1" width="5" height="82" rx="2" fill="#2F6B57"/>
+                <ellipse cx="34" cy="38" rx="21" ry="15" fill="#EEF0D2"/>
+                <g fill="#2F6B57">
+                  <rect x="22" y="33" width="24" height="3" rx="1.5"/>
+                  <rect x="25" y="39" width="18" height="2.5" rx="1.25"/>
+                </g>
+                <rect x="24" y="46" width="20" height="1.6" rx=".8" fill="#ED8627"/>
+                <g fill="#EEF0D2" opacity=".5">
+                  <rect x="22" y="63" width="24" height="1.6" rx=".8"/>
+                  <rect x="26" y="68" width="16" height="1.6" rx=".8"/>
+                </g>
+              </svg>
+              <div style="display:flex;flex-direction:column;gap:.3rem;min-width:0">
+                <span class="mock__eyebrow" style="color:#9A5108">Download imediato</span>
+                <span class="mock__big" style="color:#2F6B57;font-size:1.7rem;white-space:nowrap">R$ 160</span>
+                <span class="mock__txt" style="color:#4A5344;font-size:.64rem">ou 12x no cartão<br>7 dias de garantia</span>
+                <span class="mock__cta">Quero o livro</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="peca__info">
+          <span class="peca__formato">Imagem · quadrado</span>
+          <h3>A oferta</h3>
+          <p>Peça direta, usada só com quem já te conhece. Testa a mensagem 1.</p>
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <p class="nota mt-sm">
+      As artes finais seguem a identidade visual do livro, com as mesmas cores e ilustrações da
+      capa. Trocamos as peças que não funcionam a cada duas semanas, sempre mantendo no ar as que
+      estão trazendo resultado.
+    </p>
+
+    <div class="callout mt">
+      <h3>O que precisa de você</h3>
+      <p>
+        As duas peças com você na câmera costumam ser as que mais convertem, porque quem compra um
+        livro técnico quer ver a pessoa por trás do método. Eu escrevo os roteiros frase por frase
+        e conduzo a gravação. É celular no tripé, luz de janela, sem estúdio e sem edição da sua
+        parte. Uma tarde de gravação cobre o mês inteiro de campanha.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 06 METAS E VERBA ═══════════ -->
+<section id="metas">
+  <div class="wrap">
+    <div class="eyebrow"><b>06</b> Metas e verba</div>
+    <h2>O que queremos alcançar, e quanto isso custa.</h2>
+    <p class="lede">
+      Como o livro ainda não teve campanha nenhuma, não existe histórico para projetar vendas com
+      honestidade. Então em vez de prometer número de vendas, trabalhamos com metas de construção:
+      quantas pessoas certas vamos alcançar e quanto vamos aprender em cada mês.
+    </p>
+
+    <div class="grid-3 mt">
+      <div class="nivel">
+        <div class="nivel__topo"><span class="nivel__nome">Ritmo mínimo</span></div>
+        <span class="nivel__valor">R$ 600<small> / mês</small></span>
+        <dl>
+          <div><dt>Interessados novos por mês</dt><dd>cerca de 60</dd></div>
+          <div><dt>Anúncios testados juntos</dt><dd>3</dd></div>
+          <div><dt>Até termos leitura clara</dt><dd>8 semanas</dd></div>
+        </dl>
+      </div>
+
+      <div class="nivel nivel--rec">
+        <div class="nivel__topo"><span class="nivel__nome">Ritmo recomendado</span><span class="nivel__selo">Sugestão</span></div>
+        <span class="nivel__valor">R$ 900<small> / mês</small></span>
+        <dl>
+          <div><dt>Interessados novos por mês</dt><dd>cerca de 90</dd></div>
+          <div><dt>Anúncios testados juntos</dt><dd>6</dd></div>
+          <div><dt>Até termos leitura clara</dt><dd>5 semanas</dd></div>
+        </dl>
+      </div>
+
+      <div class="nivel">
+        <div class="nivel__topo"><span class="nivel__nome">Ritmo acelerado</span></div>
+        <span class="nivel__valor">R$ 1.500<small> / mês</small></span>
+        <dl>
+          <div><dt>Interessados novos por mês</dt><dd>cerca de 150</dd></div>
+          <div><dt>Anúncios testados juntos</dt><dd>10</dd></div>
+          <div><dt>Até termos leitura clara</dt><dd>3 semanas</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <p class="nota mt-sm">
+      <b>Por que a verba muda a velocidade:</b> o Instagram precisa de um volume mínimo de
+      resultados para entender quem é o seu público. Com pouca verba ele demora mais para
+      aprender, e a gente demora mais para saber o que funciona. A verba fica depositada direto na
+      conta de anúncios, no seu nome, e você acompanha o gasto em tempo real.
+    </p>
+
+    <h3 style="font-size:1.3rem;color:var(--verde-dark);margin-top:2.4rem">As metas dos três meses</h3>
+    <div class="tablewrap mt-sm">
+      <table>
+        <thead>
+          <tr><th>Mês</th><th>O objetivo do mês</th><th class="n">Meta de interessados</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Mês 1</th>
+            <td>Colocar tudo no ar e descobrir qual mensagem o público responde</td>
+            <td class="n">60 a 80</td>
+          </tr>
+          <tr>
+            <th>Mês 2</th>
+            <td>Cortar o que não funciona e baixar o custo de cada contato</td>
+            <td class="n">90 a 110</td>
+          </tr>
+          <tr>
+            <th>Mês 3</th>
+            <td>Ampliar o que deu certo e ativar a busca por perfis semelhantes</td>
+            <td class="n">110 a 130</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nota mt-sm">
+      As vendas acontecem ao longo dos três meses e crescem conforme o seu público se forma, mas elas
+      não entram como meta do mês 1 de propósito: nesse período o objetivo é aprender, e cobrar
+      venda cedo demais leva a desligar campanhas que estavam quase acertando. No fechamento do
+      trimestre, os números reais substituem todas as estimativas deste plano e aí sim
+      conseguimos projetar com segurança.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ 07 90 DIAS ═══════════ -->
+<section id="prazos" class="band-white">
+  <div class="wrap">
+    <div class="eyebrow"><b>07</b> Os 90 dias</div>
+    <h2>O que acontece, e quando.</h2>
+
+    <div class="tablewrap mt">
+      <table>
+        <thead><tr><th>Quando</th><th>O que acontece</th></tr></thead>
+        <tbody>
+          <tr><th>Semana 1</th><td>Preparação técnica: conta de anúncios criada e o site preparado para medir os resultados das campanhas</td></tr>
+          <tr><th>Semana 2</th><td>Produção: material da amostra montado, página de download no ar, roteiros prontos e gravação dos vídeos com você</td></tr>
+          <tr><th>Semana 3</th><td>As três campanhas entram no ar</td></tr>
+          <tr><th>Semana 4</th><td>Primeira leitura dos resultados e corte dos anúncios que não funcionaram</td></tr>
+          <tr><th>Mês 2</th><td>Anúncios novos no ar, primeiros depoimentos entrando nas peças e ajuste da divisão da verba</td></tr>
+          <tr><th>Mês 3</th><td>Ampliação do que deu certo e relatório de fechamento com os números reais</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="nota mt-sm">
+      Você recebe um relatório por mês, em linguagem simples, com quantas pessoas alcançamos,
+      quantas pessoas entraram no seu público, quantas vendas aconteceram e o que muda no mês seguinte.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ 08 DECISÕES ═══════════ -->
+<section id="decisoes">
+  <div class="wrap">
+    <div class="eyebrow"><b>08</b> O que decidir hoje</div>
+    <h2>Quatro definições e a campanha entra em produção.</h2>
+
+    <div class="grid-2 mt">
+      <div class="card card--lift dec dec--destaque span-all">
+        <div class="dec__head">
+          <span class="dec__icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8"/>
+              <rect x="2.5" y="7.5" width="19" height="4.5" rx="1"/>
+              <path d="M12 7.5V21"/>
+              <path d="M12 7.5H7.75a2.25 2.25 0 1 1 0-4.5C10.5 3 12 7.5 12 7.5z"/>
+              <path d="M12 7.5h4.25a2.25 2.25 0 1 0 0-4.5C13.5 3 12 7.5 12 7.5z"/>
+            </svg>
+          </span>
+          <div>
+            <span class="card__tag">1 · A decisão mais estratégica</span>
+            <h3>Qual material vamos oferecer como amostra?</h3>
+          </div>
+        </div>
+        <p>
+          É a peça que mais decide o resultado dos 90 dias. Precisa ser algo que a nutricionista
+          queira o suficiente para clicar e baixar, e útil o bastante para ela querer o livro
+          completo depois. Quanto melhor a amostra, mais gente entra no seu público com a mesma
+          verba. Você conhece melhor do que ninguém o que falta na rotina dessas profissionais,
+          então vale escolhermos juntos, olhando o livro.
+        </p>
+      </div>
+
+      <div class="card card--lift dec">
+        <div class="dec__head">
+          <span class="dec__icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="6" rx="7.5" ry="3.2"/>
+              <path d="M4.5 6v5c0 1.8 3.4 3.2 7.5 3.2s7.5-1.4 7.5-3.2V6"/>
+              <path d="M4.5 11v5c0 1.8 3.4 3.2 7.5 3.2s7.5-1.4 7.5-3.2v-5"/>
+            </svg>
+          </span>
+          <div>
+            <span class="card__tag">2</span>
+            <h3>Qual verba mensal?</h3>
+          </div>
+        </div>
+        <p>A sugestão é R$ 900 por mês, o ritmo em que conseguimos testar o suficiente para ter respostas dentro do trimestre.</p>
+      </div>
+
+      <div class="card card--lift dec">
+        <div class="dec__head">
+          <span class="dec__icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2.5" y="6" width="13" height="12" rx="2.5"/>
+              <path d="M15.5 11l5.2-3v8l-5.2-3z"/>
+            </svg>
+          </span>
+          <div>
+            <span class="card__tag">3</span>
+            <h3>Os vídeos com você</h3>
+          </div>
+        </div>
+        <p>Precisamos escrever os roteiros e gravar as peças com você na câmera. É o material de anúncio mais importante do plano.</p>
+      </div>
+
+      <div class="card card--lift dec span-all">
+        <div class="dec__head">
+          <span class="dec__icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.5 4.5h-17a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1H7v4l5-4h8.5a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1z"/>
+              <path d="M9 8.5v1.8c0 1.1-.7 2-1.8 2.3"/>
+              <path d="M14.5 8.5v1.8c0 1.1-.7 2-1.8 2.3"/>
+            </svg>
+          </span>
+          <div>
+            <span class="card__tag">4</span>
+            <h3>Quem são as cinco pessoas do depoimento?</h3>
+          </div>
+        </div>
+        <p>
+          Colegas, ex-alunas e nutricionistas que já tiveram acesso ao material. A página de venda
+          ainda não tem nenhum depoimento, e para um livro técnico a palavra de outra nutricionista
+          vale mais do que qualquer anúncio que a gente escreva. É a melhoria mais barata que
+          existe, e a que mais demora a acontecer se não sair daqui com nomes definidos.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p><b>Plano de anúncios · Cardápios: Um Livro Vivo</b></p>
+      <p>Preparado para Lúcia Chaise Borjes · Setembro de 2026</p>
+    </div>
+    <div style="text-align:right">
+      <p><b>Eduardo Nicoleti</b></p>
+      <p>edunicoleti.com.br · +55 (49) 99953-1382</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

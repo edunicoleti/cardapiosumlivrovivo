@@ -344,3 +344,89 @@ main.colado .faixa { padding-top: 16px; }
   .rolagem-grade tbody th { background: #f6f6f6 !important; color: #000 !important; -webkit-print-color-adjust: exact; }
   .prato { cursor: default; }
 }
+
+/* ---------- atalho para quem já respondeu o questionário ---------- */
+.atalho-perfil {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 14px 22px 0;
+  padding: 13px 15px;
+  border-radius: var(--r-md);
+  background: var(--creme-cl);
+  border: 1px solid var(--creme-md);
+}
+.atalho-perfil .resumo {
+  display: block;
+  font-size: var(--t-sm);
+  color: var(--tinta-sv);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.atalho-perfil .bt { margin-left: auto; }
+@media (max-width: 560px) {
+  .atalho-perfil .bt { margin-left: 0; width: 100%; }
+}
+
+.opcoes.uma-coluna { grid-template-columns: 1fr; }
+
+/* ---------- o que o livro deixa com a nutricionista ---------- */
+.fica-com-voce {
+  margin: 18px 0 0;
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sombra-1);
+}
+.fica-com-voce summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 18px;
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: var(--t-base);
+  font-weight: 600;
+  color: var(--verde-prof);
+  list-style: none;
+  min-height: 52px;
+}
+.fica-com-voce summary::-webkit-details-marker { display: none; }
+.fica-com-voce summary svg { width: 19px; height: 19px; color: var(--teal); flex: none; }
+.fica-com-voce summary::after {
+  content: "";
+  margin-left: auto;
+  width: 9px; height: 9px;
+  border-right: 2px solid var(--tinta-fr);
+  border-bottom: 2px solid var(--tinta-fr);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform var(--mov-rap);
+  flex: none;
+}
+.fica-com-voce[open] summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
+.fica-com-voce summary:hover { background: var(--papel); }
+
+.lista-fatores {
+  display: grid;
+  gap: 1px;
+  background: var(--linha-fr);
+  border-top: 1px solid var(--linha);
+}
+@media (min-width: 760px) { .lista-fatores { grid-template-columns: 1fr 1fr; } }
+.lista-fatores > div { background: var(--branco); padding: 14px 18px; }
+.lista-fatores b {
+  display: block;
+  font-family: var(--display);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--laranja-esc);
+  letter-spacing: .01em;
+}
+.lista-fatores span {
+  display: block;
+  font-size: var(--t-sm);
+  color: var(--tinta-sv);
+  line-height: 1.55;
+  margin-top: 4px;
+}

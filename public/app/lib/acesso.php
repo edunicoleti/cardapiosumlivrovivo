@@ -25,8 +25,9 @@ const APP_SESSAO = 'livrovivo';
  *
  *  1. o token NAO mora aqui. Este repositorio e publico, entao fica so o
  *     hash SHA-256; o link em si vive fora do codigo.
- *  2. o convite tem prazo. Um link vazado precisa morrer sozinho, sem
- *     depender de alguem lembrar de desligar.
+ *  2. CONVITE_ATE vazio significa sem prazo, que e o combinado enquanto o
+ *     formato de venda nao esta definido. Basta preencher com uma data
+ *     (AAAA-MM-DD) para o link passar a expirar sozinho.
  *  3. cada abertura vai para convites.log, para dar para ver se o link
  *     andou circulando mais do que devia.
  *
@@ -34,7 +35,7 @@ const APP_SESSAO = 'livrovivo';
  * Para emitir outro: gere um token novo e troque o hash.
  */
 const CONVITE_HASH = '208b96b841c9789c0d50748728bdb558f602dbffeff51fab91ca4468e441c423';
-const CONVITE_ATE = '2026-10-07';
+const CONVITE_ATE = '';
 const CONVITE_NOME = 'Visita de demonstração';
 
 function convitePassou(): bool

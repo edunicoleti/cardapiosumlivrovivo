@@ -1,13 +1,38 @@
 <div class="faixa">
 
-  <div class="saudacao">
-    <span class="olho">Sua área</span>
-    <h1>Olá{{NOME}}.</h1>
-    <p class="linha-apoio">
-      Tudo o que você comprou fica aqui: o livro completo para consultar e o assistente
-      que monta o cardápio da semana seguindo as regras do capítulo VI.
-    </p>
-  </div>
+  <section class="abertura">
+    <div class="abertura-texto">
+      <span class="olho">Sua área</span>
+      <h1>O livro e o assistente, no mesmo lugar</h1>
+      <p class="linha-apoio">
+        Você tem acesso a <b>Cardápios: um livro vivo</b> inteiro, de Lúcia Chaise Borjes, e a
+        um assistente que monta a semana escolhendo dentro das preparações do próprio livro,
+        seguindo as regras de composição do capítulo VI.
+      </p>
+      <div class="abertura-botoes">
+        <a class="bt bt-prim" href="/app/assistente/">
+          <svg aria-hidden="true"><use href="#i-cardapio"></use></svg>Montar um cardápio
+        </a>
+        <a class="bt bt-sec" href="/app/livro/">
+          <svg aria-hidden="true"><use href="#i-livro"></use></svg>Abrir o livro
+        </a>
+      </div>
+    </div>
+
+    <div class="abertura-numeros">
+      <svg class="ornamento-abertura" viewBox="0 0 160 90" fill="none" aria-hidden="true">
+        <path d="M10 75C40 70 80 55 150 15" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        <path d="M40 68c-2-14 2-26 12-33-4 13-8 25-5 35Z" fill="currentColor"/>
+        <path d="M65 58c-3-14 2-28 13-36-5 14-10 28-6 38Z" fill="currentColor"/>
+        <path d="M88 46c-2-14 4-28 15-36-6 14-11 28-6 38Z" fill="currentColor"/>
+        <path d="M110 32c-1-13 6-26 17-32-7 13-12 27-6 36Z" fill="currentColor"/>
+      </svg>
+      <div class="numero"><span class="n">2.298</span><span class="q">preparações no acervo</span></div>
+      <div class="numero"><span class="n">11</span><span class="q">capítulos e anexos</span></div>
+      <div class="numero"><span class="n">23</span><span class="q">categorias de prato</span></div>
+      <div class="numero"><span class="n">78</span><span class="q">itens com safra mês a mês</span></div>
+    </div>
+  </section>
 
   <a class="retomar" id="retomar" href="/app/livro/" hidden>
     <span class="marcador"><svg aria-hidden="true"><use href="#i-relogio"></use></svg></span>
@@ -18,61 +43,95 @@
     <svg aria-hidden="true"><use href="#i-dir"></use></svg>
   </a>
 
-  <div class="portais">
+  <section class="secao">
+    <h2>O que tem aqui</h2>
+    <div class="portais">
 
-    <a class="portal" href="/app/livro/">
-      <span class="capa">
-        <svg aria-hidden="true"><use href="#i-livro"></use></svg>
-        <svg class="ornamento" viewBox="0 0 160 90" fill="none" aria-hidden="true">
-          <path d="M10 75C40 70 80 55 150 15" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-          <path d="M40 68c-2-14 2-26 12-33-4 13-8 25-5 35Z" fill="currentColor"/>
-          <path d="M65 58c-3-14 2-28 13-36-5 14-10 28-6 38Z" fill="currentColor"/>
-          <path d="M88 46c-2-14 4-28 15-36-6 14-11 28-6 38Z" fill="currentColor"/>
-          <path d="M110 32c-1-13 6-26 17-32-7 13-12 27-6 36Z" fill="currentColor"/>
-        </svg>
-      </span>
-      <span class="miolo">
-        <h2>O livro</h2>
-        <p>Os onze capítulos, o glossário e os anexos, com busca em todo o conteúdo.
-           Ache um fator de correção ou um termo técnico sem folhear nada.</p>
-        <span class="fichas">
-          <span class="etiq">11 capítulos</span>
-          <span class="etiq">Busca completa</span>
-          <span class="etiq">Tabelas e anexos</span>
+      <a class="portal" href="/app/livro/">
+        <span class="capa"><svg aria-hidden="true"><use href="#i-livro"></use></svg></span>
+        <span class="miolo">
+          <h3>O livro completo</h3>
+          <p>Os onze capítulos, o glossário de técnica dietética, os anexos e o banco de
+             receitas. A busca varre o conteúdo inteiro, então dá para achar um fator de
+             correção, um per capita ou um termo técnico sem folhear nada.</p>
+          <span class="fichas">
+            <span class="etiq">Busca em tudo</span>
+            <span class="etiq">Tabelas de safra</span>
+            <span class="etiq">Guarda onde parou</span>
+          </span>
+          <span class="bt bt-sec">Abrir o livro <svg aria-hidden="true"><use href="#i-dir"></use></svg></span>
         </span>
-        <span class="bt bt-prim">Abrir o livro <svg aria-hidden="true"><use href="#i-dir"></use></svg></span>
-      </span>
-    </a>
+      </a>
 
-    <a class="portal laranja" href="/app/assistente/">
-      <span class="capa">
-        <svg aria-hidden="true"><use href="#i-cardapio"></use></svg>
-        <svg class="ornamento" viewBox="0 0 130 130" fill="none" aria-hidden="true">
-          <path d="M65 120s-5-30-10-50C48 45 30 30 20 20c15 8 32 20 42 45" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-          <path d="M65 120s5-30 10-50c7-25 25-40 35-50-15 8-32 20-42 45" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="20" cy="20" r="7" fill="currentColor"/>
-          <circle cx="110" cy="20" r="7" fill="currentColor"/>
-        </svg>
-      </span>
-      <span class="miolo">
-        <h2>Assistente de cardápio</h2>
-        <p>Monta a semana a partir do seu serviço, escolhendo dentro das preparações
-           do livro e mostrando qual regra determinou cada prato.</p>
-        <span class="fichas">
-          <span class="etiq safra">2.298 preparações</span>
-          <span class="etiq safra">Safra do mês</span>
-          <span class="etiq safra">Salva e imprime</span>
+      <a class="portal laranja" href="/app/assistente/">
+        <span class="capa"><svg aria-hidden="true"><use href="#i-cardapio"></use></svg></span>
+        <span class="miolo">
+          <h3>Assistente de cardápio</h3>
+          <p>Você responde como é o seu serviço e ele monta a semana inteira, escolhendo
+             dentro do acervo do livro. Cada prato mostra por que entrou, e você troca o que
+             quiser sem refazer o resto.</p>
+          <span class="fichas">
+            <span class="etiq safra">Segue o capítulo VI</span>
+            <span class="etiq safra">Respeita a safra</span>
+            <span class="etiq safra">Salva e imprime</span>
+          </span>
+          <span class="bt bt-prim">Montar um cardápio <svg aria-hidden="true"><use href="#i-dir"></use></svg></span>
         </span>
-        <span class="bt bt-prim">Montar um cardápio <svg aria-hidden="true"><use href="#i-dir"></use></svg></span>
-      </span>
-    </a>
+      </a>
 
-  </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Como o assistente decide</h2>
+    <p class="linha-apoio">
+      Ele não inventa pratos e não consulta nenhuma inteligência artificial. O método é o do
+      livro, aplicado na ordem que o capítulo VI descreve.
+    </p>
+
+    <ol class="passos-metodo">
+      <li>
+        <span class="marca">1</span>
+        <div>
+          <h3>Você descreve o serviço</h3>
+          <p>Que serviço atende, padrão do cardápio, quantas refeições por dia, que
+             equipamento existe na cozinha e o que não pode entrar. São os fatores
+             administrativos 1.1, 1.6 e 1.8 do capítulo VI.</p>
+        </div>
+      </li>
+      <li>
+        <span class="marca">2</span>
+        <div>
+          <h3>Ele filtra o acervo</h3>
+          <p>Sem forno, nada de assado. Sem carne suína, nada que leve bacon, presunto ou
+             linguiça, lendo o nome e a descrição de cada preparação, não só a categoria.</p>
+        </div>
+      </li>
+      <li>
+        <span class="marca">3</span>
+        <div>
+          <h3>Ele compõe a semana</h3>
+          <p>Rodízio de proteína, variedade de cocção, variedade de ingredientes, safra do mês
+             e digestibilidade entram como peso na escolha de cada espaço. São as regras
+             sensoriais 3.1, 3.2, 3.7 e 3.9.</p>
+        </div>
+      </li>
+      <li>
+        <span class="marca">4</span>
+        <div>
+          <h3>Você tem a palavra final</h3>
+          <p>Toque em qualquer prato para ver as outras opções que ele considerou e trocar.
+             Trocar um prato não refaz o resto da semana.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
 
   <p class="rodape-autora">
-    Todo o conteúdo vem de <b>Cardápios: um livro vivo</b>, de Lúcia Chaise Borjes.
-    O assistente não inventa pratos: escolhe dentro do acervo do livro e mostra
-    qual regra do capítulo VI determinou cada escolha.
+    Todo o conteúdo, os índices e as regras de composição vêm de <b>Cardápios: um livro
+    vivo</b>, de Lúcia Chaise Borjes. Os fatores que dependem do seu contexto, como custo,
+    pessoal disponível e horário de atendimento, continuam sendo decisão sua: o livro os lista
+    e o assistente os lembra ao final do questionário, mas não decide por você.
   </p>
 
 </div>

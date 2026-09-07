@@ -61,18 +61,10 @@ if ($usuario === null) {
 }
 
 // ---------------------------------------------------------------- logado
-// a visita por convite nao tem nome de gente, entao a saudacao fica sem nome
-$primeiroNome = ($usuario['convidado'] ?? false) === true
-    ? ''
-    : trim(explode(' ', (string) $usuario['nome'])[0] ?? '');
-
 renderizarTela([
     'titulo' => 'Início',
     'chave' => 'inicio',
     'usuario' => $usuario,
     'topoTitulo' => 'Sua área',
-    'conteudo' => tela('inicio', [
-        'NOME' => $primeiroNome !== '' ? ', ' . e($primeiroNome) : '',
-        'VERSAO' => e(versaoDosAssets()),
-    ]),
+    'conteudo' => tela('inicio', ['VERSAO' => e(versaoDosAssets())]),
 ]);

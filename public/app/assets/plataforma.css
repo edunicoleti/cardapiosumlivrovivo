@@ -482,8 +482,17 @@ dialog {
 }
 dialog::backdrop { background: rgba(22, 54, 44, .5); backdrop-filter: blur(3px); }
 
-/* modal centrado — o padrão no desktop */
+/* O navegador esconde <dialog> fechado com display:none, e qualquer display na
+   classe anula isso. Sem esta linha o diálogo fechado continua desenhado na
+   página, como um painel solto: era o modal perdido no meio do leitor. */
+dialog:not([open]) { display: none; }
+
+/* modal centrado — o padrão no desktop.
+   position:fixed + inset:0 + margin:auto ancora na janela: sem isso, numa
+   página muito alta o diálogo aparecia deslocado, longe de onde a pessoa está. */
 .modal {
+  position: fixed;
+  inset: 0;
   margin: auto;
   width: min(560px, calc(100% - 32px));
   max-height: min(86dvh, 760px);
@@ -518,7 +527,8 @@ dialog::backdrop { background: rgba(22, 54, 44, .5); backdrop-filter: blur(3px);
 /* no celular o mesmo diálogo vira folha que sobe de baixo */
 @media (max-width: 720px) {
   .modal {
-    margin: auto auto 0;
+    inset: auto 0 0 0;
+    margin: 0;
     width: 100%;
     max-width: none;
     max-height: 92dvh;

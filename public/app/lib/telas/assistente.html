@@ -55,6 +55,27 @@
 
   <section class="conferencia" id="conferencia" aria-label="Conferência das regras do capítulo VI"></section>
 
+  <details class="fica-com-voce">
+    <summary>
+      <svg aria-hidden="true"><use href="#i-ajuda"></use></svg>
+      O livro pede mais seis coisas que o assistente não decide
+    </summary>
+    <div class="lista-fatores">
+      <div><b>1.2 Disponibilidade de gêneros</b><span>O prato só entra se o ingrediente chega
+        no seu fornecedor, na quantidade e no dia certos.</span></div>
+      <div><b>1.4 Recursos humanos</b><span>Quantas pessoas na cozinha, com que habilitação e
+        com quanto tempo hábil para executar.</span></div>
+      <div><b>1.5 Área física</b><span>Espaço insuficiente compromete a racionalização do
+        cardápio e o padrão de qualidade.</span></div>
+      <div><b>1.7 Estimativa de custo</b><span>A relação custo por lucro de cada prato, e a
+        compatibilidade com a disponibilidade financeira do serviço.</span></div>
+      <div><b>1.9 Horário de atendimento</b><span>Atendimento longo em bufê exige cuidado com
+        reposição e com o que resiste no balcão.</span></div>
+      <div><b>2.2 Per capita</b><span>O equilíbrio nutricional depende da quantidade servida.
+        Os per capita estão no livro, capítulo IV.</span></div>
+    </div>
+  </details>
+
   <p class="creditos">
     Todas as preparações, os índices e as regras de composição vêm de
     <b>Cardápios: um livro vivo</b>, de Lúcia Chaise Borjes. As perguntas do perfil
@@ -72,6 +93,14 @@
     <p id="perfilAjuda">Cinco perguntas rápidas. Não são invenção da ferramenta: são os
        fatores administrativos que o capítulo VI manda considerar antes de fechar um cardápio.</p>
     <div class="trilha-passos" id="trilhaPassos" aria-hidden="true"></div>
+  </div>
+
+  <div class="atalho-perfil" id="atalhoPerfil" hidden>
+    <div>
+      <span class="olho">Você já respondeu antes</span>
+      <span class="resumo" id="atalhoResumo"></span>
+    </div>
+    <button class="bt bt-verde" id="usarAnterior" type="button">Montar com estas respostas</button>
   </div>
 
   <div class="modal-corpo">
@@ -112,9 +141,19 @@
       </fieldset>
 
       <fieldset class="grupo" data-passo="5" hidden>
-        <legend>Alguma restrição alimentar?</legend>
-        <p class="origem">O que não pode entrar no cardápio deste serviço</p>
+        <legend>O que entra na composição?</legend>
+        <p class="origem">Capítulo VI, B: a ordem da refeição principal</p>
+        <div class="opcoes" data-campo="composicao" data-tipo="multiplo"></div>
+        <p class="nota">Sem marcar nada, a semana sai com entrada de saladas, prato principal,
+           acompanhamento, arroz, feijão e sobremesa.</p>
+      </fieldset>
+
+      <fieldset class="grupo" data-passo="6" hidden>
+        <legend>O que evitar?</legend>
+        <p class="origem">Restrições do serviço e fator sensorial 3.9</p>
         <div class="opcoes" data-campo="restricoes" data-tipo="multiplo"></div>
+        <div class="opcoes uma-coluna" data-campo="digestao" data-tipo="booleano"
+             style="margin-top:9px"></div>
         <p class="nota">A exclusão lê o nome e a descrição de cada preparação, não uma ficha
            de ingredientes. Confira antes de servir.</p>
       </fieldset>

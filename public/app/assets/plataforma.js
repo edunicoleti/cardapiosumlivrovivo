@@ -57,7 +57,33 @@ export function prepararDialogo(dialogo) {
   for (const botao of $$('[data-fechar]', dialogo)) {
     botao.addEventListener('click', () => dialogo.close())
   }
+  dialogo.addEventListener('close', destravarSeVazio)
   return dialogo
+}
+
+/* O navegador nao impede a pagina de rolar atras de um <dialog> aberto em todo
+   caso, e num leitor de 27.000px isso deixava a folha perdida no meio da tela. */
+function destravarSeVazio() {
+  if (!document.querySelector('dialog[open]')) {
+    document.documentElement.style.overflow = ''
+  }
+}
+
+/**
+ * Abre um dialogo fechando qualquer outro antes.
+ * Dois <dialog> abertos ao mesmo tempo empilham no top layer e viram aquela
+ * sobreposicao sem saida: era o que acontecia ao chamar o tamanho do texto com
+ * o sumario ainda aberto.
+ */
+export function abrirDialogo(dialogo, aoAbrir) {
+  if (!dialogo) return
+  for (const outro of $$('dialog[open]')) {
+    if (outro !== dialogo) outro.close()
+  }
+  prepararDialogo(dialogo)
+  document.documentElement.style.overflow = 'hidden'
+  dialogo.showModal()
+  if (typeof aoAbrir === 'function') aoAbrir()
 }
 
 /** Copia texto e avisa, com desvio para navegadores sem clipboard assíncrono. */

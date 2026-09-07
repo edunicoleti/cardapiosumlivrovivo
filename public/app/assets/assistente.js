@@ -5,7 +5,7 @@
    por quê, e deixa a nutricionista ter a palavra final em cada espaço.
    ========================================================================== */
 
-import { $, $$, esc, semAcento, memoria, avisar, copiar, prepararDialogo } from './plataforma.js'
+import { $, $$, esc, semAcento, memoria, avisar, copiar, prepararDialogo, abrirDialogo } from './plataforma.js'
 
 const MESES = [
   ['jan', 'Janeiro'], ['fev', 'Fevereiro'], ['mar', 'Março'], ['abr', 'Abril'],
@@ -59,25 +59,44 @@ const RESTRICOES = [
              'fraldinha', 'matambre', 'cupim'] },
 ]
 
+/* Capítulo VI, B: a refeição principal tem entrada, prato principal,
+   acompanhamento, prato base, complemento e sobremesa. Sopa, molho e prato
+   típico existem no acervo e ficavam de fora da grade: 444 preparações que
+   nenhum cardápio alcançava. Entram como escolha, porque nem todo serviço
+   oferece os três. */
+const COMPOSICAO = [
+  { id: 'sopa', rot: 'Sopa na entrada', desc: '50 sopas e caldos do acervo' },
+  { id: 'molho', rot: 'Molho como complemento', desc: '51 molhos quentes e frios' },
+  { id: 'tipico', rot: 'Prato típico brasileiro', desc: 'Capítulo X, preparações regionais' },
+]
+
+/* Fator sensorial 3.9: o livro manda evitar a oferta CONCENTRADA de alimentos
+   de difícil digestão e flatulentos, e lista quais são em 3.9.1 e 3.9.2. Não é
+   restrição, é limite por dia: por isso pesa na nota em vez de excluir. */
+const DIGESTAO_PESADA = [
+  'abacate', 'agriao', 'alho', 'banana d agua', 'batata-doce', 'brocolis', 'carne gorda',
+  'cebola', 'creme de leite', 'couve-flor', 'couve', 'embutido', 'fava', 'feijao',
+  'goiaba', 'grao-de-bico', 'jaca', 'lentilha', 'melao', 'melancia', 'milho', 'nabo',
+  'pepino', 'pimentao', 'rabanete', 'repolho', 'uva', 'viscera', 'acelga', 'aipo',
+  'amendoim', 'castanha', 'couve-de-bruxelas', 'ervilha', 'gengibre', 'maca',
+  'mostarda', 'nozes', 'ovo',
+]
+
 const PERFIL_PADRAO = {
   servico: 'institucional', padrao: 'medio', refeicoes: 200,
   equipamentos: ['forno', 'fritadeira', 'chapa'], restricoes: [],
+  composicao: [], digestao: false,
 }
 
-// Estrutura do dia, derivada da matriz do capítulo VI. O serviço ajusta o que entra.
-const BASE_ESTRUTURA = [
-  { espaco: 'Prato principal', slot: 'principal', rodizio: true },
-  { espaco: 'Arroz', slot: 'base', referencia: 'Arroz' },
-  { espaco: 'Feijão', slot: 'base', referencia: 'Feijão' },
-  { espaco: 'Acompanhamento', slot: 'acompanhamento' },
-  { espaco: 'Salada crua', slot: 'salada', referencias: ['Crua', 'Mista'] },
-  { espaco: 'Salada cozida', slot: 'salada', referencias: ['Cozida'] },
-  { espaco: 'Sobremesa', slot: 'sobremesa' },
-]
 const RODIZIO = ['Carne bovina', 'Carne de frango', 'Pescados', 'Carne suína', 'Carnes diversas']
 
+/* Linhas de cabeçalho das tabelas do livro que a extração trouxe como se fossem
+   preparação: "MACARRÃO (MASSAS ALIMENTÍCIAS)", "REGIÃO SUL", "FRUTAS". Nome
+   sem nenhuma minúscula é a assinatura delas; prato de verdade vem capitalizado. */
+const ehCabecalho = (p) => !/[a-zà-ÿ]/.test(String(p.nome ?? ''))
+
 let base = null
-let estrutura = BASE_ESTRUTURA
+let estrutura = []
 let estado = {
   mes: MESES[new Date().getMonth()][0], dias: 5, semente: 1, cardapio: null,
   perfil: { ...PERFIL_PADRAO }, relaxados: [], repetidos: [], diaVisivel: 0,
@@ -109,6 +128,12 @@ function naSafra(p, itens) {
   if (naDesc) return { item: naDesc, peso: 1, mostrar: false }
   return null
 }
+/** 3.9.1 e 3.9.2: procura os itens das listas do livro no nome e na descrição. */
+function ehPesada(p) {
+  const alvo = semAcento(`${p.nome} ${p.descricao || ''}`)
+  return DIGESTAO_PESADA.some((item) => regexItem(item).test(alvo))
+}
+
 const VAZIAS = new Set(['com', 'sem', 'ao', 'aos', 'de', 'da', 'do', 'em', 'na', 'no', 'uma', 'para'])
 function ingredienteChave(p, safra) {
   if (safra) return safra.item
@@ -168,19 +193,43 @@ function pesoDoPadrao(p, padrao) {
   return 0
 }
 
-function estruturaDoServico(servico) {
-  const e = BASE_ESTRUTURA.map((l) => ({ ...l }))
+/**
+ * A ordem das linhas é a da composição do capítulo VI, B: entrada, prato
+ * principal, acompanhamento, prato base, complemento e sobremesa. Antes as
+ * saladas vinham depois do arroz e do feijão, que é o inverso do que o livro
+ * manda; e sopa, molho e prato típico não tinham lugar nenhum.
+ */
+function estruturaDoServico(perfil) {
+  const servico = perfil.servico
+  const inclui = (x) => (perfil.composicao ?? []).includes(x)
+  const linhas = []
+
+  if (inclui('sopa')) linhas.push({ espaco: 'Entrada · sopa', slot: 'sopa' })
+  linhas.push({ espaco: 'Entrada · salada crua', slot: 'salada', referencias: ['Crua', 'Mista'] })
+  linhas.push({ espaco: 'Entrada · salada cozida', slot: 'salada', referencias: ['Cozida'] })
   if (servico === 'bufe') {
     // bufê oferece mais opções de salada e acompanhamento na mesma refeição
-    e.splice(4, 0, { espaco: 'Acompanhamento 2', slot: 'acompanhamento' })
-    e.push({ espaco: 'Salada extra', slot: 'salada', referencias: ['Mista', 'Elaborada com molho'] })
+    linhas.push({ espaco: 'Entrada · salada extra', slot: 'salada', referencias: ['Mista', 'Elaborada com molho'] })
   }
-  if (servico === 'infantil' || servico === 'repouso') {
-    // sobremesa de fruta em vez de elaborada
-    const i = e.findIndex((l) => l.espaco === 'Sobremesa')
-    e[i] = { ...e[i], referencias: ['Fruta in natura'] }
-  }
-  return e
+
+  linhas.push({ espaco: 'Prato principal', slot: 'principal', rodizio: true })
+  if (inclui('tipico')) linhas.push({ espaco: 'Prato típico', slot: 'regional' })
+
+  linhas.push({ espaco: 'Acompanhamento', slot: 'acompanhamento' })
+  if (servico === 'bufe') linhas.push({ espaco: 'Acompanhamento 2', slot: 'acompanhamento' })
+
+  linhas.push({ espaco: 'Prato base · arroz', slot: 'base', referencia: 'Arroz' })
+  linhas.push({ espaco: 'Prato base · feijão', slot: 'base', referencia: 'Feijão' })
+
+  if (inclui('molho')) linhas.push({ espaco: 'Complemento · molho', slot: 'molho' })
+
+  // sobremesa de fruta em vez de elaborada para público infantil e casa de repouso
+  const soFruta = servico === 'infantil' || servico === 'repouso'
+  linhas.push(soFruta
+    ? { espaco: 'Sobremesa', slot: 'sobremesa', referencias: ['Fruta in natura'] }
+    : { espaco: 'Sobremesa', slot: 'sobremesa' })
+
+  return linhas
 }
 
 function montar({ mes, dias, semente, perfil }) {
@@ -189,7 +238,7 @@ function montar({ mes, dias, semente, perfil }) {
   const bloqMetodos = metodosBloqueados(perfil)
   const bloqRefs = referenciasBloqueadas(perfil)
   const bloqTermos = termosBloqueados(perfil)
-  const estruturaDoDia = estruturaDoServico(perfil.servico)
+  const estruturaDoDia = estruturaDoServico(perfil)
   const usadas = new Set()
   const frituras = []
   const ingredientePorEspaco = {}
@@ -201,6 +250,11 @@ function montar({ mes, dias, semente, perfil }) {
     const dia = { dia: DIAS[d % 7], itens: [] }
     const metodosDoDia = []
     const ingredientesDoDia = []
+    let pesadosDoDia = 0
+    // Método básico do capítulo VI: "às segundas-feiras usar preparações mais
+    // simples, que não necessitem de pré-preparo, pois muitas UANs não
+    // funcionam aos domingos".
+    const segunda = dia.dia === 'Segunda'
 
     for (const linha of estruturaDoDia) {
       const rodizioDisponivel = RODIZIO.filter((r) => !bloqRefs.has(r))
@@ -246,7 +300,15 @@ function montar({ mes, dias, semente, perfil }) {
         const chave = ingredienteChave(p, safra)
         if (chave && (ingredientePorEspaco[linha.espaco] ?? []).includes(chave)) nota -= 3
         if (chave && ingredientesDoDia.includes(chave)) nota -= 3.5
-        return { p, nota, safra, chave }
+        if (segunda) {
+          if (SIMPLES.has(p.referencia)) nota += 1
+          if (ELABORADO.has(p.referencia)) nota -= 1.5
+        }
+        const pesado = perfil.digestao && ehPesada(p)
+        // 3.9 fala em oferta concentrada, entao o peso so entra a partir do
+        // terceiro prato pesado do dia: o feijao sozinho ja e um deles
+        if (pesado && pesadosDoDia >= 2) nota -= 2.5
+        return { p, nota, safra, chave, pesado }
       }).sort((a, b) => b.nota - a.nota)
 
       const escolhida = avaliadas[0]
@@ -257,6 +319,7 @@ function montar({ mes, dias, semente, perfil }) {
         ;(ingredientePorEspaco[linha.espaco] ??= []).push(escolhida.chave)
         ingredientesDoDia.push(escolhida.chave)
       }
+      if (escolhida.pesado) pesadosDoDia++
 
       dia.itens.push({
         espaco: linha.espaco, nome: escolhida.p.nome, metodo: escolhida.p.metodo,
@@ -300,7 +363,9 @@ function rotuloPerfil() {
   const padrao = PADROES.find((x) => x.id === p.padrao)?.rot?.toLowerCase() ?? ''
   const semEquip = EQUIPAMENTOS.filter((e) => !p.equipamentos.includes(e.id)).map((e) => e.rot.toLowerCase())
   const restr = RESTRICOES.filter((r) => p.restricoes.includes(r.id)).map((r) => r.rot.toLowerCase())
-  const extras = [...semEquip.map((e) => `sem ${e}`), ...restr]
+  const comp = COMPOSICAO.filter((c) => (p.composicao ?? []).includes(c.id)).map((c) => c.rot.toLowerCase())
+  const extras = [...comp, ...semEquip.map((e) => `sem ${e}`), ...restr,
+                  ...(p.digestao ? ['sem concentrar pesados'] : [])]
   return `<span class="rot">Seu serviço</span>
     <span class="val"><b>${esc(servico)}</b> · padrão ${esc(padrao)} · ${p.refeicoes} refeições${
       extras.length ? ` · ${esc(extras.join(' · '))}` : ''}</span>
@@ -440,7 +505,7 @@ function abrirTroca(di, li) {
   $('trocaAtual').textContent = item.nome
   $('filtroTroca').value = ''
   pintarTroca('')
-  $('dlgTroca').showModal()
+  abrirDialogo($('dlgTroca'))
 }
 
 function pintarTroca(filtro) {
@@ -489,25 +554,35 @@ function redesenharCelulas() {
 }
 
 /* ------------------------------------------------------ perfil em passos */
-const TOTAL_PASSOS = 5
+const TOTAL_PASSOS = 6
 let passo = 1
+let respondeuAntes = false
 
 function pintarOpcoes() {
-  const mapa = { servico: SERVICOS, padrao: PADROES, equipamentos: EQUIPAMENTOS, restricoes: RESTRICOES }
+  const mapa = {
+    servico: SERVICOS, padrao: PADROES, equipamentos: EQUIPAMENTOS,
+    restricoes: RESTRICOES, composicao: COMPOSICAO,
+    digestao: [{ id: 'sim', rot: 'Evitar concentrar alimentos pesados no mesmo dia',
+                 desc: 'Fator 3.9: difícil digestão e flatulentos, pelas listas do livro' }],
+  }
   for (const caixa of $$('.opcoes')) {
     const campo = caixa.dataset.campo
+    const booleano = caixa.dataset.tipo === 'booleano'
     const multiplo = caixa.dataset.tipo === 'multiplo'
     caixa.innerHTML = mapa[campo].map((o) => {
-      const marcado = multiplo ? estado.perfil[campo].includes(o.id) : estado.perfil[campo] === o.id
+      const marcado = booleano ? estado.perfil[campo] === true
+        : multiplo ? estado.perfil[campo].includes(o.id) : estado.perfil[campo] === o.id
       return `<button class="opt" type="button" data-campo="${campo}" data-id="${o.id}"
-        data-multiplo="${multiplo}" aria-pressed="${marcado}">${esc(o.rot)}${
+        data-tipo="${caixa.dataset.tipo}" aria-pressed="${marcado}">${esc(o.rot)}${
         o.desc ? `<span class="desc">${esc(o.desc)}</span>` : ''}</button>`
     }).join('')
   }
   for (const botao of $$('.opt')) {
     botao.addEventListener('click', () => {
-      const { campo, id, multiplo } = botao.dataset
-      if (multiplo === 'true') {
+      const { campo, id, tipo } = botao.dataset
+      if (tipo === 'booleano') {
+        estado.perfil[campo] = !estado.perfil[campo]
+      } else if (tipo === 'multiplo') {
         const lista = estado.perfil[campo]
         estado.perfil[campo] = lista.includes(id) ? lista.filter((x) => x !== id) : [...lista, id]
       } else {
@@ -525,6 +600,7 @@ function mostrarPasso(n) {
     `<span class="${i < passo ? 'feito' : ''}"></span>`).join('')
   $('perfilVoltar').hidden = passo === 1
   $('pularPerfil').hidden = passo !== 1
+  $('atalhoPerfil').hidden = !(passo === 1 && respondeuAntes)
   $('perfilAvancar').textContent = passo === TOTAL_PASSOS ? 'Montar meu cardápio' : 'Continuar'
   $('perfilAjuda').textContent = passo === 1
     ? 'Cinco perguntas rápidas. Não são invenção da ferramenta: são os fatores administrativos que o capítulo VI manda considerar antes de fechar um cardápio.'
@@ -542,9 +618,17 @@ function atualizarNotaVolume() {
 
 function abrirPerfil() {
   $('refeicoes').value = estado.perfil.refeicoes
+  $('atalhoResumo').textContent = resumoDoPerfil()
   pintarOpcoes()
   mostrarPasso(1)
-  $('dlgPerfil').showModal()
+  abrirDialogo($('dlgPerfil'))
+}
+
+function resumoDoPerfil() {
+  const p = estado.perfil
+  const servico = SERVICOS.find((s) => s.id === p.servico)?.rot ?? ''
+  const padrao = PADROES.find((x) => x.id === p.padrao)?.rot?.toLowerCase() ?? ''
+  return `${servico} · padrão ${padrao} · ${p.refeicoes} refeições por dia`
 }
 
 function guardarPerfil() {
@@ -652,9 +736,13 @@ function ligarEventos() {
   $('copiar').addEventListener('click', () => copiar(cardapioEmTexto(), 'Cardápio copiado como texto.'))
 
   $('btPerfil')?.addEventListener('click', () => abrirPerfil())
-  $('btAjuda')?.addEventListener('click', () => $('dlgAjuda').showModal())
-  $('btSalvos')?.addEventListener('click', () => { pintarSalvos(); $('dlgSalvos').showModal() })
+  $('btAjuda')?.addEventListener('click', () => abrirDialogo($('dlgAjuda')))
+  $('btSalvos')?.addEventListener('click', () => { pintarSalvos(); abrirDialogo($('dlgSalvos')) })
 
+  $('usarAnterior').addEventListener('click', () => {
+    $('dlgPerfil').close()
+    gerar()
+  })
   $('perfilVoltar').addEventListener('click', () => mostrarPasso(passo - 1))
   $('perfilAvancar').addEventListener('click', () => {
     if (passo < TOTAL_PASSOS) { mostrarPasso(passo + 1); return }
@@ -699,14 +787,18 @@ async function iniciar() {
   $('mes').innerHTML = MESES.map(([v, n]) =>
     `<option value="${v}"${v === estado.mes ? ' selected' : ''}>${n}</option>`).join('')
 
+  // Cabeçalhos das tabelas do livro que a extração trouxe como preparação
+  base.preparacoes = base.preparacoes.filter((p) => !ehCabecalho(p))
+
   const salvo = memoria.ler(CHAVE_PERFIL)
+  respondeuAntes = Boolean(salvo)
   if (salvo) estado.perfil = { ...PERFIL_PADRAO, ...salvo }
 
+  // A tela abre pelo questionário, sempre: é ele que explica o que a ferramenta
+  // faz e de onde vem cada pergunta. Quem já respondeu tem o atalho de um toque
+  // no primeiro passo, então não perde tempo.
   gerar()
-
-  // Quem chega pela primeira vez responde o perfil; quem já respondeu vai direto
-  // para a grade, com o cardápio do serviço dele já montado.
-  if (!salvo) abrirPerfil()
+  abrirPerfil()
 }
 
 function falhar(recado) {

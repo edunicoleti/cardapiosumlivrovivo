@@ -124,16 +124,76 @@
 
 /* ==========================================================================
    Painel inicial
+   A tela existe para apresentar a plataforma a quem acabou de comprar: o que
+   ela entrega, como o assistente decide, e por onde comecar.
    ========================================================================== */
 
-.saudacao { margin-bottom: 26px; }
-.saudacao h1 { margin: 6px 0 8px; }
-
-.portais {
+.abertura {
   display: grid;
-  gap: 16px;
   grid-template-columns: 1fr;
+  gap: 22px;
+  padding: 4px 0 30px;
+  border-bottom: 1px solid var(--linha);
+  margin-bottom: 30px;
 }
+@media (min-width: 900px) {
+  .abertura { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 44px; align-items: center; }
+}
+.abertura h1 { margin: 8px 0 12px; max-width: 18ch; }
+.abertura .linha-apoio { font-size: 1.02rem; }
+.abertura-botoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+@media (max-width: 480px) { .abertura-botoes .bt { flex: 1 1 100%; } }
+
+.abertura-numeros {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--linha);
+  border: 1px solid var(--linha);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sombra-1);
+}
+.abertura-numeros .numero {
+  background: var(--branco);
+  padding: 18px 18px 20px;
+  position: relative;
+  z-index: 1;
+}
+.abertura-numeros .n {
+  display: block;
+  font-family: var(--display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--verde-prof);
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+.abertura-numeros .q {
+  display: block;
+  font-size: var(--t-sm);
+  color: var(--tinta-sv);
+  margin-top: 7px;
+  line-height: 1.4;
+}
+.ornamento-abertura {
+  position: absolute;
+  inset: auto -18px -14px auto;
+  width: 190px;
+  color: var(--verde);
+  opacity: .16;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.secao { margin-bottom: 38px; }
+.secao > h2 { margin-bottom: 8px; }
+.secao > .linha-apoio { margin-bottom: 20px; }
+.secao > h2 + .portais { margin-top: 18px; }
+
+.portais { display: grid; gap: 16px; grid-template-columns: 1fr; }
 @media (min-width: 760px) { .portais { grid-template-columns: 1fr 1fr; } }
 
 .portal {
@@ -155,33 +215,53 @@
   color: inherit;
 }
 .portal .capa {
-  height: 132px;
+  height: 96px;
   display: grid;
   place-items: center;
-  position: relative;
-  overflow: hidden;
   background: linear-gradient(140deg, #EAF1EC 0%, var(--creme) 100%);
+  border-bottom: 1px solid var(--linha);
 }
 .portal.laranja .capa { background: linear-gradient(140deg, #FDF1E3 0%, #F7EFD9 100%); }
-.portal .capa > svg { width: 54px; height: 54px; color: var(--verde-prof); position: relative; }
-.portal.laranja .capa > svg { color: var(--laranja-esc); }
-.portal .capa .ornamento {
-  position: absolute; inset: auto -28px -34px auto; width: 170px; opacity: .35;
-  color: var(--verde); pointer-events: none;
-}
-.portal.laranja .capa .ornamento { color: var(--laranja); opacity: .28; }
-.portal .miolo { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
-.portal h2 { font-size: 1.22rem; }
-.portal p { font-size: var(--t-md); color: var(--tinta-sv); line-height: 1.55; }
+.portal .capa svg { width: 40px; height: 40px; color: var(--verde-prof); }
+.portal.laranja .capa svg { color: var(--laranja-esc); }
+.portal .miolo { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.portal h3 { font-size: 1.16rem; color: var(--verde-prof); }
+.portal p { font-size: var(--t-md); color: var(--tinta-sv); line-height: 1.6; }
 .portal .fichas { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 2px; }
 .portal .bt { margin-top: auto; align-self: flex-start; }
+
+/* Os quatro passos sao uma sequencia de verdade: a ordem e o metodo do livro,
+   por isso numerar aqui diz alguma coisa. */
+.passos-metodo { list-style: none; display: grid; gap: 2px; margin: 0; padding: 0; }
+@media (min-width: 900px) { .passos-metodo { grid-template-columns: 1fr 1fr; gap: 16px; } }
+.passos-metodo li {
+  display: flex;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sombra-1);
+}
+.passos-metodo .marca {
+  width: 30px; height: 30px; flex: none;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--creme);
+  color: var(--verde-prof);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: var(--t-md);
+}
+.passos-metodo h3 { font-size: var(--t-base); color: var(--verde-prof); margin-bottom: 5px; }
+.passos-metodo p { font-size: var(--t-sm); color: var(--tinta-sv); line-height: 1.6; }
 
 .retomar {
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 15px 18px;
-  margin-bottom: 18px;
+  margin-bottom: 30px;
   border-radius: var(--r-lg);
   background: var(--branco);
   border: 1px solid var(--linha);
@@ -204,13 +284,13 @@
 .retomar > svg { width: 20px; height: 20px; color: var(--tinta-fr); flex: none; }
 
 .rodape-autora {
-  margin-top: 30px;
-  padding-top: 20px;
+  margin-top: 8px;
+  padding-top: 22px;
   border-top: 1px solid var(--linha);
   font-size: var(--t-sm);
   color: var(--tinta-fr);
-  line-height: 1.6;
-  max-width: 74ch;
+  line-height: 1.65;
+  max-width: 78ch;
 }
 
 /* ==========================================================================
@@ -304,27 +384,7 @@ main.legado .cartao a.acao:hover { background: var(--laranja-esc); color: #fff; 
 .casca.limpa main.nu { padding: 0; }
 .casca.limpa .palco { background: none; }
 
-/* ==========================================================================
-   Faixa de demonstração
-   Aparece só na visita por convite. Precisa ser inconfundível sem virar
-   alarme: quem abre tem de entender na hora que é protótipo, não produto.
-   ========================================================================== */
-.faixa-demo {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 11px 16px calc(11px + var(--seguro-b, 0px));
-  background: var(--laranja-cl);
-  border-bottom: 1px solid #F0D9BC;
-  color: var(--laranja-esc);
-  font-size: var(--t-sm);
-  line-height: 1.45;
-}
-.faixa-demo svg { width: 17px; height: 17px; flex: none; margin-top: 1px; }
-.faixa-demo b { font-weight: 600; }
-.faixa-demo i { font-style: italic; }
-@media (min-width: 1024px) { .faixa-demo { padding-inline: 34px; } }
-
+/* marcador discreto da visita por convite, no rodape do trilho */
 .trilho .quem.convidado {
   background: rgba(237, 134, 39, .16);
   border-color: rgba(237, 134, 39, .3);

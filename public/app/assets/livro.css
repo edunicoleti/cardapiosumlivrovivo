@@ -68,8 +68,12 @@ main.colado .faixa { padding-top: 16px; }
 }
 .caixa-busca .limpar svg { width: 16px; height: 16px; }
 
+/* Sumário: 44 seções, então achar "onde estou" tem de ser instantâneo.
+   O item atual é preenchido em verde, o mesmo contraste que o trilho usa ao
+   contrário. Os itens de segundo nível ficam sob um fio de agrupamento, que
+   diz a que capítulo pertencem em vez de só recuar. */
 .sumario { list-style: none; }
-.sumario li + li { margin-top: 1px; }
+.sumario > li + li { margin-top: 1px; }
 .sumario button {
   width: 100%;
   min-height: 44px;
@@ -79,27 +83,40 @@ main.colado .faixa { padding-top: 16px; }
   border-radius: var(--r-sm);
   cursor: pointer;
   font-family: var(--corpo);
-  font-size: var(--t-md);
+  font-size: var(--t-sm);
   font-weight: 500;
+  letter-spacing: .005em;
   color: var(--tinta-sv);
   padding: 10px 12px;
-  line-height: 1.38;
+  line-height: 1.42;
   transition: background var(--mov-rap), color var(--mov-rap);
 }
 .sumario button:hover { background: var(--branco); color: var(--verde-prof); }
 .sumario button[aria-current="true"] {
-  background: var(--branco);
-  color: var(--verde-prof);
+  background: var(--verde-prof);
+  color: #fff;
   font-weight: 600;
-  box-shadow: var(--sombra-1), inset 3px 0 0 var(--laranja);
+  box-shadow: var(--sombra-2);
 }
+
+.sumario .n2 { position: relative; padding-left: 13px; }
+.sumario .n2::before {
+  content: "";
+  position: absolute;
+  left: 5px; top: -1px; bottom: -1px;
+  width: 1px;
+  background: var(--linha);
+}
+.sumario .n2:has(+ :not(.n2))::before, .sumario .n2:last-child::before { bottom: 50%; }
 .sumario .n2 button {
-  padding-left: 24px;
   font-size: var(--t-sm);
   font-weight: 400;
   color: var(--tinta-fr);
+  min-height: 40px;
+  padding-block: 8px;
 }
-.sumario .n2 button:hover, .sumario .n2 button[aria-current="true"] { color: var(--verde-esc); }
+.sumario .n2 button:hover { color: var(--verde-esc); }
+.sumario .n2 button[aria-current="true"] { color: #fff; font-weight: 500; }
 
 .contagem-busca {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;

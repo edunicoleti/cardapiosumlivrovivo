@@ -5,7 +5,7 @@
    entre um leitor que funciona e um que trava.
    ========================================================================== */
 
-import { $, $$, esc, semAcento, memoria, avisar, prepararDialogo } from './plataforma.js'
+import { $, $$, esc, semAcento, memoria, avisar, prepararDialogo, abrirDialogo } from './plataforma.js'
 
 /* O livro guarda cor como nome do Notion ("red", "red_background"), não como
    hexadecimal. O leitor antigo escrevia background:#red_background — inválido —
@@ -358,9 +358,17 @@ function aplicarTamanho(t) {
 const fecharFolha = () => $('folhaSumario').open && $('folhaSumario').close()
 
 function abrirFolha(focoNaBusca = false) {
-  $('folhaSumario').showModal()
-  if (focoNaBusca) setTimeout(() => $('buscaFolha').focus(), 120)
+  abrirDialogo($('folhaSumario'), () => {
+    if (focoNaBusca) setTimeout(() => $('buscaFolha').focus(), 120)
+  })
 }
+
+/* A folha é a versão de celular do sumário. Se a janela alargar com ela aberta,
+   ela vira um painel solto por cima da barra lateral, que já mostra o mesmo. */
+const larguraDesktop = window.matchMedia('(min-width: 1024px)')
+larguraDesktop.addEventListener('change', (evento) => {
+  if (evento.matches && $('folhaSumario').open) $('folhaSumario').close()
+})
 
 /* ------------------------------------------------------------ início */
 function ligarEventos() {
@@ -388,7 +396,9 @@ function ligarEventos() {
 
   $('btSumario')?.addEventListener('click', () => abrirFolha(false))
   $('btBusca')?.addEventListener('click', () => abrirFolha(true))
-  for (const b of $$('[data-abre="leitura"]')) b.addEventListener('click', () => $('dlgLeitura').showModal())
+  for (const b of $$('[data-abre="leitura"]')) {
+    b.addEventListener('click', () => abrirDialogo($('dlgLeitura')))
+  }
 
   window.addEventListener('scroll', aoRolar, { passive: true })
 

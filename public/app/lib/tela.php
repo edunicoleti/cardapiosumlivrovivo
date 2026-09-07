@@ -122,7 +122,6 @@ function renderizarTela(array $opcoes): void
     $modeloAbas = pedacoDoGabarito($gabarito, 'item-abas');
     $modeloQuem = pedacoDoGabarito($gabarito, 'quem');
     $modeloConvidado = pedacoDoGabarito($gabarito, 'quem-convidado');
-    $modeloFaixaDemo = pedacoDoGabarito($gabarito, 'faixa-demo');
     $gabarito = semPedacos($gabarito);
 
     $navTrilho = '';
@@ -165,7 +164,6 @@ function renderizarTela(array $opcoes): void
         'NAV_TRILHO' => $navTrilho,
         'NAV_ABAS' => $navAbas,
         'QUEM' => $quem,
-        'FAIXA_DEMO' => $convidado ? $modeloFaixaDemo : '',
         'TOPO_TITULO' => e((string) ($opcoes['topoTitulo'] ?? ($opcoes['titulo'] ?? ''))),
         'TOPO_ACOES' => (string) ($opcoes['topoAcoes'] ?? ''),
         'CONTEUDO' => (string) ($opcoes['conteudo'] ?? ''),

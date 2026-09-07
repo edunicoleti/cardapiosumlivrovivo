@@ -5,7 +5,7 @@
    por quê, e deixa a nutricionista ter a palavra final em cada espaço.
    ========================================================================== */
 
-import { $, $$, esc, semAcento, memoria, avisar, copiar, prepararDialogo, abrirDialogo } from './plataforma.js'
+import { $, $$, esc, semAcento, memoria, avisar, copiar, prepararDialogo, abrirDialogo } from './nucleo.js'
 
 const MESES = [
   ['jan', 'Janeiro'], ['fev', 'Fevereiro'], ['mar', 'Março'], ['abr', 'Abril'],

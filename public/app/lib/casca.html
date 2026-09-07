@@ -74,7 +74,31 @@
 </div>
 
 <div class="torrada" id="torrada" role="status" aria-live="polite"></div>
-<script src="/app/assets/plataforma.js?v={{VERSAO}}" type="module"></script>
+<script src="/app/assets/nucleo.js?v={{VERSAO}}" type="module"></script>
+<script>
+/* Cão de guarda. Nao e module de proposito: se um module falhar ao carregar,
+   este continua rodando. Um erro de script deixava a tela presa no "carregando"
+   para sempre, sem dizer nada a quem estava esperando. */
+(function () {
+  var quebrou = false
+  addEventListener('error', function (e) { if (e.filename || e.message) quebrou = true }, true)
+  addEventListener('unhandledrejection', function () { quebrou = true })
+
+  setTimeout(function () {
+    var preso = document.querySelector('.carregando')
+    if (!preso) return
+    preso.innerHTML =
+      '<svg style="width:26px;height:26px;color:#B85F10" aria-hidden="true">' +
+      '<use href="#i-atencao"></use></svg>' +
+      '<div style="max-width:34ch;line-height:1.55">' +
+      (quebrou
+        ? 'Algo travou ao abrir esta tela. Costuma ser uma versão antiga guardada no navegador.'
+        : 'Está demorando mais do que devia para carregar.') +
+      '</div>' +
+      '<button type="button" class="bt bt-prim" onclick="location.reload(true)">Recarregar</button>'
+  }, 12000)
+})()
+</script>
 {{RODAPE}}
 </body>
 </html>

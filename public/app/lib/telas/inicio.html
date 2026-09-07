@@ -137,7 +137,7 @@
 </div>
 
 <script type="module">
-  import { memoria, $ } from '/app/assets/plataforma.js?v={{VERSAO}}'
+  import { memoria, $ } from '/app/assets/nucleo.js?v={{VERSAO}}'
   const marca = memoria.ler('livro-posicao')
   if (marca && marca.titulo) {
     $('retomarOnde').textContent = marca.titulo

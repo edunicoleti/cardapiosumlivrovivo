@@ -5,7 +5,7 @@
    entre um leitor que funciona e um que trava.
    ========================================================================== */
 
-import { $, $$, esc, semAcento, memoria, avisar, prepararDialogo, abrirDialogo } from './plataforma.js'
+import { $, $$, esc, semAcento, memoria, avisar, prepararDialogo, abrirDialogo } from './nucleo.js'
 
 /* O livro guarda cor como nome do Notion ("red", "red_background"), não como
    hexadecimal. O leitor antigo escrevia background:#red_background — inválido —

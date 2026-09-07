@@ -603,7 +603,7 @@ function mostrarPasso(n) {
   $('atalhoPerfil').hidden = !(passo === 1 && respondeuAntes)
   $('perfilAvancar').textContent = passo === TOTAL_PASSOS ? 'Montar meu cardápio' : 'Continuar'
   $('perfilAjuda').textContent = passo === 1
-    ? 'Cinco perguntas rápidas. Não são invenção da ferramenta: são os fatores administrativos que o capítulo VI manda considerar antes de fechar um cardápio.'
+    ? 'Seis perguntas rápidas. Não são invenção da ferramenta: saem dos fatores que o capítulo VI manda considerar antes de fechar um cardápio.'
     : `Pergunta ${passo} de ${TOTAL_PASSOS}.`
   $('modalCorpoPerfil')?.scrollTo({ top: 0 })
   atualizarNotaVolume()

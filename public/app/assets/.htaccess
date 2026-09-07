@@ -1,0 +1,13 @@
+# Os arquivos de entrada (livro.js, assistente.js, os CSS) chegam com ?v= pela
+# data de modificacao, mas o import de dentro deles aponta para
+# ./plataforma.js sem versao nenhuma: e outra URL, e o navegador podia servir
+# uma copia velha do modulo compartilhado indefinidamente. Foi o que quebrou o
+# assistente depois de um deploy: o modulo antigo nao tinha abrirDialogo.
+#
+# no-cache nao quer dizer "nao guarde": quer dizer "pergunte antes de usar".
+# O navegador continua guardando e recebendo 304, que e barato.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>

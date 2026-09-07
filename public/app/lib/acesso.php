@@ -16,6 +16,59 @@ declare(strict_types=1);
 
 const APP_SESSAO = 'livrovivo';
 
+/**
+ * Convite de demonstracao.
+ *
+ * Serve para a autora e a equipe verem a plataforma sem passar por login,
+ * enquanto o formato de venda ainda esta em discussao. Quem tem o link ve o
+ * livro inteiro, entao valem tres cuidados:
+ *
+ *  1. o token NAO mora aqui. Este repositorio e publico, entao fica so o
+ *     hash SHA-256; o link em si vive fora do codigo.
+ *  2. o convite tem prazo. Um link vazado precisa morrer sozinho, sem
+ *     depender de alguem lembrar de desligar.
+ *  3. cada abertura vai para convites.log, para dar para ver se o link
+ *     andou circulando mais do que devia.
+ *
+ * Para revogar antes do prazo: apague o valor de CONVITE_HASH e publique.
+ * Para emitir outro: gere um token novo e troque o hash.
+ */
+const CONVITE_HASH = '208b96b841c9789c0d50748728bdb558f602dbffeff51fab91ca4468e441c423';
+const CONVITE_ATE = '2026-10-07';
+const CONVITE_NOME = 'Visita de demonstração';
+
+function convitePassou(): bool
+{
+    if (CONVITE_ATE === '') {
+        return false;
+    }
+    $limite = strtotime(CONVITE_ATE . ' 23:59:59');
+    return $limite !== false && time() > $limite;
+}
+
+function conviteValido(string $token): bool
+{
+    $token = trim($token);
+    if (CONVITE_HASH === '' || $token === '' || convitePassou()) {
+        return false;
+    }
+    return hash_equals(CONVITE_HASH, hash('sha256', $token));
+}
+
+/** Abre uma sessao de visita, sem comprador por tras. */
+function abrirSessaoDeConvite(): void
+{
+    iniciarSessao();
+    session_regenerate_id(true);
+    $_SESSION['convidado'] = true;
+    $_SESSION['nome'] = CONVITE_NOME;
+    $_SESSION['desde'] = time();
+    registrarLog('convites.log', [
+        'ip' => $_SERVER['REMOTE_ADDR'] ?? '',
+        'agente' => substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 180),
+    ]);
+}
+
 /** Pasta de dados de execucao, preferindo um lugar que o deploy nao alcanca. */
 function pastaDados(): string
 {
@@ -233,6 +286,14 @@ function autenticar(string $email, string $codigo): bool
 function usuarioLogado(): ?array
 {
     iniciarSessao();
+    // visita por convite: nao ha comprador para reconferir, so o prazo
+    if (!empty($_SESSION['convidado'])) {
+        if (convitePassou()) {
+            encerrarSessao();
+            return null;
+        }
+        return ['email' => '', 'nome' => CONVITE_NOME, 'convidado' => true];
+    }
     if (empty($_SESSION['email'])) {
         return null;
     }

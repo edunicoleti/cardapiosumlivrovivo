@@ -3,6 +3,18 @@ declare(strict_types=1);
 require __DIR__ . '/lib/acesso.php';
 require __DIR__ . '/lib/tela.php';
 
+// Convite de demonstracao: abre a sessao e limpa o token da barra de endereco,
+// para o link nao ficar exposto em print, historico ou compartilhamento de tela.
+if (isset($_GET['convite']) && conviteValido((string) $_GET['convite'])) {
+    abrirSessaoDeConvite();
+    $destino = (string) ($_GET['retorno'] ?? '/app/');
+    if ($destino === '' || $destino[0] !== '/' || str_starts_with($destino, '//')) {
+        $destino = '/app/';
+    }
+    header('Location: ' . $destino);
+    exit;
+}
+
 $erro = '';
 $usuario = usuarioLogado();
 
@@ -49,7 +61,10 @@ if ($usuario === null) {
 }
 
 // ---------------------------------------------------------------- logado
-$primeiroNome = trim(explode(' ', (string) $usuario['nome'])[0] ?? '');
+// a visita por convite nao tem nome de gente, entao a saudacao fica sem nome
+$primeiroNome = ($usuario['convidado'] ?? false) === true
+    ? ''
+    : trim(explode(' ', (string) $usuario['nome'])[0] ?? '');
 
 renderizarTela([
     'titulo' => 'Início',

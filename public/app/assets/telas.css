@@ -303,3 +303,30 @@ main.legado .cartao a.acao:hover { background: var(--laranja-esc); color: #fff; 
 .casca.limpa .topo { display: none; }
 .casca.limpa main.nu { padding: 0; }
 .casca.limpa .palco { background: none; }
+
+/* ==========================================================================
+   Faixa de demonstração
+   Aparece só na visita por convite. Precisa ser inconfundível sem virar
+   alarme: quem abre tem de entender na hora que é protótipo, não produto.
+   ========================================================================== */
+.faixa-demo {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 16px calc(11px + var(--seguro-b, 0px));
+  background: var(--laranja-cl);
+  border-bottom: 1px solid #F0D9BC;
+  color: var(--laranja-esc);
+  font-size: var(--t-sm);
+  line-height: 1.45;
+}
+.faixa-demo svg { width: 17px; height: 17px; flex: none; margin-top: 1px; }
+.faixa-demo b { font-weight: 600; }
+.faixa-demo i { font-style: italic; }
+@media (min-width: 1024px) { .faixa-demo { padding-inline: 34px; } }
+
+.trilho .quem.convidado {
+  background: rgba(237, 134, 39, .16);
+  border-color: rgba(237, 134, 39, .3);
+}
+.trilho .quem.convidado .sair { color: #E8B98A; }

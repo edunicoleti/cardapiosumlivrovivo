@@ -121,6 +121,8 @@ function renderizarTela(array $opcoes): void
     $modeloTrilho = pedacoDoGabarito($gabarito, 'item-trilho');
     $modeloAbas = pedacoDoGabarito($gabarito, 'item-abas');
     $modeloQuem = pedacoDoGabarito($gabarito, 'quem');
+    $modeloConvidado = pedacoDoGabarito($gabarito, 'quem-convidado');
+    $modeloFaixaDemo = pedacoDoGabarito($gabarito, 'faixa-demo');
     $gabarito = semPedacos($gabarito);
 
     $navTrilho = '';
@@ -147,7 +149,8 @@ function renderizarTela(array $opcoes): void
             $nome = (string) ($usuario['email'] ?? '');
         }
     }
-    $quem = $usuario === null ? '' : trocarTokens($modeloQuem, [
+    $convidado = ($usuario['convidado'] ?? false) === true;
+    $quem = $usuario === null ? '' : trocarTokens($convidado ? $modeloConvidado : $modeloQuem, [
         'INICIAL' => e(primeiraLetra($nome)),
         'NOME' => e($nome),
     ]);
@@ -162,6 +165,7 @@ function renderizarTela(array $opcoes): void
         'NAV_TRILHO' => $navTrilho,
         'NAV_ABAS' => $navAbas,
         'QUEM' => $quem,
+        'FAIXA_DEMO' => $convidado ? $modeloFaixaDemo : '',
         'TOPO_TITULO' => e((string) ($opcoes['topoTitulo'] ?? ($opcoes['titulo'] ?? ''))),
         'TOPO_ACOES' => (string) ($opcoes['topoAcoes'] ?? ''),
         'CONTEUDO' => (string) ($opcoes['conteudo'] ?? ''),

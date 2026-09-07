@@ -397,7 +397,13 @@ const sinais = (item) => {
 }
 
 /** Roda o motor e redesenha. */
+function mostrarPainel() {
+  $('apresentacao').hidden = true
+  $('painelCardapio').hidden = false
+}
+
 function gerar() {
+  mostrarPainel()
   const r = montar(estado)
   estado.cardapio = r.cardapio
   estrutura = r.estrutura
@@ -680,6 +686,7 @@ function mostrarPasso(n) {
     `<span class="${i < passo ? 'feito' : ''}"></span>`).join('')
   $('perfilVoltar').hidden = passo === 1
   $('pularPerfil').hidden = passo !== 1
+  $('pularPerfil').textContent = 'Montar sem responder'
   $('perfilAvancar').textContent = passo === TOTAL_PASSOS ? 'Montar meu cardápio' : 'Continuar'
   $('dlgPerfil').querySelector('.modal-corpo')?.scrollTo({ top: 0 })
   atualizarNotaVolume()
@@ -792,6 +799,7 @@ function carregarSalvo(id) {
   $('mes').value = estado.mes
   $('dias').value = String(estado.dias)
   $('dlgSalvos').close()
+  mostrarPainel()
   pintar()
   avisar('Cardápio carregado.')
 }
@@ -824,6 +832,8 @@ function ligarEventos() {
   $('imprimir').addEventListener('click', () => window.print())
   $('copiar').addEventListener('click', () => copiar(cardapioEmTexto(), 'Cardápio copiado como texto.'))
 
+  $('comecar').addEventListener('click', () => abrirPerfil())
+  $('verSalvosApresentacao').addEventListener('click', () => { pintarSalvos(); abrirDialogo($('dlgSalvos')) })
   $('btPerfil')?.addEventListener('click', () => abrirPerfil())
   $('btAjuda')?.addEventListener('click', () => abrirDialogo($('dlgAjuda')))
   $('btSalvos')?.addEventListener('click', () => { pintarSalvos(); abrirDialogo($('dlgSalvos')) })
@@ -835,9 +845,12 @@ function ligarEventos() {
     $('dlgPerfil').close()
     gerar()
   })
+  // sem cardápio na tela, fechar o questionário sem montar deixaria a pessoa
+  // olhando para a apresentação de novo; pular monta com o que já está marcado
   $('pularPerfil').addEventListener('click', () => {
     guardarPerfil()
     $('dlgPerfil').close()
+    gerar()
   })
   $('refeicoes').addEventListener('input', atualizarNotaVolume)
   $('mesWizard').addEventListener('change', atualizarNotaSafra)
@@ -881,11 +894,8 @@ async function iniciar() {
   const salvo = memoria.ler(CHAVE_PERFIL)
   if (salvo) estado.perfil = { ...PERFIL_PADRAO, ...salvo }
 
-  // A tela abre pelo questionário, sempre: é ele que explica o que a ferramenta
-  // faz e de onde vem cada pergunta. Quem já respondeu tem o atalho de um toque
-  // no primeiro passo, então não perde tempo.
-  gerar()
-  abrirPerfil()
+  // A tela abre pela apresentação: quem chega precisa entender de onde vem cada
+  // prato antes de responder qualquer coisa. O questionário vem no clique.
 }
 
 function falhar(recado) {

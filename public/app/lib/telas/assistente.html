@@ -1,5 +1,61 @@
 <div class="faixa">
 
+  <section class="apresentacao" id="apresentacao">
+    <span class="olho">Assistente de cardápio</span>
+    <h1>A semana montada pelo método do livro</h1>
+    <p class="linha-apoio">
+      Ele não inventa pratos e não consulta nenhuma inteligência artificial. Escolhe dentro
+      das 2.298 preparações do livro, seguindo a ordem e as regras do capítulo VI.
+    </p>
+
+    <ol class="passos-metodo">
+      <li>
+        <span class="marca">1</span>
+        <div>
+          <h2>Você descreve o serviço</h2>
+          <p>Que serviço atende, padrão do cardápio, quantas refeições por dia, que
+             equipamento existe na cozinha e o que não pode entrar. São os fatores
+             administrativos 1.1, 1.6 e 1.8.</p>
+        </div>
+      </li>
+      <li>
+        <span class="marca">2</span>
+        <div>
+          <h2>Ele filtra o acervo</h2>
+          <p>Sem forno, nada de assado. Sem carne suína, nada que leve bacon, presunto ou
+             linguiça, lendo o nome e a descrição de cada preparação, não só a categoria.</p>
+        </div>
+      </li>
+      <li>
+        <span class="marca">3</span>
+        <div>
+          <h2>Ele compõe a semana</h2>
+          <p>Rodízio de proteína, variedade de cocção, variedade de ingredientes, safra do
+             mês e digestibilidade entram como peso na escolha de cada espaço. São as regras
+             sensoriais 3.1, 3.2, 3.7 e 3.9.</p>
+        </div>
+      </li>
+      <li>
+        <span class="marca">4</span>
+        <div>
+          <h2>Você tem a palavra final</h2>
+          <p>Toque em qualquer prato para ver ingredientes, preparo e a regra que o colocou
+             ali. Trocar um prato não refaz o resto da semana.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="apresentacao-acao">
+      <button class="bt bt-prim" id="comecar" type="button">
+        <svg aria-hidden="true"><use href="#i-cardapio"></use></svg>Montar meu cardápio
+      </button>
+      <button class="bt bt-fantasma" id="verSalvosApresentacao" type="button">
+        Meus cardápios salvos
+      </button>
+    </div>
+  </section>
+
+  <div id="painelCardapio" hidden>
   <header class="cabeca-assistente">
     <div class="cabeca-texto">
       <span class="olho">Assistente de cardápio</span>
@@ -81,6 +137,8 @@
         Os per capita estão no livro, capítulo IV.</span></div>
     </div>
   </details>
+
+  </div>
 
   <p class="creditos">
     Todas as preparações, os índices e as regras de composição vêm de

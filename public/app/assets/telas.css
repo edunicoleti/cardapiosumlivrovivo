@@ -124,173 +124,121 @@
 
 /* ==========================================================================
    Painel inicial
-   A tela existe para apresentar a plataforma a quem acabou de comprar: o que
-   ela entrega, como o assistente decide, e por onde comecar.
+   A tela tem um trabalho só: dizer o que a pessoa tem e mandar ela para um dos
+   dois lugares. Coluna única, dois destinos, nada competindo por atenção.
    ========================================================================== */
 
-.abertura {
+.faixa.estreita-media { width: min(880px, 100%); }
+
+.abertura { padding: 6px 0 30px; }
+.abertura h1 { margin: 9px 0 10px; max-width: 20ch; }
+.abertura .linha-apoio { font-size: 1.05rem; }
+
+.destinos { display: flex; flex-direction: column; gap: 16px; }
+
+.destino {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 22px;
-  padding: 4px 0 30px;
-  border-bottom: 1px solid var(--linha);
-  margin-bottom: 30px;
-}
-@media (min-width: 900px) {
-  .abertura { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 44px; align-items: center; }
-}
-.abertura h1 { margin: 8px 0 12px; max-width: 18ch; }
-.abertura .linha-apoio { font-size: 1.02rem; }
-.abertura-botoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
-@media (max-width: 480px) { .abertura-botoes .bt { flex: 1 1 100%; } }
-
-.abertura-numeros {
-  position: relative;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--linha);
-  border: 1px solid var(--linha);
-  border-radius: var(--r-xl);
-  box-shadow: var(--sombra-1);
-}
-.abertura-numeros .numero {
-  background: var(--branco);
-  padding: 18px 18px 20px;
-  position: relative;
-  z-index: 1;
-}
-.abertura-numeros .n {
-  display: block;
-  font-family: var(--display);
-  font-size: 1.7rem;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--verde-prof);
-  letter-spacing: -.02em;
-  font-variant-numeric: tabular-nums;
-}
-.abertura-numeros .q {
-  display: block;
-  font-size: var(--t-sm);
-  color: var(--tinta-sv);
-  margin-top: 7px;
-  line-height: 1.4;
-}
-.ornamento-abertura {
-  position: absolute;
-  inset: auto -18px -14px auto;
-  width: 190px;
-  color: var(--verde);
-  opacity: .16;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.secao { margin-bottom: 38px; }
-.secao > h2 { margin-bottom: 8px; }
-.secao > .linha-apoio { margin-bottom: 20px; }
-.secao > h2 + .portais { margin-top: 18px; }
-
-.portais { display: grid; gap: 16px; grid-template-columns: 1fr; }
-@media (min-width: 760px) { .portais { grid-template-columns: 1fr 1fr; } }
-
-.portal {
-  position: relative;
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
   background: var(--branco);
   border: 1px solid var(--linha);
   border-radius: var(--r-xl);
   box-shadow: var(--sombra-1);
-  transition: transform var(--mov), box-shadow var(--mov), border-color var(--mov);
   color: inherit;
+  transition: transform var(--mov), box-shadow var(--mov), border-color var(--mov);
 }
-.portal:hover {
-  transform: translateY(-3px);
+@media (min-width: 660px) { .destino { grid-template-columns: 168px minmax(0, 1fr); } }
+
+.destino:hover {
+  transform: translateY(-2px);
   box-shadow: var(--sombra-3);
   border-color: var(--creme-md);
   color: inherit;
 }
-.portal .capa {
-  height: 96px;
+
+.destino .ilustra {
+  position: relative;
   display: grid;
   place-items: center;
-  background: linear-gradient(140deg, #EAF1EC 0%, var(--creme) 100%);
-  border-bottom: 1px solid var(--linha);
+  overflow: hidden;
+  min-height: 92px;
+  background: linear-gradient(150deg, #EDF3EE 0%, var(--creme) 120%);
+  border-bottom: 1px solid var(--linha-fr);
 }
-.portal.laranja .capa { background: linear-gradient(140deg, #FDF1E3 0%, #F7EFD9 100%); }
-.portal .capa svg { width: 40px; height: 40px; color: var(--verde-prof); }
-.portal.laranja .capa svg { color: var(--laranja-esc); }
-.portal .miolo { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.portal h3 { font-size: 1.16rem; color: var(--verde-prof); }
-.portal p { font-size: var(--t-md); color: var(--tinta-sv); line-height: 1.6; }
-.portal .fichas { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 2px; }
-.portal .bt { margin-top: auto; align-self: flex-start; }
+@media (min-width: 660px) {
+  .destino .ilustra { border-bottom: none; border-right: 1px solid var(--linha-fr); }
+}
+.destino.laranja .ilustra { background: linear-gradient(150deg, #FDF3E7 0%, #F7EFD9 120%); }
 
-/* Os quatro passos sao uma sequencia de verdade: a ordem e o metodo do livro,
-   por isso numerar aqui diz alguma coisa. */
-.passos-metodo { list-style: none; display: grid; gap: 2px; margin: 0; padding: 0; }
-@media (min-width: 900px) { .passos-metodo { grid-template-columns: 1fr 1fr; gap: 16px; } }
-.passos-metodo li {
+.destino .simbolo { position: relative; z-index: 1; width: 40px; height: 40px; color: var(--verde-prof); }
+.destino.laranja .simbolo { color: var(--laranja-esc); }
+
+.destino .tracos {
+  position: absolute;
+  inset: auto -22px -20px auto;
+  width: 150px;
+  color: var(--verde);
+  opacity: .17;
+  pointer-events: none;
+}
+.destino.laranja .tracos { color: var(--laranja); opacity: .2; }
+.destino .tracos.espelhado { transform: scaleX(-1); inset: auto auto -20px -22px; }
+
+.destino .corpo {
   display: flex;
-  gap: 14px;
-  padding: 18px 20px;
-  background: var(--branco);
-  border: 1px solid var(--linha);
-  border-radius: var(--r-lg);
-  box-shadow: var(--sombra-1);
+  flex-direction: column;
+  gap: 9px;
+  padding: 24px 26px 20px;
 }
-.passos-metodo .marca {
-  width: 30px; height: 30px; flex: none;
-  display: grid; place-items: center;
-  border-radius: 50%;
-  background: var(--creme);
-  color: var(--verde-prof);
+.destino .titulo {
   font-family: var(--display);
+  font-size: 1.28rem;
   font-weight: 700;
-  font-size: var(--t-md);
+  letter-spacing: -.012em;
+  color: var(--verde-prof);
+  line-height: 1.2;
 }
-.passos-metodo h3 { font-size: var(--t-base); color: var(--verde-prof); margin-bottom: 5px; }
-.passos-metodo p { font-size: var(--t-sm); color: var(--tinta-sv); line-height: 1.6; }
-
-.retomar {
+.destino .texto {
+  font-size: var(--t-md);
+  color: var(--tinta-sv);
+  line-height: 1.62;
+  max-width: 56ch;
+}
+.destino .pe {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 15px 18px;
-  margin-bottom: 30px;
-  border-radius: var(--r-lg);
-  background: var(--branco);
-  border: 1px solid var(--linha);
-  box-shadow: var(--sombra-1);
-  transition: border-color var(--mov-rap), box-shadow var(--mov-rap);
-  color: inherit;
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--linha-fr);
 }
-.retomar:hover { border-color: var(--verde); box-shadow: var(--sombra-2); color: inherit; }
-.retomar .marcador {
-  width: 40px; height: 40px; flex: none; display: grid; place-items: center;
-  border-radius: 12px; background: var(--creme); color: var(--verde-prof);
+.destino .dados {
+  font-size: var(--t-sm);
+  color: var(--tinta-fr);
+  letter-spacing: .01em;
 }
-.retomar .marcador svg { width: 20px; height: 20px; }
-.retomar .texto { min-width: 0; flex: 1; }
-.retomar .olho { display: block; }
-.retomar .onde {
-  display: block; font-size: var(--t-md); font-weight: 600; color: var(--verde-prof);
-  margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.destino .seta {
+  margin-left: auto;
+  flex: none;
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--creme-cl);
+  color: var(--verde-prof);
+  transition: background var(--mov-rap), transform var(--mov-rap), color var(--mov-rap);
 }
-.retomar > svg { width: 20px; height: 20px; color: var(--tinta-fr); flex: none; }
+.destino .seta svg { width: 17px; height: 17px; }
+.destino:hover .seta { background: var(--verde-prof); color: #fff; transform: translateX(3px); }
+.destino.laranja:hover .seta { background: var(--laranja); }
 
 .rodape-autora {
-  margin-top: 8px;
-  padding-top: 22px;
+  margin-top: 34px;
+  padding-top: 20px;
   border-top: 1px solid var(--linha);
   font-size: var(--t-sm);
   color: var(--tinta-fr);
   line-height: 1.65;
-  max-width: 78ch;
+  max-width: 70ch;
 }
 
 /* ==========================================================================

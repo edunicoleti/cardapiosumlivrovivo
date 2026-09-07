@@ -8,6 +8,37 @@
 main.colado .faixa { padding-top: 16px; }
 @media (min-width: 1024px) { main.colado .faixa { padding-top: 30px; } }
 
+/* ---------- apresentação, antes do questionário ---------- */
+.apresentacao { max-width: 720px; padding: 6px 0 20px; }
+.apresentacao h1 { margin: 9px 0 10px; max-width: 20ch; }
+.apresentacao .linha-apoio { font-size: 1.02rem; margin-bottom: 28px; }
+
+/* Os quatro passos são uma sequência de verdade: é a ordem do método do livro,
+   por isso numerar aqui diz alguma coisa em vez de enfeitar. */
+.passos-metodo { list-style: none; display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; }
+.passos-metodo li {
+  display: flex;
+  gap: 15px;
+  padding: 17px 0;
+  border-top: 1px solid var(--linha);
+}
+.passos-metodo li:last-child { border-bottom: 1px solid var(--linha); }
+.passos-metodo .marca {
+  width: 28px; height: 28px; flex: none;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--creme);
+  color: var(--verde-prof);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: var(--t-sm);
+}
+.passos-metodo h2 { font-size: var(--t-base); color: var(--verde-prof); margin-bottom: 5px; }
+.passos-metodo p { font-size: var(--t-sm); color: var(--tinta-sv); line-height: 1.6; max-width: 62ch; }
+
+.apresentacao-acao { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+@media (max-width: 480px) { .apresentacao-acao .bt { flex: 1 1 100%; } }
+
 /* ---------- cabeçalho ---------- */
 .cabeca-assistente { margin-bottom: 16px; }
 .cabeca-assistente h1 { margin: 6px 0 8px; }

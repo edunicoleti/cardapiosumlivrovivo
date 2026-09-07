@@ -129,7 +129,7 @@ main.colado .faixa { padding-top: 16px; }
   background: var(--branco);
   box-shadow: var(--sombra-1);
 }
-.rolagem-grade table { border-collapse: collapse; width: 100%; min-width: 880px; }
+.rolagem-grade table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 900px; }
 .rolagem-grade th, .rolagem-grade td {
   border-bottom: 1px solid var(--linha-fr);
   border-right: 1px solid var(--linha-fr);
@@ -137,38 +137,82 @@ main.colado .faixa { padding-top: 16px; }
 }
 .rolagem-grade th:last-child, .rolagem-grade td:last-child { border-right: none; }
 .rolagem-grade tr:last-child th, .rolagem-grade tr:last-child td { border-bottom: none; }
+
 .rolagem-grade thead th {
-  background: var(--verde-esc); color: #fff; font-family: var(--display);
-  font-size: var(--t-xs); font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
-  padding: 12px; text-align: left;
+  background: var(--verde-esc);
+  color: #fff;
+  font-family: var(--display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  padding: 13px 14px;
+  text-align: left;
+  white-space: nowrap;
 }
-.rolagem-grade thead th:first-child { background: var(--verde-prof); }
+
+/* A coluna dos espaços fica presa na esquerda: numa grade de 900px que rola na
+   horizontal, sem isso a pessoa perde a referência do que está olhando. */
+.rolagem-grade thead th:first-child,
 .rolagem-grade tbody th {
-  background: var(--creme-cl); font-family: var(--display); font-size: var(--t-sm);
-  font-weight: 600; letter-spacing: .02em; color: var(--verde-prof);
-  padding: 13px 12px; text-align: left; white-space: nowrap; width: 158px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 152px;
+  min-width: 152px;
+}
+.rolagem-grade thead th:first-child { background: var(--verde-prof); z-index: 3; }
+.rolagem-grade tbody th {
+  background: var(--creme-cl);
+  font-family: var(--display);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--verde-prof);
+  padding: 16px 14px;
+  text-align: left;
+  line-height: 1.3;
+  box-shadow: 1px 0 0 var(--linha-fr);
 }
 .rolagem-grade td { padding: 0; }
 
 .prato {
-  width: 100%; height: 100%; text-align: left; background: none; border: none;
-  font-family: var(--corpo); padding: 12px; cursor: pointer; display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 74px;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: var(--corpo);
+  padding: 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: flex-start;
   transition: background var(--mov-rap);
-  position: relative;
 }
 .prato:hover { background: var(--creme-cl); }
-.prato .nome { display: block; font-size: var(--t-md); color: var(--tinta); font-weight: 500; line-height: 1.4; }
-.prato .meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 7px; }
-.prato .trocar {
-  display: flex; align-items: center; gap: 5px;
-  font-size: var(--t-xs); font-weight: 600; color: var(--laranja-esc);
-  margin-top: 8px; opacity: 0; transition: opacity var(--mov-rap);
+.prato .nome {
+  font-size: var(--t-md);
+  color: var(--tinta);
+  font-weight: 500;
+  line-height: 1.42;
 }
-.prato .trocar svg { width: 13px; height: 13px; }
-.prato:hover .trocar, .prato:focus-visible .trocar { opacity: 1; }
-/* em tela sensível ao toque não existe hover: a pista tem de estar sempre à vista */
-@media (hover: none) { .prato .trocar { opacity: 1; } }
-.vazio { padding: 12px; font-size: var(--t-sm); color: var(--tinta-fr); font-style: italic; }
+.prato:hover .nome { color: var(--verde-prof); }
+
+/* linha de apoio: sem cor de fundo, sem pílula, sem competir com o nome */
+.sinais {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--t-xs);
+  color: var(--tinta-fr);
+  letter-spacing: .02em;
+  line-height: 1.2;
+}
+.sinais .folha { width: 13px; height: 13px; color: var(--laranja); flex: none; }
+
+.vazio { padding: 14px; font-size: var(--t-sm); color: var(--tinta-fr); font-style: italic; }
 
 /* ---------- semana estreita (um dia por vez) ---------- */
 .tira-dias {
@@ -237,7 +281,7 @@ main.colado .faixa { padding-top: 16px; }
   display: block; font-size: var(--t-base); color: var(--tinta); font-weight: 500;
   line-height: 1.38; margin-top: 3px;
 }
-.cartao-prato .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.cartao-prato .sinais { margin-top: 8px; }
 .cartao-prato > svg { width: 19px; height: 19px; color: var(--tinta-fr); flex: none; }
 .cartao-prato.sem-opcao { cursor: default; }
 .cartao-prato.sem-opcao .nome { color: var(--tinta-fr); font-style: italic; }
@@ -332,7 +376,7 @@ main.colado .faixa { padding-top: 16px; }
 /* ---------- impressão ---------- */
 @media print {
   .trilho, .abas, .topo, .controles, .perfil-tira, .avisos, .creditos,
-  .prato .trocar, .semana-estreita, .cabeca-assistente .linha-apoio { display: none !important; }
+  .semana-estreita, .fica-com-voce, .legenda-grade, .cabeca-assistente .linha-apoio { display: none !important; }
   .semana-larga { display: block !important; }
   main { padding: 0 !important; }
   .faixa { padding: 0 !important; width: 100% !important; }
@@ -343,30 +387,7 @@ main.colado .faixa { padding-top: 16px; }
   .rolagem-grade thead th { background: #eee !important; color: #000 !important; -webkit-print-color-adjust: exact; }
   .rolagem-grade tbody th { background: #f6f6f6 !important; color: #000 !important; -webkit-print-color-adjust: exact; }
   .prato { cursor: default; }
-}
-
-/* ---------- atalho para quem já respondeu o questionário ---------- */
-.atalho-perfil {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin: 14px 22px 0;
-  padding: 13px 15px;
-  border-radius: var(--r-md);
-  background: var(--creme-cl);
-  border: 1px solid var(--creme-md);
-}
-.atalho-perfil .resumo {
-  display: block;
-  font-size: var(--t-sm);
-  color: var(--tinta-sv);
-  margin-top: 3px;
-  line-height: 1.4;
-}
-.atalho-perfil .bt { margin-left: auto; }
-@media (max-width: 560px) {
-  .atalho-perfil .bt { margin-left: 0; width: 100%; }
+  .rolagem-grade thead th:first-child, .rolagem-grade tbody th { position: static; }
 }
 
 .opcoes.uma-coluna { grid-template-columns: 1fr; }
@@ -430,3 +451,64 @@ main.colado .faixa { padding-top: 16px; }
   line-height: 1.55;
   margin-top: 4px;
 }
+
+.legenda-grade {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  font-size: var(--t-sm);
+  color: var(--tinta-fr);
+  line-height: 1.5;
+}
+.legenda-grade svg { width: 15px; height: 15px; color: var(--laranja); flex: none; }
+
+/* ---------- detalhe do prato ---------- */
+.prato-sinais { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 11px; }
+
+.bloco-detalhe { padding: 18px 22px; border-bottom: 1px solid var(--linha-fr); }
+.bloco-detalhe:last-child { border-bottom: none; }
+.bloco-detalhe h3 {
+  font-family: var(--display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--laranja-esc);
+  margin-bottom: 9px;
+}
+#pratoDescricao { font-size: var(--t-base); line-height: 1.62; color: var(--tinta); }
+#pratoDescricao.sem-texto { color: var(--tinta-fr); font-style: italic; font-size: var(--t-md); }
+
+.motivos { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.motivos li {
+  position: relative;
+  padding-left: 20px;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--tinta-sv);
+}
+.motivos li::before {
+  content: "";
+  position: absolute;
+  left: 3px; top: .55em;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--verde);
+}
+.motivos b { color: var(--verde-prof); font-weight: 600; }
+
+#pratoTroca .caixa-filtro {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 14px 22px;
+  margin: 0;
+  background: var(--papel);
+  border-bottom: 1px solid var(--linha);
+}
+
+/* ---------- o quando, no questionário ---------- */
+.quando { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 520px) { .quando { grid-template-columns: 1fr 1fr; } }
+.quando .campo { display: flex; flex-direction: column; }

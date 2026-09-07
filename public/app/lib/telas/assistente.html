@@ -6,7 +6,7 @@
       <h1>A semana montada pelo método do livro</h1>
       <p class="linha-apoio">
         O assistente escolhe dentro das preparações do livro e mostra qual regra
-        do capítulo VI determinou cada prato. Toque em qualquer prato para trocar.
+        do capítulo VI determinou cada prato. Toque em qualquer prato para ver os ingredientes.
       </p>
     </div>
     <div class="perfil-tira" id="perfil"></div>
@@ -53,6 +53,12 @@
     <div class="cartoes-dia" id="cartoesDia"></div>
   </div>
 
+  <p class="legenda-grade">
+    <svg aria-hidden="true"><use href="#i-folha"></use></svg>
+    marca ingrediente na safra do mês. Toque num prato para ver ingredientes, preparo e a
+    regra que o colocou ali.
+  </p>
+
   <section class="conferencia" id="conferencia" aria-label="Conferência das regras do capítulo VI"></section>
 
   <details class="fica-com-voce">
@@ -90,17 +96,7 @@
   <div class="modal-topo">
     <span class="olho">Antes de montar</span>
     <h2 id="perfilTitulo">Me conta sobre o seu serviço</h2>
-    <p id="perfilAjuda">Seis perguntas rápidas. Não são invenção da ferramenta: saem dos
-       fatores que o capítulo VI manda considerar antes de fechar um cardápio.</p>
     <div class="trilha-passos" id="trilhaPassos" aria-hidden="true"></div>
-  </div>
-
-  <div class="atalho-perfil" id="atalhoPerfil" hidden>
-    <div>
-      <span class="olho">Você já respondeu antes</span>
-      <span class="resumo" id="atalhoResumo"></span>
-    </div>
-    <button class="bt bt-verde" id="usarAnterior" type="button">Montar com estas respostas</button>
   </div>
 
   <div class="modal-corpo">
@@ -157,6 +153,25 @@
         <p class="nota">A exclusão lê o nome e a descrição de cada preparação, não uma ficha
            de ingredientes. Confira antes de servir.</p>
       </fieldset>
+      <fieldset class="grupo" data-passo="7" hidden>
+        <legend>Para quando é este cardápio?</legend>
+        <p class="origem">Fator 1.3: o mês define o que está na safra</p>
+        <div class="quando">
+          <div class="campo">
+            <label class="rot" for="mesWizard">Mês</label>
+            <select id="mesWizard"></select>
+          </div>
+          <div class="campo">
+            <label class="rot" for="diasWizard">Quantos dias</label>
+            <select id="diasWizard">
+              <option value="5">5 dias (seg a sex)</option>
+              <option value="6">6 dias</option>
+              <option value="7">7 dias</option>
+            </select>
+          </div>
+        </div>
+        <p class="nota" id="notaSafra"></p>
+      </fieldset>
     </form>
   </div>
 
@@ -167,19 +182,40 @@
   </div>
 </dialog>
 
-<!-- ---------------------------------------------------------- troca -->
-<dialog class="modal" id="dlgTroca" aria-label="Trocar preparação">
+<!-- ------------------------------------------------- detalhe do prato -->
+<dialog class="modal" id="dlgPrato" aria-label="Detalhe do prato">
   <div class="modal-topo">
-    <span class="olho" id="trocaEspaco"></span>
-    <h2 id="trocaAtual"></h2>
-    <p>Outras opções que o assistente considerou para este espaço.</p>
-    <div class="caixa-filtro">
-      <input type="search" id="filtroTroca" placeholder="Filtrar por nome ou ingrediente"
-             autocomplete="off" aria-label="Filtrar as opções">
+    <span class="olho" id="pratoEspaco"></span>
+    <h2 id="pratoNome"></h2>
+    <div class="prato-sinais" id="pratoSinais"></div>
+  </div>
+
+  <div class="modal-corpo">
+    <div id="pratoDetalhe">
+      <section class="bloco-detalhe">
+        <h3>Ingredientes e preparo</h3>
+        <p id="pratoDescricao"></p>
+      </section>
+      <section class="bloco-detalhe">
+        <h3>Por que entrou aqui</h3>
+        <ul class="motivos" id="pratoMotivos"></ul>
+      </section>
+    </div>
+
+    <div id="pratoTroca" hidden>
+      <div class="caixa-filtro">
+        <input type="search" id="filtroTroca" placeholder="Filtrar por nome ou ingrediente"
+               autocomplete="off" aria-label="Filtrar as opções">
+      </div>
+      <div id="trocaLista"></div>
     </div>
   </div>
-  <div class="modal-corpo" id="trocaLista"></div>
-  <div class="modal-pe"><button class="bt bt-sec" type="button" data-fechar>Cancelar</button></div>
+
+  <div class="modal-pe">
+    <button class="bt bt-fantasma esquerda" id="voltarDetalhe" type="button" hidden>Voltar</button>
+    <button class="bt bt-sec" type="button" data-fechar>Fechar</button>
+    <button class="bt bt-prim" id="verOutras" type="button">Ver outras opções</button>
+  </div>
 </dialog>
 
 <!-- ---------------------------------------------------------- salvos -->

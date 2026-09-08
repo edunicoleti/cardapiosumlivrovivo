@@ -20,6 +20,7 @@
 
 <svg class="so-leitor" aria-hidden="true" focusable="false">
 <symbol id="i-casa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.2 12 3.5l9 6.7"/><path d="M5.5 9.4V20h13V9.4"/><path d="M9.8 20v-5.4h4.4V20"/></symbol>
+<symbol id="i-livro-fechado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.4h11.2a1.4 1.4 0 0 1 1.4 1.4v14.4a1.4 1.4 0 0 1-1.4 1.4H6a1.6 1.6 0 0 1-1.6-1.6V5a1.6 1.6 0 0 1 1.6-1.6Z"/><path d="M8.2 3.4v17.2"/></symbol>
 <symbol id="i-livro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5h5.2c1.6 0 2.8 1 2.8 2.4V20c0-1.2-1.1-2-2.6-2H4z"/><path d="M20 4.5h-5.2c-1.6 0-2.8 1-2.8 2.4V20c0-1.2 1.1-2 2.6-2H20z"/></symbol>
 <symbol id="i-cardapio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8.4 3.2v4.9a3 3 0 0 1-6 0V3.2"/><path d="M5.4 11.1v9.7"/><path d="M15.6 20.8V3.2c2.7 1.2 4.2 3.6 4.2 6.4 0 2.5-1.4 4-4.2 4.4"/></symbol>
 <symbol id="i-busca" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.6 15.6 4 4"/></symbol>
@@ -46,9 +47,7 @@
 
   <aside class="trilho">
     <a class="marca" href="/app/">
-      <span class="selo">
-        <img src="/app/assets/livro-capa-mini.png?v={{VERSAO}}" alt="" width="120" height="174">
-      </span>
+      <span class="selo"><svg aria-hidden="true"><use href="#i-livro-fechado"></use></svg></span>
       <span class="nome">Cardápios:<br>um livro vivo<i>Plataforma</i></span>
     </a>
     <nav aria-label="Seções da plataforma">

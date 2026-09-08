@@ -29,7 +29,6 @@ let livro = null
 let secoes = []   // sumário achatado
 let indice = []   // trechos pesquisáveis
 let atual = 0
-let termoAtivo = ''
 let achados = []
 let achadoAtual = 0
 
@@ -244,7 +243,6 @@ function realcar(termo) {
   }
 
   achados = $$('.marca-busca', $('leitura'))
-  termoAtivo = termo
   if (!achados.length) return
   achadoAtual = 0
   irParaAchado(0)
@@ -378,6 +376,12 @@ larguraDesktop.addEventListener('change', (evento) => {
 
 /* ------------------------------------------------------------ início */
 function ligarEventos() {
+  $('abrirLivro').addEventListener('click', () => irParaLeitura(true))
+  $('verSumario').addEventListener('click', () => {
+    irParaLeitura(true)
+    if (!larguraDesktop.matches) setTimeout(() => abrirFolha(), 820)
+  })
+  window.addEventListener('hashchange', aplicarHash)
   let debounce
   const digitou = (origem) => (evento) => {
     clearTimeout(debounce)
@@ -416,6 +420,81 @@ function ligarEventos() {
   })
 }
 
+/* ============================================================ capa
+   Duas telas na mesma pagina: a capa e a leitura. O hash #ler enderessa a
+   leitura, entao o botao Voltar do navegador devolve para a capa em vez de
+   sair da pagina, e um link direto para o livro continua funcionando. */
+let marcaSalva = null
+
+function mostrarTela(qual) {
+  const naCapa = qual === 'capa'
+  $('capaLivro').hidden = !naCapa
+  $('leitorLivro').hidden = naCapa
+  document.querySelector('.barra-progresso').hidden = naCapa
+  // as acoes de leitura nao fazem sentido antes de o livro abrir
+  for (const b of $$('.topo .acoes .bt-icone')) b.hidden = naCapa
+  const titulo = document.querySelector('.topo .titulo')
+  if (naCapa && titulo) titulo.textContent = 'O livro'
+  document.title = naCapa
+    ? 'O livro · Cardápios: Um Livro Vivo'
+    : secoes[atual]?.titulo + ' · Cardápios: Um Livro Vivo'
+}
+
+function pintarCapa() {
+  // so os capitulos numerados: a lista de secoes traz tambem apresentacao,
+  // orientacoes, anexos e referencias, e ai o numero saia 15 em vez de 11
+  const capitulos = (livro.capitulos ?? []).filter((c) => /^[IVX]+[.\s]/.test(c.titulo)).length
+  $('capaNumeros').innerHTML = [
+    [String(capitulos), 'capítulos'],
+    ['2.298', 'preparações'],
+    ['glossário', 'e anexos'],
+  ].map(([n, q]) => `<li><b>${esc(n)}</b> ${esc(q)}</li>`).join('')
+
+  // "continuar" so faz sentido se a pessoa andou de verdade; parada no comeco
+  // da apresentacao, continuar e comecar
+  const andou = marcaSalva && (marcaSalva.i > 0 || (marcaSalva.y || 0) > 200)
+  if (andou && secoes[marcaSalva.i]) {
+    $('abrirLivroRotulo').textContent = 'Continuar lendo'
+    $('capaRetomar').hidden = false
+    $('capaRetomar').innerHTML =
+      `Você parou em <b>${esc(secoes[marcaSalva.i].titulo)}</b>.
+       <button type="button" class="link" id="lerDoInicio">Começar do início</button>`
+    $('lerDoInicio').addEventListener('click', () => {
+      marcaSalva = null
+      abrir(0)
+      irParaLeitura()
+    })
+  }
+}
+
+const semMovimento = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/** Abre a capa como se fosse um livro, e so entao troca de tela. */
+function irParaLeitura(comAnimacao = false) {
+  if (!comAnimacao || semMovimento()) {
+    location.hash = 'ler'
+    return
+  }
+  const capa = $('capaLivro')
+  capa.classList.add('abrindo')
+  setTimeout(() => {
+    location.hash = 'ler'
+    capa.classList.remove('abrindo')
+  }, 780)
+}
+
+function aplicarHash() {
+  if (location.hash.replace(/^#/, '') === 'ler') {
+    mostrarTela('leitura')
+    if (marcaSalva) {
+      if ((marcaSalva.y || 0) > 200 || marcaSalva.i > 0) avisar('Voltamos para onde você parou.')
+      marcaSalva = null
+    }
+    return
+  }
+  mostrarTela('capa')
+}
+
 async function iniciar() {
   aplicarTamanho(memoria.ler(CHAVE_TAMANHO, 'm'))
   ligarEventos()
@@ -441,11 +520,14 @@ async function iniciar() {
 
   const marca = memoria.ler(CHAVE_POSICAO)
   if (marca && Number.isInteger(marca.i) && secoes[marca.i] && marca.titulo === secoes[marca.i].titulo) {
+    marcaSalva = marca
     abrir(marca.i, '', marca.y || 0)
-    if ((marca.y || 0) > 200 || marca.i > 0) avisar('Voltamos para onde você parou.')
   } else {
     abrir(0)
   }
+
+  pintarCapa()
+  aplicarHash()
 }
 
 function falhar(recado) {

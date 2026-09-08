@@ -574,17 +574,18 @@ function pintarForma() {
 function pintarMeses() {
   $('meses').innerHTML = MESES.map(([v, n]) => {
     const on = estado.mes === v
+    const qt = itensNaSafra(v).length
     return `<button class="chip-mes" type="button" role="radio" aria-checked="${on}"
-      tabindex="${on ? 0 : -1}" data-mes="${v}" aria-label="${esc(n)}, ${itensNaSafra(v).length} itens na safra">
+      tabindex="${on ? 0 : -1}" data-mes="${v}" aria-label="${esc(n)}, ${qt} itens na safra">
       <span class="m">${esc(n.slice(0, 3))}</span>
-      <span class="q">${itensNaSafra(v).length}</span>
+      <span class="q"><svg aria-hidden="true"><use href="#i-folha"></use></svg>${qt}</span>
     </button>`
   }).join('')
 }
 
 function pintarDiasOpcao() {
-  $('diasOpcao').innerHTML = [[5, '5 dias', 'Segunda a sexta'], [6, '6 dias', 'Inclui sábado'],
-    [7, '7 dias', 'Semana inteira']].map(([v, rot, desc]) => {
+  $('diasOpcao').innerHTML = [[5, '5 dias', 'De segunda a sexta'], [6, '6 dias', 'Inclui o sábado'],
+    [7, '7 dias', 'A semana inteira']].map(([v, rot, desc]) => {
     const on = estado.dias === v
     return `<button class="chip-dia" type="button" role="radio" aria-checked="${on}"
       tabindex="${on ? 0 : -1}" data-dias="${v}">

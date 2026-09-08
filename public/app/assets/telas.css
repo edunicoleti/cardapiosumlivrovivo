@@ -133,20 +133,22 @@
 .faixa.estreita-media { --faixa: 1180px; }
 
 .abertura { padding: 6px 0 30px; }
-.abertura h1 { margin: 9px 0 10px; max-width: 20ch; }
+.abertura h1 { margin: 9px 0 10px; max-width: 26ch; }
 .abertura .linha-apoio { font-size: 1.05rem; }
 
 .destinos { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
 @media (min-width: 1180px) { .destinos { grid-template-columns: 1fr 1fr; } }
 
+/* Sobre o creme com as ilustracoes ao fundo, borda fina e sombra minima
+   sumiam: nao dava para ver que sao dois destinos clicaveis. */
 .destino {
   display: grid;
   grid-template-columns: 1fr;
   overflow: hidden;
   background: var(--branco);
-  border: 1px solid var(--linha);
+  border: 1px solid var(--creme-md);
   border-radius: var(--r-xl);
-  box-shadow: var(--sombra-1);
+  box-shadow: var(--sombra-2);
   color: inherit;
   transition: transform var(--mov), box-shadow var(--mov), border-color var(--mov);
 }
@@ -155,11 +157,12 @@
 @media (min-width: 1180px) and (max-width: 1420px) { .destino { grid-template-columns: 1fr; } }
 
 .destino:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--sombra-3);
-  border-color: var(--creme-md);
+  border-color: var(--verde);
   color: inherit;
 }
+.destino:focus-visible { outline: 2px solid var(--laranja); outline-offset: 3px; }
 
 .destino .ilustra {
   position: relative;
@@ -237,13 +240,20 @@
 .destino .seta {
   margin-left: auto;
   flex: none;
-  width: 36px; height: 36px;
-  display: grid; place-items: center;
-  border-radius: 50%;
-  background: var(--creme-cl);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 6px 0 14px;
+  border-radius: var(--r-pill);
+  background: var(--creme);
   color: var(--verde-prof);
+  font-family: var(--corpo);
+  font-size: var(--t-sm);
+  font-weight: 600;
   transition: background var(--mov-rap), transform var(--mov-rap), color var(--mov-rap);
 }
+.destino .seta::before { content: "Abrir"; }
 .destino .seta svg { width: 17px; height: 17px; }
 .destino:hover .seta { background: var(--verde-prof); color: #fff; transform: translateX(3px); }
 .destino.laranja:hover .seta { background: var(--laranja); }
@@ -349,9 +359,16 @@ main.legado .cartao a.acao:hover { background: var(--laranja-esc); color: #fff; 
 .casca.limpa main.nu { padding: 0; }
 .casca.limpa .palco { background: none; }
 
-/* marcador discreto da visita por convite, no rodape do trilho */
+/* Marcador da visita por convite. As cores vinham do trilho verde escuro: no
+   creme, laranja sobre laranja claro ficava ilegivel. */
 .trilho .quem.convidado {
-  background: rgba(237, 134, 39, .16);
-  border-color: rgba(237, 134, 39, .3);
+  background: var(--laranja-cl);
+  border-color: #F0D3AE;
 }
-.trilho .quem.convidado .sair { color: #E8B98A; }
+.trilho .quem.convidado .inicial {
+  background: var(--branco);
+  border: 1px solid #F0D3AE;
+  color: var(--laranja-esc);
+}
+.trilho .quem.convidado .nome { color: var(--laranja-esc); }
+.trilho .quem.convidado .sair { color: #A9793E; }

@@ -18,6 +18,7 @@
   --laranja-esc: #B85F10;
   --laranja-cl: #FDF1E3;
 
+  --verde-cl: #EAF3EE;   /* fundo do que esta selecionado */
   --creme: #EEF0D2;
   --creme-cl: #F7F8EC;
   --creme-md: #E2E5BE;
@@ -57,6 +58,8 @@
   --sombra-2: 0 2px 4px rgba(31, 75, 62, .05), 0 8px 20px -8px rgba(31, 75, 62, .16);
   --sombra-3: 0 4px 8px rgba(31, 75, 62, .06), 0 20px 44px -16px rgba(31, 75, 62, .26);
   --sombra-4: 0 24px 70px -20px rgba(22, 54, 44, .38);
+  /* anel do selecionado: marca a escolha sem encher o cartao de tinta */
+  --anel: 0 0 0 3px rgba(68, 141, 118, .17);
 
   /* --- movimento --- */
   --mov: 200ms cubic-bezier(.22, 1, .36, 1);
@@ -156,13 +159,17 @@ img { max-width: 100%; }
   mask: url("/id-visual-livro-vivo-06.svg") center / contain no-repeat;
 }
 
+/* alinhado pelo topo de proposito: centralizado, o selo subia e descia quando
+   a League Spartan terminava de carregar e o bloco de texto mudava de altura,
+   e a troca aparecia como "o icone muda de lugar entre as paginas" */
 .trilho .marca {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 11px;
   padding: 4px 8px 0;
   color: var(--verde-prof);
+  min-height: 56px;
 }
 .trilho .marca:hover { color: var(--verde-noite); }
 .trilho .marca .selo {
@@ -174,6 +181,7 @@ img { max-width: 100%; }
   box-shadow: 0 3px 10px -3px rgba(31, 75, 62, .5);
 }
 .trilho .marca .selo svg { width: 21px; height: 21px; }
+.trilho .marca .nome { padding-top: 1px; }
 .trilho .marca .nome {
   font-family: var(--display);
   font-size: .96rem;
@@ -220,15 +228,25 @@ img { max-width: 100%; }
 }
 .item:hover { background: rgba(255, 255, 255, .62); color: var(--verde-prof); }
 .item:hover svg { background: #fff; transform: translateY(-1px); }
+/* sem sombra: o que diz "voce esta aqui" e a barra laranja na borda e a
+   pastilha verde do icone, nao um cartao levantado da tela */
 .item[aria-current="page"] {
+  position: relative;
   background: var(--branco);
   border-color: var(--creme-md);
   color: var(--verde-prof);
   font-weight: 600;
-  box-shadow: var(--sombra-2);
+}
+.item[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: -1px; top: 12px; bottom: 12px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--laranja);
 }
 .item[aria-current="page"] svg {
-  background: linear-gradient(150deg, var(--laranja), var(--laranja-esc));
+  background: linear-gradient(150deg, var(--verde), var(--verde-prof));
   color: #fff;
 }
 .item .desc {
@@ -447,6 +465,12 @@ main.colado { padding-top: 0; }
 /* ==========================================================================
    Peças reutilizáveis
    ========================================================================== */
+
+/* balance corta a viuva do titulo: "O livro e o assistente, no / mesmo lugar"
+   deixava um "no" pendurado no fim da primeira linha. pretty faz o mesmo com o
+   paragrafo, evitando a ultima linha com uma palavra so. */
+h1, h2, h3, h4, legend { text-wrap: balance; }
+p, li, .opt-desc, .linha-apoio, .origem, .nota { text-wrap: pretty; }
 
 h1, h2, h3, h4 { font-family: var(--display); color: var(--verde-prof); line-height: 1.18; }
 h1 { font-size: var(--t-2xl); font-weight: 700; letter-spacing: -.018em; }

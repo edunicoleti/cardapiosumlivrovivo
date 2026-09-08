@@ -23,7 +23,7 @@ main.colado .faixa { padding-top: 16px; }
   text-align: center;
   padding-bottom: 6px;
 }
-.abertura-topo h1 { margin: 12px auto 14px; max-width: 18ch; }
+.abertura-topo h1 { margin: 12px auto 14px; max-width: 24ch; }
 .abertura-topo .linha-apoio { font-size: 1.04rem; margin-inline: auto; }
 
 .abertura-acao {
@@ -260,7 +260,10 @@ main.colado .faixa { padding-top: 16px; }
 .rot-campo:first-of-type { margin-top: 0; }
 
 /* --- cartao de opcao --- */
-.opcoes { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(238px, 1fr)); }
+/* 300px de minimo: com 238 cabiam quatro colunas e sobravam 165px para o
+   texto, entao "Empresa, industria, hospital" quebrava em duas linhas dentro de
+   um cartao que tinha espaco de sobra. */
+.opcoes { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .opcoes.larga { grid-template-columns: 1fr; margin-top: 12px; }
 @media (max-width: 480px) { .opcoes { grid-template-columns: 1fr; } }
 
@@ -272,7 +275,7 @@ main.colado .faixa { padding-top: 16px; }
   border: 1px solid var(--linha);
   background: var(--branco);
   border-radius: var(--r-md);
-  padding: 16px 42px 16px 16px;
+  padding: 16px 18px;
   cursor: pointer;
   font-family: var(--corpo);
   text-align: left;
@@ -298,32 +301,39 @@ main.colado .faixa { padding-top: 16px; }
   display: block; font-size: var(--t-sm); font-weight: 400; color: var(--tinta-fr);
   margin-top: 4px; line-height: 1.45;
 }
+/* no canto e fora do fluxo: reservar uma coluna de 42px para ela era o que
+   apertava o texto */
 .opt-marca {
   position: absolute;
-  top: 50%; right: 14px;
-  transform: translateY(-50%) scale(.6);
-  width: 22px; height: 22px;
+  top: 10px; right: 10px;
+  transform: scale(.5);
+  width: 21px; height: 21px;
   display: grid; place-items: center;
   border-radius: 50%;
-  background: var(--laranja);
+  background: var(--verde);
   color: #fff;
   opacity: 0;
   transition: opacity var(--mov-rap), transform var(--mov-rap);
 }
-.opt-marca svg { width: 13px; height: 13px; }
+.opt-marca svg { width: 12px; height: 12px; }
 
+/* Escolhido = fundo verde claro, borda verde e um anel. O bloco verde escuro
+   pesava numa interface que e toda creme e branco, e com quatro cartoes
+   marcados a tela virava um tabuleiro escuro. */
 .opt[aria-pressed="true"], .opt[aria-checked="true"] {
-  border-color: var(--verde-prof);
-  background: linear-gradient(150deg, var(--verde-prof), var(--verde-noite));
-  box-shadow: var(--sombra-2);
+  border-color: var(--verde);
+  background: var(--verde-cl);
+  box-shadow: var(--anel);
 }
-.opt[aria-pressed="true"] .opt-rot, .opt[aria-checked="true"] .opt-rot { color: #fff; }
-.opt[aria-pressed="true"] .opt-desc, .opt[aria-checked="true"] .opt-desc { color: #9FC4B6; }
+.opt[aria-pressed="true"] .opt-rot, .opt[aria-checked="true"] .opt-rot {
+  color: var(--verde-prof); font-weight: 700;
+}
+.opt[aria-pressed="true"] .opt-desc, .opt[aria-checked="true"] .opt-desc { color: var(--tinta-sv); }
 .opt[aria-pressed="true"] .opt-icone, .opt[aria-checked="true"] .opt-icone {
-  background: rgba(238, 240, 210, .16); color: var(--creme);
+  background: linear-gradient(150deg, var(--verde), var(--verde-prof)); color: #fff;
 }
 .opt[aria-pressed="true"] .opt-marca, .opt[aria-checked="true"] .opt-marca {
-  opacity: 1; transform: translateY(-50%) scale(1);
+  opacity: 1; transform: scale(1);
 }
 
 /* --- volume --- */
@@ -412,13 +422,24 @@ main.colado .faixa { padding-top: 16px; }
 }
 @keyframes entrar { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-/* --- meses e dias --- */
-.meses { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
-@media (max-width: 560px) { .meses { grid-template-columns: repeat(4, 1fr); } }
+/* --- meses e dias ---
+   Os dois grupos moram na mesma grade de seis colunas: antes o mes vinha em
+   seis e o dia em tres, com gaps diferentes, e as bordas nao batiam. */
+.meses, .dias-opcao {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 9px;
+}
+.dias-opcao > * { grid-column: span 2; }
+@media (max-width: 620px) {
+  .meses, .dias-opcao { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .dias-opcao > * { grid-column: span 1; }
+}
+
 .chip-mes {
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-  min-height: 60px;
-  padding: 10px 4px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  min-height: 62px;
+  padding: 9px 4px;
   border: 1px solid var(--linha);
   background: var(--branco);
   border-radius: var(--r-md);
@@ -427,23 +448,27 @@ main.colado .faixa { padding-top: 16px; }
   transition: all var(--mov-rap);
 }
 .chip-mes .m {
-  font-family: var(--display); font-size: var(--t-sm); font-weight: 600; color: var(--tinta);
+  font-family: var(--display); font-size: var(--t-md); font-weight: 600; color: var(--tinta);
+  line-height: 1;
 }
+/* o numero sozinho nao dizia nada; agora vem com a folha da safra, que e o
+   mesmo simbolo usado na grade do cardapio, e com legenda acima da grade */
 .chip-mes .q {
+  display: inline-flex; align-items: center; gap: 3px;
   font-size: var(--t-xs); color: var(--tinta-fr); font-variant-numeric: tabular-nums;
 }
+.chip-mes .q svg { width: 11px; height: 11px; color: var(--laranja); }
 .chip-mes:hover { border-color: var(--verde); background: var(--papel); }
 .chip-mes[aria-checked="true"] {
-  background: var(--verde-prof); border-color: var(--verde-prof); box-shadow: var(--sombra-2);
+  background: var(--verde-cl); border-color: var(--verde); box-shadow: var(--anel);
 }
-.chip-mes[aria-checked="true"] .m { color: #fff; }
-.chip-mes[aria-checked="true"] .q { color: var(--laranja); font-weight: 600; }
+.chip-mes[aria-checked="true"] .m { color: var(--verde-prof); font-weight: 700; }
+.chip-mes[aria-checked="true"] .q { color: var(--laranja-esc); font-weight: 600; }
 
-.dias-opcao { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .chip-dia {
-  display: flex; flex-direction: column; gap: 3px;
-  min-height: 66px;
-  padding: 12px 14px;
+  display: flex; flex-direction: column; justify-content: center; gap: 3px;
+  min-height: 62px;
+  padding: 11px 14px;
   border: 1px solid var(--linha);
   background: var(--branco);
   border-radius: var(--r-md);
@@ -455,9 +480,23 @@ main.colado .faixa { padding-top: 16px; }
 .chip-dia .m { font-family: var(--display); font-size: var(--t-md); font-weight: 600; color: var(--tinta); }
 .chip-dia .q { font-size: var(--t-xs); color: var(--tinta-fr); }
 .chip-dia:hover { border-color: var(--verde); background: var(--papel); }
-.chip-dia[aria-checked="true"] { background: var(--verde-prof); border-color: var(--verde-prof); }
-.chip-dia[aria-checked="true"] .m { color: #fff; }
-.chip-dia[aria-checked="true"] .q { color: #9FC4B6; }
+.chip-dia[aria-checked="true"] {
+  background: var(--verde-cl); border-color: var(--verde); box-shadow: var(--anel);
+}
+.chip-dia[aria-checked="true"] .m { color: var(--verde-prof); font-weight: 700; }
+.chip-dia[aria-checked="true"] .q { color: var(--tinta-sv); }
+
+/* rotulo com a explicacao junto, para o numero do chip fazer sentido */
+.rot-campo .pista {
+  display: inline;
+  font-family: var(--corpo);
+  font-size: var(--t-xs);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--tinta-fr);
+  margin-left: 8px;
+}
 
 /* --- revisao --- */
 .revisao { display: flex; flex-direction: column; gap: 1px; background: var(--linha-fr);
@@ -568,11 +607,13 @@ main.colado .faixa { padding-top: 16px; }
   color: var(--tinta-sv);
   white-space: nowrap;
 }
+/* verde escuro solido aqui repetia o peso que saiu dos cartoes; o tom claro com
+   borda verde e negrito ja separa o nome do servico do resto das fichas */
 .ficha.forte {
-  background: var(--verde-prof);
-  border-color: var(--verde-prof);
-  color: #fff;
-  font-weight: 600;
+  background: var(--verde-cl);
+  border-color: var(--verde);
+  color: var(--verde-prof);
+  font-weight: 700;
 }
 .ficha.mais { background: #EAF2ED; border-color: #C7DDCC; color: var(--verde-esc); }
 .ficha.mais::before { content: "+"; font-weight: 700; opacity: .7; }

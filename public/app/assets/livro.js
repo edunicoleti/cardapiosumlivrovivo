@@ -376,10 +376,10 @@ larguraDesktop.addEventListener('change', (evento) => {
 
 /* ------------------------------------------------------------ início */
 function ligarEventos() {
-  $('abrirLivro').addEventListener('click', () => irParaLeitura(true))
+  $('abrirLivro').addEventListener('click', irParaLeitura)
   $('verSumario').addEventListener('click', () => {
-    irParaLeitura(true)
-    if (!larguraDesktop.matches) setTimeout(() => abrirFolha(), 820)
+    irParaLeitura()
+    if (!larguraDesktop.matches) setTimeout(abrirFolha, 60)
   })
   window.addEventListener('hashchange', aplicarHash)
   let debounce
@@ -450,38 +450,12 @@ function pintarCapa() {
     ['glossário', 'e anexos'],
   ].map(([n, q]) => `<li><b>${esc(n)}</b> ${esc(q)}</li>`).join('')
 
-  // "continuar" so faz sentido se a pessoa andou de verdade; parada no comeco
-  // da apresentacao, continuar e comecar
-  const andou = marcaSalva && (marcaSalva.i > 0 || (marcaSalva.y || 0) > 200)
-  if (andou && secoes[marcaSalva.i]) {
-    $('abrirLivroRotulo').textContent = 'Continuar lendo'
-    $('capaRetomar').hidden = false
-    $('capaRetomar').innerHTML =
-      `Você parou em <b>${esc(secoes[marcaSalva.i].titulo)}</b>.
-       <button type="button" class="link" id="lerDoInicio">Começar do início</button>`
-    $('lerDoInicio').addEventListener('click', () => {
-      marcaSalva = null
-      abrir(0)
-      irParaLeitura()
-    })
-  }
 }
 
-const semMovimento = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-/** Abre a capa como se fosse um livro, e so entao troca de tela. */
-function irParaLeitura(comAnimacao = false) {
-  if (!comAnimacao || semMovimento()) {
-    location.hash = 'ler'
-    return
-  }
-  const capa = $('capaLivro')
-  capa.classList.add('abrindo')
-  setTimeout(() => {
-    location.hash = 'ler'
-    capa.classList.remove('abrindo')
-  }, 780)
-}
+/* Sem escolha na capa: abrir leva para onde a pessoa parou, e o recado de
+   sempre avisa que voltamos para la. Perguntar "continuar ou comecar do
+   inicio" na porta do livro era uma decisao a mais para uma coisa so. */
+const irParaLeitura = () => { location.hash = 'ler' }
 
 function aplicarHash() {
   if (location.hash.replace(/^#/, '') === 'ler') {

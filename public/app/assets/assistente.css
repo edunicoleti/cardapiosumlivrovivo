@@ -17,25 +17,26 @@ main.colado .faixa { padding-top: 16px; }
    mockup de exemplo e os três cartões de número disputavam atenção com isso.
    ========================================================================== */
 
-.abertura-topo {
-  max-width: 780px;
-  margin: 10px auto 0;
-  text-align: center;
-  padding-bottom: 6px;
-}
-/* largura sob medida para o titulo caber numa linha so e o apoio em duas */
-.abertura-topo h1 { margin: 12px auto 16px; max-width: none; }
-.abertura-topo .linha-apoio {
-  font-size: 1.04rem;
-  max-width: 66ch;
-  margin-inline: auto;
-}
+/* alinhado a esquerda como as outras telas: centrado, era a unica pagina fora
+   do padrao */
+.abertura-topo { max-width: 780px; padding-bottom: 6px; }
+.abertura-topo h1 { margin: 12px 0 16px; max-width: none; }
+.abertura-topo .linha-apoio { font-size: 1.04rem; max-width: 66ch; }
 
-.abertura-acao {
-  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 26px;
-}
+.abertura-acao { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
 .bt-grande { min-height: 52px; padding: 12px 26px; font-size: 1.02rem; }
 @media (max-width: 560px) { .abertura-acao .bt { flex: 1 1 100%; } }
+
+/* a tela toda ocupa a altura disponivel e distribui: colada no topo sobrava um
+   vazio grande embaixo */
+@media (min-width: 1024px) {
+  .abertura-assistente {
+    min-height: calc(100dvh - 94px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
 
 /* --- como funciona --- */
 .como-funciona { margin-top: 42px; }

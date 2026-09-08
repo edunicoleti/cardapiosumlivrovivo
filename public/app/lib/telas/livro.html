@@ -6,15 +6,10 @@
 <section class="capa-livro" id="capaLivro">
   <div class="capa-miolo">
 
-    <div class="capa-arte">
-      <div class="livro3d" id="livro3d">
-        <span class="livro3d-paginas" aria-hidden="true"></span>
-        <span class="livro3d-capa">
-          <img src="/app/assets/livro-capa.png" alt="Capa de Cardápios: um livro vivo"
-               width="460" height="667">
-        </span>
-      </div>
-    </div>
+    <figure class="capa-arte">
+      <img src="/app/assets/livro-capa.png" alt="Capa de Cardápios: um livro vivo"
+           width="460" height="667">
+    </figure>
 
     <div class="capa-texto">
       <span class="olho">Livro completo</span>
@@ -29,14 +24,12 @@
 
       <div class="capa-acao">
         <button class="bt bt-prim bt-grande" id="abrirLivro" type="button">
-          <svg aria-hidden="true"><use href="#i-livro"></use></svg>
-          <span id="abrirLivroRotulo">Abrir o livro</span>
+          <svg aria-hidden="true"><use href="#i-livro"></use></svg>Abrir o livro
         </button>
         <button class="bt bt-sec" id="verSumario" type="button">
           <svg aria-hidden="true"><use href="#i-lista"></use></svg>Ver o sumário
         </button>
       </div>
-      <p class="capa-retomar" id="capaRetomar" hidden></p>
 
       <ul class="capa-numeros" id="capaNumeros"></ul>
     </div>
@@ -45,13 +38,14 @@
 
   <aside class="capa-autora-bloco">
     <img class="retrato" src="/app/imagem.php?f=02-Lucia.jpg" alt="Lúcia Chaise Borjes"
-         loading="lazy" width="200" height="200">
-    <div>
+         loading="lazy" width="320" height="320">
+    <div class="capa-autora-texto">
       <span class="olho">Sobre a autora</span>
+      <h2>Lúcia Chaise Borjes</h2>
       <p>
-        <b>Lúcia Chaise Borjes</b> é nutricionista e escreveu este livro a partir da
-        prática em unidades de alimentação e nutrição. O conteúdo não é definitivo:
-        evolui com as ideias e as dúvidas de quem lê, e é por isso que ele é vivo.
+        Nutricionista, escreveu este livro a partir da prática em unidades de alimentação
+        e nutrição. O conteúdo não é definitivo: evolui com as ideias e as dúvidas de quem
+        lê, e é por isso que ele é vivo.
       </p>
     </div>
   </aside>

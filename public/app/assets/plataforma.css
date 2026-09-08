@@ -159,17 +159,19 @@ img { max-width: 100%; }
   mask: url("/id-visual-livro-vivo-06.svg") center / contain no-repeat;
 }
 
-/* alinhado pelo topo de proposito: centralizado, o selo subia e descia quando
-   a League Spartan terminava de carregar e o bloco de texto mudava de altura,
-   e a troca aparecia como "o icone muda de lugar entre as paginas" */
+/* Caixa de altura FIXA com o selo centrado nela. Enquanto a altura vinha do
+   texto, ela mudava quando a League Spartan terminava de carregar, e o selo
+   ia junto: era o "icone muda de lugar entre as paginas". Aqui nada depende da
+   metrica da fonte, nem a altura da caixa nem a do texto (line-height em px). */
 .trilho .marca {
   position: relative;
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
   gap: 11px;
-  padding: 4px 8px 0;
+  padding: 0 8px;
+  height: 56px;
   color: var(--verde-prof);
-  min-height: 56px;
 }
 .trilho .marca:hover { color: var(--verde-noite); }
 .trilho .marca .selo {
@@ -181,12 +183,11 @@ img { max-width: 100%; }
   box-shadow: 0 3px 10px -3px rgba(31, 75, 62, .5);
 }
 .trilho .marca .selo svg { width: 21px; height: 21px; }
-.trilho .marca .nome { padding-top: 1px; }
 .trilho .marca .nome {
   font-family: var(--display);
-  font-size: .96rem;
+  font-size: 15px;
   font-weight: 700;
-  line-height: 1.18;
+  line-height: 17px;
   letter-spacing: -.005em;
 }
 .trilho .marca .nome i {
@@ -197,8 +198,10 @@ img { max-width: 100%; }
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--laranja-esc);
-  margin-top: 3px;
+  color: var(--tinta-fr);
+  font-size: 10px;
+  line-height: 13px;
+  margin-top: 2px;
 }
 
 .trilho nav { position: relative; display: flex; flex-direction: column; gap: 4px; }
@@ -226,24 +229,16 @@ img { max-width: 100%; }
   color: var(--verde-esc);
   transition: background var(--mov-rap), color var(--mov-rap), transform var(--mov);
 }
-.item:hover { background: rgba(255, 255, 255, .62); color: var(--verde-prof); }
-.item:hover svg { background: #fff; transform: translateY(-1px); }
-/* sem sombra: o que diz "voce esta aqui" e a barra laranja na borda e a
-   pastilha verde do icone, nao um cartao levantado da tela */
+.item:hover { background: rgba(255, 255, 255, .5); color: var(--verde-prof); }
+.item:hover svg { background: #fff; }
+/* Minimalista de proposito: nem cartao branco, nem borda, nem sombra, nem
+   barra. Quem diz "voce esta aqui" e a pastilha verde do icone e o peso do
+   texto; o fundo e so um leve realce. */
 .item[aria-current="page"] {
-  position: relative;
-  background: var(--branco);
-  border-color: var(--creme-md);
+  background: rgba(255, 255, 255, .72);
+  border-color: transparent;
   color: var(--verde-prof);
   font-weight: 600;
-}
-.item[aria-current="page"]::before {
-  content: "";
-  position: absolute;
-  left: -1px; top: 12px; bottom: 12px;
-  width: 3px;
-  border-radius: 0 3px 3px 0;
-  background: var(--laranja);
 }
 .item[aria-current="page"] svg {
   background: linear-gradient(150deg, var(--verde), var(--verde-prof));

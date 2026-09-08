@@ -409,16 +409,6 @@ const itensNaSafra = (v) => (base?.sazonalidade ?? []).filter((s) => s.meses.inc
 
 /* ==================================================== 1. apresentação */
 
-function pintarNumeros() {
-  const total = base.meta?.totalReal ?? base.preparacoes.length
-  const categorias = new Set(base.preparacoes.map((p) => p.categoria)).size
-  $('numerosAcervo').innerHTML = [
-    [total.toLocaleString('pt-BR'), 'preparações'],
-    [String(categorias), 'categorias'],
-    [String(base.sazonalidade.length), 'itens com safra'],
-  ].map(([n, q]) => `<li><b>${esc(n)}</b> ${esc(q)}</li>`).join('')
-}
-
 /* ========================================================== 2. wizard */
 
 const PASSOS = [
@@ -1335,15 +1325,14 @@ async function iniciar() {
   $('mes').value = estado.mes
   $('dias').value = String(estado.dias)
 
-  pintarNumeros()
   aplicarHash()
 }
 
 function falhar(recado) {
   // sem acervo não há tela nenhuma para mostrar: o recado vai para a abertura,
   // que é onde a pessoa está quando isso acontece
-  $('numerosAcervo').outerHTML = `<div class="recado erro">
-    <svg aria-hidden="true"><use href="#i-atencao"></use></svg><span>${esc(recado)}</span></div>`
+  $('comecar').insertAdjacentHTML('afterend', `<p class="recado erro">
+    <svg aria-hidden="true"><use href="#i-atencao"></use></svg><span>${esc(recado)}</span></p>`)
   $('comecar').disabled = true
 }
 

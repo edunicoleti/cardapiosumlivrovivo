@@ -18,45 +18,24 @@ main.colado .faixa { padding-top: 16px; }
    ========================================================================== */
 
 .abertura-topo {
-  max-width: 62ch;
-  margin: 8px auto 0;
+  max-width: 780px;
+  margin: 10px auto 0;
   text-align: center;
   padding-bottom: 6px;
 }
-.abertura-topo h1 { margin: 12px auto 14px; max-width: 24ch; }
-.abertura-topo .linha-apoio { font-size: 1.04rem; margin-inline: auto; }
+/* largura sob medida para o titulo caber numa linha so e o apoio em duas */
+.abertura-topo h1 { margin: 12px auto 16px; max-width: none; }
+.abertura-topo .linha-apoio {
+  font-size: 1.04rem;
+  max-width: 66ch;
+  margin-inline: auto;
+}
 
 .abertura-acao {
   display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 26px;
 }
 .bt-grande { min-height: 52px; padding: 12px 26px; font-size: 1.02rem; }
 @media (max-width: 560px) { .abertura-acao .bt { flex: 1 1 100%; } }
-
-.abertura-tempo {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  margin-top: 14px; font-size: var(--t-sm); color: var(--tinta-fr);
-}
-.abertura-tempo svg { width: 15px; height: 15px; flex: none; color: var(--verde); }
-
-/* Os números do acervo em uma linha: são credencial, não conteúdo. */
-.numeros-linha {
-  list-style: none;
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 8px 22px;
-  margin: 22px 0 0;
-  padding: 16px 0 0;
-  border-top: 1px solid var(--linha);
-  font-size: var(--t-sm);
-  color: var(--tinta-fr);
-}
-.numeros-linha b {
-  font-family: var(--display);
-  font-size: 1.06rem;
-  font-weight: 700;
-  color: var(--verde-prof);
-  font-variant-numeric: tabular-nums;
-  margin-right: 3px;
-}
 
 /* --- como funciona --- */
 .como-funciona { margin-top: 42px; }
@@ -70,8 +49,7 @@ main.colado .faixa { padding-top: 16px; }
   margin: 0;
   padding: 0;
 }
-@media (min-width: 640px) { .cartoes-passo { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 1080px) { .cartoes-passo { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 760px) { .cartoes-passo { grid-template-columns: repeat(3, 1fr); } }
 
 .cartao-passo {
   position: relative;
@@ -87,41 +65,35 @@ main.colado .faixa { padding-top: 16px; }
 }
 .cartao-passo:hover { box-shadow: var(--sombra-2); transform: translateY(-2px); border-color: var(--creme-md); }
 
+/* A bolinha laranja no canto do icone parecia notificacao, e o rodape laranja
+   competia com o unico laranja que importa na tela, o botao de montar. O passo
+   agora e um numero em verde, dentro do proprio cartao. */
 .passo-marca {
-  position: relative;
-  width: 44px; height: 44px;
-  display: grid; place-items: center;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--verde-esc);
+  margin-bottom: 10px;
+}
+.passo-marca svg {
+  width: 22px; height: 22px;
+  box-sizing: content-box;
+  padding: 11px;
   border-radius: 13px;
   background: linear-gradient(150deg, #EDF3EE, var(--creme));
   color: var(--verde-prof);
-  margin-bottom: 6px;
 }
-.passo-marca svg { width: 22px; height: 22px; }
 .passo-marca i {
-  position: absolute;
-  top: -7px; right: -7px;
-  width: 21px; height: 21px;
-  display: grid; place-items: center;
-  border-radius: 50%;
-  background: var(--laranja);
-  color: #fff;
   font-family: var(--display);
   font-style: normal;
   font-size: var(--t-xs);
   font-weight: 700;
-  border: 2px solid var(--papel);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--tinta-fr);
 }
-.cartao-passo h3 { font-size: var(--t-base); color: var(--verde-prof); }
-.cartao-passo p { font-size: var(--t-sm); color: var(--tinta-sv); line-height: 1.58; }
-.passo-regra {
-  margin-top: auto;
-  padding-top: 13px;
-  border-top: 1px solid var(--linha-fr);
-  font-size: var(--t-xs);
-  letter-spacing: .02em;
-  color: var(--laranja-esc);
-  font-weight: 600;
-}
+.cartao-passo h3 { font-size: var(--t-lg); color: var(--verde-prof); }
+.cartao-passo p { font-size: var(--t-md); color: var(--tinta-sv); line-height: 1.6; }
 
 /* ==========================================================================
    2. Wizard na página

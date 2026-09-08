@@ -83,10 +83,12 @@ http.createServer((req, res) => {
   }
 
   if (p === '/app/imagem.php') {
-    const id = u.searchParams.get('id') || ''
+    // o app usa ?f=<arquivo>; ?id= era chute meu e deixava o livro sem imagem
+    const id = u.searchParams.get('f') || u.searchParams.get('id') || ''
     const alvo = path.join(APP, 'acervo/imagens', path.basename(id))
     if (id && fs.existsSync(alvo) && fs.statSync(alvo).isFile()) {
-      res.writeHead(200, { 'Content-Type': 'image/png' })
+      const tipo = TIPOS[path.extname(alvo).toLowerCase()] || 'image/jpeg'
+      res.writeHead(200, { 'Content-Type': tipo })
       fs.createReadStream(alvo).pipe(res).on('error', () => res.end()); return
     }
     res.writeHead(404).end(); return

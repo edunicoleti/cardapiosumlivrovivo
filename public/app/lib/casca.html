@@ -66,6 +66,7 @@
       <span class="selo"><svg aria-hidden="true"><use href="#i-livro-fechado"></use></svg></span>
       <span class="nome">Cardápios:<br>um livro vivo<i>Plataforma</i></span>
     </a>
+    <span class="folhagem-trilho" aria-hidden="true"></span>
     <nav aria-label="Seções da plataforma">
       {{NAV_TRILHO}}
     </nav>
@@ -75,6 +76,16 @@
   </aside>
 
   <div class="palco">
+
+    <!-- As mesmas ilustracoes da identidade do livro que a landing page usa no
+         hero, aqui como fundo: mascara em CSS para pegar a cor da marca sem
+         filtro de matiz, e flutuacao em keyframes para nao precisar de
+         biblioteca de animacao. Fica preso na tela com sticky + margem
+         negativa, entao acompanha a rolagem sem ocupar altura. -->
+    <div class="decor" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+
     <header class="topo">
       <span class="titulo">{{TOPO_TITULO}}</span>
       <div class="acoes">{{TOPO_ACOES}}</div>

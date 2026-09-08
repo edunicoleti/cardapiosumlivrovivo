@@ -121,36 +121,57 @@ img { max-width: 100%; }
   grid-template-columns: 1fr;
 }
 
-/* ---------- trilho lateral ---------- */
+/* ---------- trilho lateral ----------
+   Era um bloco verde escuro de 268px, que pesava mais que o conteudo e nao
+   tinha nada a ver com o creme da landing page. Agora e do mesmo creme, com o
+   verde reservado para o que esta selecionado. */
 .trilho {
   display: none;
   grid-area: trilho;
-  background: linear-gradient(168deg, var(--verde-prof) 0%, var(--verde-noite) 100%);
-  color: #fff;
-  padding: 22px 16px calc(18px + var(--seguro-b));
+  position: relative;
+  background: linear-gradient(172deg, #F4F6E2 0%, #E9ECCC 100%);
+  border-right: 1px solid var(--creme-md);
+  color: var(--tinta);
+  padding: 22px 14px calc(18px + var(--seguro-b));
   position: sticky;
   top: 0;
   height: 100dvh;
   flex-direction: column;
-  gap: 26px;
+  gap: 24px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
-.trilho::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .18); }
+
+/* uma folhagem da identidade, discreta, no pe do trilho */
+.folhagem-trilho {
+  position: absolute;
+  left: -44px;
+  bottom: 96px;
+  width: 240px;
+  height: 240px;
+  pointer-events: none;
+  opacity: .09;
+  background: var(--verde);
+  -webkit-mask: url("/id-visual-livro-vivo-06.svg") center / contain no-repeat;
+  mask: url("/id-visual-livro-vivo-06.svg") center / contain no-repeat;
+}
 
 .trilho .marca {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 11px;
   padding: 4px 8px 0;
-  color: #fff;
+  color: var(--verde-prof);
 }
-.trilho .marca:hover { color: #fff; }
+.trilho .marca:hover { color: var(--verde-noite); }
 .trilho .marca .selo {
-  width: 38px; height: 38px; flex: none;
+  width: 40px; height: 40px; flex: none;
   display: grid; place-items: center;
-  border-radius: 11px;
-  background: rgba(238, 240, 210, .14);
-  border: 1px solid rgba(238, 240, 210, .2);
+  border-radius: 12px;
+  background: linear-gradient(150deg, var(--verde), var(--verde-prof));
+  color: var(--creme);
+  box-shadow: 0 3px 10px -3px rgba(31, 75, 62, .5);
 }
 .trilho .marca .selo svg { width: 21px; height: 21px; }
 .trilho .marca .nome {
@@ -165,68 +186,72 @@ img { max-width: 100%; }
   font-style: normal;
   font-family: var(--corpo);
   font-size: var(--t-xs);
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: #8FB6A7;
+  color: var(--laranja-esc);
   margin-top: 3px;
 }
 
-.trilho nav { display: flex; flex-direction: column; gap: 3px; }
-.trilho .rotulo-grupo {
-  font-family: var(--display);
-  font-size: var(--t-xs);
-  font-weight: 600;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-  color: #6F9887;
-  padding: 0 12px 8px;
-}
+.trilho nav { position: relative; display: flex; flex-direction: column; gap: 4px; }
 .item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 12px;
+  padding: 10px 11px;
   border-radius: var(--r-md);
-  color: #CBDFD6;
+  color: var(--tinta-sv);
   font-size: var(--t-md);
   font-weight: 500;
   line-height: 1.3;
-  transition: background var(--mov-rap), color var(--mov-rap);
-  position: relative;
+  border: 1px solid transparent;
+  transition: background var(--mov-rap), color var(--mov-rap), border-color var(--mov-rap);
 }
-.item svg { width: 20px; height: 20px; flex: none; opacity: .8; }
-.item:hover { background: rgba(255, 255, 255, .09); color: #fff; }
-.item:hover svg { opacity: 1; }
+/* o icone ganha uma pastilha propria: da ritmo a lista e deixa o item
+   selecionado obvio sem precisar pintar a linha inteira */
+.item svg {
+  width: 20px; height: 20px; flex: none;
+  box-sizing: content-box;
+  padding: 8px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .6);
+  color: var(--verde-esc);
+  transition: background var(--mov-rap), color var(--mov-rap), transform var(--mov);
+}
+.item:hover { background: rgba(255, 255, 255, .62); color: var(--verde-prof); }
+.item:hover svg { background: #fff; transform: translateY(-1px); }
 .item[aria-current="page"] {
-  background: var(--papel);
+  background: var(--branco);
+  border-color: var(--creme-md);
   color: var(--verde-prof);
   font-weight: 600;
   box-shadow: var(--sombra-2);
 }
-.item[aria-current="page"] svg { opacity: 1; color: var(--laranja); }
+.item[aria-current="page"] svg {
+  background: linear-gradient(150deg, var(--laranja), var(--laranja-esc));
+  color: #fff;
+}
 .item .desc {
   display: block;
   font-size: var(--t-xs);
   font-weight: 400;
-  color: #7FA697;
+  color: var(--tinta-fr);
   margin-top: 2px;
 }
-.item[aria-current="page"] .desc { color: var(--tinta-fr); }
 
-.trilho .rodape { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+.trilho .rodape { position: relative; margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
 .trilho .quem {
   display: flex; align-items: center; gap: 11px;
-  padding: 11px 12px;
+  padding: 10px 11px;
   border-radius: var(--r-md);
-  background: rgba(255, 255, 255, .07);
-  border: 1px solid rgba(255, 255, 255, .1);
+  background: rgba(255, 255, 255, .66);
+  border: 1px solid var(--creme-md);
 }
 .trilho .quem .inicial {
-  width: 32px; height: 32px; flex: none;
+  width: 34px; height: 34px; flex: none;
   display: grid; place-items: center;
   border-radius: 50%;
-  background: var(--laranja);
+  background: linear-gradient(150deg, var(--laranja), var(--laranja-esc));
   color: #fff;
   font-family: var(--display);
   font-weight: 700;
@@ -234,11 +259,11 @@ img { max-width: 100%; }
 }
 .trilho .quem .dados { min-width: 0; display: grid; }
 .trilho .quem .nome {
-  font-size: var(--t-sm); font-weight: 600; color: #fff;
+  font-size: var(--t-sm); font-weight: 600; color: var(--verde-prof);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.trilho .quem .sair { font-size: var(--t-xs); color: #8FB6A7; justify-self: start; }
-.trilho .quem .sair:hover { color: #fff; text-decoration: underline; }
+.trilho .quem .sair { font-size: var(--t-xs); color: var(--tinta-fr); justify-self: start; }
+.trilho .quem .sair:hover { color: var(--laranja-esc); text-decoration: underline; }
 
 /* ---------- topo do celular ---------- */
 .topo {
@@ -298,13 +323,20 @@ img { max-width: 100%; }
 }
 .abas a svg { width: 22px; height: 22px; transition: transform var(--mov); }
 .abas a:hover { color: var(--verde-esc); }
-.abas a[aria-current="page"] { color: var(--verde-prof); background: var(--creme); }
-.abas a[aria-current="page"] svg { color: var(--laranja); transform: translateY(-1px); }
+.abas a[aria-current="page"] {
+  color: var(--verde-prof);
+  background: var(--branco);
+  box-shadow: var(--sombra-1);
+  font-weight: 700;
+}
+.abas a[aria-current="page"] svg { color: var(--laranja-esc); transform: translateY(-1px); }
 
 /* ---------- área de conteúdo ---------- */
 .palco {
   grid-area: palco;
   min-width: 0;
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   background:
@@ -312,16 +344,87 @@ img { max-width: 100%; }
     radial-gradient(760px 380px at -6% 4%, rgba(237, 134, 39, .06), transparent 60%),
     var(--creme-cl);
 }
-main { flex: 1; padding: 22px 0 calc(var(--abas-h) + var(--seguro-b) + 26px); }
+
+/* ---------- ilustracoes de fundo ----------
+   sticky + margem negativa: fica preso na tela enquanto a pagina rola e nao
+   ocupa nenhuma altura no fluxo */
+.decor {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  margin-bottom: -100dvh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.decor i {
+  position: absolute;
+  display: block;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-position: center; mask-position: center;
+  opacity: var(--op, .06);
+  animation: flutuar var(--dur, 9s) ease-in-out infinite;
+  animation-delay: var(--atraso, 0s);
+  will-change: transform;
+}
+@keyframes flutuar {
+  0%, 100% { transform: translateY(0) rotate(calc(var(--gira, 0deg) * -1)); }
+  50% { transform: translateY(calc(var(--sobe, 16px) * -1)) rotate(var(--gira, 0deg)); }
+}
+
+.decor i:nth-child(1) {
+  top: -4%; right: -5%; width: 380px; height: 380px;
+  background: var(--verde);
+  -webkit-mask-image: url("/id-visual-livro-vivo-01.svg"); mask-image: url("/id-visual-livro-vivo-01.svg");
+  --sobe: 20px; --gira: 6deg; --dur: 11s; --op: .07;
+}
+.decor i:nth-child(2) {
+  top: 14%; left: -7%; width: 320px; height: 300px;
+  background: var(--laranja);
+  -webkit-mask-image: url("/id-visual-livro-vivo-08.svg"); mask-image: url("/id-visual-livro-vivo-08.svg");
+  --sobe: 15px; --gira: -8deg; --dur: 13s; --atraso: .6s; --op: .07;
+}
+.decor i:nth-child(3) {
+  bottom: 4%; left: -4%; width: 360px; height: 360px;
+  background: var(--teal);
+  -webkit-mask-image: url("/id-visual-livro-vivo-06.svg"); mask-image: url("/id-visual-livro-vivo-06.svg");
+  --sobe: 18px; --gira: -5deg; --dur: 12s; --atraso: 1.1s; --op: .06;
+}
+.decor i:nth-child(4) {
+  bottom: 16%; right: -9%; width: 340px; height: 320px;
+  background: var(--verde);
+  -webkit-mask-image: url("/id-visual-livro-vivo-09.svg"); mask-image: url("/id-visual-livro-vivo-09.svg");
+  --sobe: 24px; --gira: 7deg; --dur: 14s; --atraso: 1.6s; --op: .06;
+}
+.decor i:nth-child(5) {
+  top: 44%; left: 30%; width: 250px; height: 250px;
+  background: var(--laranja);
+  -webkit-mask-image: url("/id-visual-livro-vivo-02.svg"); mask-image: url("/id-visual-livro-vivo-02.svg");
+  --sobe: 13px; --gira: 10deg; --dur: 10s; --atraso: 2.1s; --op: .04;
+}
+.decor i:nth-child(6) {
+  top: 58%; right: 8%; width: 240px; height: 280px;
+  background: var(--teal);
+  -webkit-mask-image: url("/id-visual-livro-vivo-04.svg"); mask-image: url("/id-visual-livro-vivo-04.svg");
+  --sobe: 16px; --gira: -6deg; --dur: 15s; --atraso: .9s; --op: .045;
+}
+/* num aparelho estreito as pecas grandes so atrapalham a leitura */
+@media (max-width: 899px) {
+  .decor i:nth-child(5), .decor i:nth-child(6) { display: none; }
+  .decor i { opacity: calc(var(--op, .06) * .7); }
+}
+main { position: relative; z-index: 1; flex: 1; padding: 22px 0 calc(var(--abas-h) + var(--seguro-b) + 26px); }
 main.colado { padding-top: 0; }
 
-/* O conteudo acompanha o trilho: comeca junto dele e ocupa a pagina, em vez de
-   flutuar numa coluna centrada com margem morta dos dois lados. O limite de
-   leitura passa a ser de quem precisa dele (.medida), nao da faixa inteira:
-   grade e tabela querem largura, paragrafo nao. */
+/* Coluna centrada, com o limite por tela em --faixa. Esticar o conteudo ate a
+   borda deixava tudo espalhado demais, com linhas longas e itens distantes uns
+   dos outros; centrar de novo mantem a leitura junta. Cada tela ajusta o proprio
+   limite: o leitor do livro quer mais largura que um formulario. */
 .faixa {
   width: 100%;
-  max-width: var(--faixa, 1680px);
+  max-width: var(--faixa, 1280px);
+  margin-inline: auto;
   padding-inline: 16px;
 }
 .faixa.estreita { --faixa: 760px; }

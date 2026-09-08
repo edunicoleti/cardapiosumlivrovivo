@@ -128,9 +128,9 @@
    dois lugares. Coluna única, dois destinos, nada competindo por atenção.
    ========================================================================== */
 
-/* A faixa agora acompanha o trilho; aqui o limite é da leitura, não do bloco:
-   os dois destinos ficam lado a lado quando há largura para isso. */
-.faixa.estreita-media { --faixa: 1280px; }
+/* Dois destinos lado a lado a partir de 1180px, e um limite que não deixa cada
+   cartão virar um bloco de 800px. */
+.faixa.estreita-media { --faixa: 1180px; }
 
 .abertura { padding: 6px 0 30px; }
 .abertura h1 { margin: 9px 0 10px; max-width: 20ch; }

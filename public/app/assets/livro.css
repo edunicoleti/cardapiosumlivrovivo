@@ -24,9 +24,9 @@
 @media (min-width: 1024px) { .barra-progresso { left: var(--trilho); } }
 
 main.colado .faixa { padding-top: 16px; }
-/* a faixa vai até a borda da página, mas o leitor tem medida própria: um cartão
-   de 1.600px com 70ch de texto no meio deixa a coluna boiando */
-.faixa { --faixa: 1240px; }
+/* O leitor é a tela que mais pede largura: sumário e texto lado a lado deixam
+   um vazio grande à direita num limite curto. */
+.faixa { --faixa: 1560px; }
 @media (min-width: 1024px) { main.colado .faixa { padding-top: 30px; } }
 
 .leitor {
@@ -36,7 +36,7 @@ main.colado .faixa { padding-top: 16px; }
   align-items: start;
 }
 @media (min-width: 1024px) {
-  .leitor { grid-template-columns: 288px minmax(0, 1fr); gap: 34px; }
+  .leitor { grid-template-columns: 300px minmax(0, 1fr); gap: 34px; }
 }
 
 /* ---------- sumário lateral (desktop) ---------- */
@@ -157,8 +157,9 @@ main.colado .faixa { padding-top: 16px; }
   background: var(--creme-cl);
   border-radius: var(--r-xl) var(--r-xl) 0 0;
 }
-.leitura .corpo { padding: 26px 20px 34px; max-width: 70ch; margin-inline: auto; }
+.leitura .corpo { padding: 26px 20px 34px; max-width: 74ch; margin-inline: auto; }
 @media (min-width: 700px) { .leitura .corpo { padding: 34px 44px 44px; } }
+@media (min-width: 1280px) { .leitura .corpo { padding: 40px 56px 52px; } }
 
 .leitura .titulo-cap {
   font-family: var(--display);

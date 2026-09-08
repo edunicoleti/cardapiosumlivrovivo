@@ -3,42 +3,30 @@
 <!-- ==================================================== 1. apresentação -->
 <section class="abertura-assistente" id="apresentacao">
 
-  <div class="abertura-topo">
-    <div class="abertura-texto">
-      <span class="olho">Assistente de cardápio</span>
-      <h1>A semana montada pelo método do livro</h1>
-      <p class="linha-apoio">
-        Ele não inventa pratos e não consulta nenhuma inteligência artificial. Escolhe
-        dentro das preparações do livro, seguindo a ordem e as regras do capítulo VI.
-      </p>
-      <div class="abertura-acao">
-        <button class="bt bt-prim bt-grande" id="comecar" type="button">
-          <svg aria-hidden="true"><use href="#i-cardapio"></use></svg>Montar meu cardápio
-        </button>
-        <button class="bt bt-sec" id="verSalvosApresentacao" type="button">
-          <svg aria-hidden="true"><use href="#i-salvar"></use></svg>Meus cardápios salvos
-        </button>
-      </div>
-      <p class="abertura-tempo">
-        <svg aria-hidden="true"><use href="#i-relogio"></use></svg>
-        Sete perguntas rápidas. Dá para sair no meio e voltar depois.
-      </p>
+  <header class="abertura-topo">
+    <span class="olho">Assistente de cardápio</span>
+    <h1>A semana montada pelo método do livro</h1>
+    <p class="linha-apoio">
+      Ele não inventa pratos e não consulta nenhuma inteligência artificial. Escolhe
+      dentro das preparações do livro, seguindo a ordem e as regras do capítulo VI.
+    </p>
+
+    <div class="abertura-acao">
+      <button class="bt bt-prim bt-grande" id="comecar" type="button">
+        <svg aria-hidden="true"><use href="#i-cardapio"></use></svg>Montar meu cardápio
+      </button>
+      <button class="bt bt-sec" id="verSalvosApresentacao" type="button">
+        <svg aria-hidden="true"><use href="#i-salvar"></use></svg>Meus cardápios salvos
+      </button>
     </div>
 
-    <!-- Prévia montada pelo motor de verdade, com o perfil padrão: mostra o
-         resultado antes de pedir qualquer resposta. -->
-    <figure class="previa" id="previa" aria-label="Exemplo de três dias montados pelo assistente">
-      <figcaption class="previa-cabeca">
-        <span class="olho">Exemplo</span>
-        <span class="previa-nota">Três dias montados agora, com o perfil padrão</span>
-      </figcaption>
-      <div class="previa-grade" id="previaGrade">
-        <div class="carregando"><span class="giro"></span>Montando um exemplo…</div>
-      </div>
-    </figure>
-  </div>
+    <p class="abertura-tempo">
+      <svg aria-hidden="true"><use href="#i-relogio"></use></svg>
+      Sete perguntas rápidas. Dá para sair no meio e voltar depois.
+    </p>
 
-  <ul class="numeros-acervo" id="numerosAcervo"></ul>
+    <ul class="numeros-linha" id="numerosAcervo"></ul>
+  </header>
 
   <section class="como-funciona" aria-labelledby="tituloComoFunciona">
     <h2 id="tituloComoFunciona">Como funciona</h2>
@@ -100,7 +88,6 @@
   <ol class="trilha" id="trilha" aria-label="Etapas"></ol>
 
   <div class="wizard-corpo">
-
     <div class="wizard-palco">
       <form id="formPerfil">
 
@@ -164,8 +151,7 @@
           <p class="origem">Restrições do serviço e fator sensorial 3.9</p>
           <div class="opcoes" data-campo="restricoes" data-tipo="multiplo"></div>
           <div class="opcoes larga" data-campo="digestao" data-tipo="booleano"></div>
-          <p class="nota">A exclusão lê o nome e a descrição de cada preparação, não uma ficha
-             de ingredientes. Confira antes de servir.</p>
+          <p class="nota" id="notaRestricoes"></p>
         </fieldset>
 
         <fieldset class="etapa" data-passo="7" tabindex="-1" hidden>
@@ -186,12 +172,6 @@
 
       </form>
     </div>
-
-    <aside class="wizard-lado" aria-label="Resumo das respostas">
-      <div class="acervo-vivo" id="acervoVivo"></div>
-      <div class="resumo-vivo" id="resumoVivo"></div>
-    </aside>
-
   </div>
 
   <div class="wizard-pe">
@@ -209,42 +189,59 @@
 <div id="painelCardapio" hidden>
 
   <header class="cabeca-assistente">
-    <div class="cabeca-texto">
-      <span class="olho">Assistente de cardápio</span>
-      <h1>A semana montada pelo método do livro</h1>
-    </div>
-    <div class="perfil-tira" id="perfil"></div>
+    <span class="olho">Assistente de cardápio</span>
+    <h1>A semana montada pelo método do livro</h1>
   </header>
 
-  <div class="controles">
-    <div class="campo">
-      <label class="rot" for="mes">Mês</label>
-      <select id="mes"></select>
+  <!-- Perfil e controles no mesmo cartão: eram duas barras empilhadas, uma
+       verde escura com o perfil numa linha corrida de pontos e outra branca
+       com os botões. -->
+  <div class="painel-topo">
+    <div class="perfil-linha">
+      <div class="perfil-fichas" id="perfil"></div>
+      <button class="bt bt-fantasma" id="ajustarPerfil" type="button">
+        <svg aria-hidden="true"><use href="#i-ajuste"></use></svg>Ajustar
+      </button>
     </div>
-    <div class="campo">
-      <label class="rot" for="dias">Dias</label>
-      <select id="dias">
-        <option value="5">5 dias (seg a sex)</option>
-        <option value="6">6 dias</option>
-        <option value="7">7 dias</option>
-      </select>
+
+    <div class="controles">
+      <div class="campo">
+        <label class="rot" for="mes">Mês</label>
+        <select id="mes"></select>
+      </div>
+      <div class="campo">
+        <label class="rot" for="dias">Dias</label>
+        <select id="dias">
+          <option value="5">5 dias (seg a sex)</option>
+          <option value="6">6 dias</option>
+          <option value="7">7 dias</option>
+        </select>
+      </div>
+      <div class="empurra"></div>
+      <button class="bt bt-prim" id="outra" type="button">
+        <svg aria-hidden="true"><use href="#i-atualizar"></use></svg>Gerar outra
+      </button>
+      <button class="bt bt-sec" id="salvar" type="button" aria-label="Salvar este cardápio">
+        <svg aria-hidden="true"><use href="#i-salvar"></use></svg><span>Salvar</span>
+      </button>
+      <button class="bt-icone contornado" id="copiar" type="button" aria-label="Copiar o cardápio como texto">
+        <svg aria-hidden="true"><use href="#i-copiar"></use></svg>
+      </button>
+      <button class="bt-icone contornado" id="imprimir" type="button" aria-label="Imprimir o cardápio">
+        <svg aria-hidden="true"><use href="#i-imprimir"></use></svg>
+      </button>
     </div>
-    <div class="empurra"></div>
-    <button class="bt bt-prim" id="outra" type="button">
-      <svg aria-hidden="true"><use href="#i-atualizar"></use></svg>Gerar outra
-    </button>
-    <button class="bt bt-sec" id="salvar" type="button" aria-label="Salvar este cardápio">
-      <svg aria-hidden="true"><use href="#i-salvar"></use></svg><span>Salvar</span>
-    </button>
-    <button class="bt-icone contornado" id="copiar" type="button" aria-label="Copiar o cardápio como texto">
-      <svg aria-hidden="true"><use href="#i-copiar"></use></svg>
-    </button>
-    <button class="bt-icone contornado" id="imprimir" type="button" aria-label="Imprimir o cardápio">
-      <svg aria-hidden="true"><use href="#i-imprimir"></use></svg>
-    </button>
   </div>
 
-  <div id="avisos" class="avisos"></div>
+  <!-- Três faixas de alerta no topo empurravam a grade para fora da tela e
+       gritavam mais que o cardápio. Viram uma linha que abre quando interessa. -->
+  <details class="observacoes" id="observacoes" hidden>
+    <summary>
+      <svg aria-hidden="true"><use href="#i-atencao"></use></svg>
+      <span id="observacoesResumo"></span>
+    </summary>
+    <div class="observacoes-corpo" id="avisos"></div>
+  </details>
 
   <div class="semana-larga">
     <div class="rolagem-grade">
@@ -262,6 +259,8 @@
     marca ingrediente na safra do mês. Toque num prato para ver ingredientes, preparo e a
     regra que o colocou ali.
   </p>
+
+  <p class="ressalva" id="ressalvaRestricoes" hidden></p>
 
   <section class="conferencia" id="conferencia" aria-label="Conferência das regras do capítulo VI"></section>
 

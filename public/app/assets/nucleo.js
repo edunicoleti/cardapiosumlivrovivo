@@ -58,6 +58,11 @@ export function prepararDialogo(dialogo) {
     botao.addEventListener('click', () => dialogo.close())
   }
   dialogo.addEventListener('close', destravarSeVazio)
+  /* O evento close nao chega em todo navegador, e quando falha a pagina fica
+     travada sem rolagem para sempre. Observar o atributo open pega o
+     fechamento venha ele de onde vier. */
+  new MutationObserver(() => { if (!dialogo.open) destravarSeVazio() })
+    .observe(dialogo, { attributes: true, attributeFilter: ['open'] })
   return dialogo
 }
 

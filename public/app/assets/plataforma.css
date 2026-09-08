@@ -66,6 +66,7 @@
   --trilho: 268px;
   --topo-h: 60px;
   --abas-h: 66px;
+  --gaveta: 440px;
   --seguro-b: env(safe-area-inset-bottom, 0px);
 }
 
@@ -313,8 +314,20 @@ img { max-width: 100%; }
 }
 main { flex: 1; padding: 22px 0 calc(var(--abas-h) + var(--seguro-b) + 26px); }
 main.colado { padding-top: 0; }
-.faixa { width: min(1180px, 100%); margin-inline: auto; padding-inline: 16px; }
-.faixa.estreita { width: min(760px, 100%); }
+
+/* O conteudo acompanha o trilho: comeca junto dele e ocupa a pagina, em vez de
+   flutuar numa coluna centrada com margem morta dos dois lados. O limite de
+   leitura passa a ser de quem precisa dele (.medida), nao da faixa inteira:
+   grade e tabela querem largura, paragrafo nao. */
+.faixa {
+  width: 100%;
+  max-width: var(--faixa, 1680px);
+  padding-inline: 16px;
+}
+.faixa.estreita { --faixa: 760px; }
+
+/* Medida de leitura, para o texto corrido dentro de uma faixa larga. */
+.medida { max-width: 68ch; }
 
 @media (min-width: 1024px) {
   .casca {
@@ -531,9 +544,14 @@ dialog:not([open]) { display: none; }
 }
 .modal-pe .esquerda { margin-right: auto; }
 
-/* no celular o mesmo diálogo vira folha que sobe de baixo */
+/* No celular o mesmo diálogo vira folha que sobe de baixo.
+   O seletor repete .modal.largo de propósito: media query não soma
+   especificidade, então a regra de cima (.modal.largo, 0-2-0) vencia a largura
+   daqui (.modal, 0-1-0) e a folha do questionário ficava com 343px colada à
+   esquerda, vazando 24px abaixo da tela num aparelho de 812px de altura. */
 @media (max-width: 720px) {
-  .modal {
+  .modal,
+  .modal.largo {
     inset: auto 0 0 0;
     margin: 0;
     width: 100%;
@@ -554,6 +572,63 @@ dialog:not([open]) { display: none; }
   .modal-topo { padding-top: 13px; }
 }
 @keyframes subir { from { transform: translateY(24px); opacity: .4; } to { transform: none; opacity: 1; } }
+
+/* --- gaveta lateral ---
+   No desktop ela NAO e modal: o palco encolhe do lado e a pagina continua
+   clicavel atras, entao da para pular de um item para outro sem fechar nada.
+   Um modal aqui escondia justamente o que a pessoa precisa comparar. */
+.gaveta {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 45;
+  width: min(var(--gaveta), 100%);
+  /* o navegador aplica max-width: calc(100% - 6px - 2em) a todo dialog:modal,
+     e sem esta linha a folha do celular ficava 36px mais estreita que a tela,
+     colada à esquerda, com uma faixa morta na direita */
+  max-width: none;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  border: none;
+  border-left: 1px solid var(--linha);
+  border-radius: 0;
+  background: var(--papel);
+  box-shadow: var(--sombra-3);
+  display: flex;
+  flex-direction: column;
+  animation: chegar var(--mov) both;
+}
+@keyframes chegar { from { transform: translateX(18px); opacity: .5; } to { transform: none; opacity: 1; } }
+
+@media (min-width: 1700px) { :root { --gaveta: 500px; } }
+
+@media (min-width: 1024px) {
+  .casca.com-gaveta .palco { padding-right: var(--gaveta); }
+  .casca.com-gaveta .torrada { left: calc(50% - var(--gaveta) / 2); }
+}
+
+/* abaixo de 1024px nao sobra tela para as duas coisas: volta a ser folha modal */
+@media (max-width: 1023px) {
+  .gaveta {
+    inset: auto 0 0 0;
+    width: 100%;
+    height: auto;
+    max-height: 88dvh;
+    border-left: none;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    box-shadow: var(--sombra-4);
+    animation: subir var(--mov) both;
+  }
+  .gaveta::before {
+    content: "";
+    display: block;
+    width: 40px; height: 4px;
+    border-radius: 99px;
+    background: var(--creme-md);
+    margin: 9px auto 0;
+    flex: none;
+  }
+}
 
 /* lista de escolha dentro de diálogo */
 .escolha {

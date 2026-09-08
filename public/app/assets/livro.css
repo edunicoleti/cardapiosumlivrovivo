@@ -24,6 +24,9 @@
 @media (min-width: 1024px) { .barra-progresso { left: var(--trilho); } }
 
 main.colado .faixa { padding-top: 16px; }
+/* a faixa vai até a borda da página, mas o leitor tem medida própria: um cartão
+   de 1.600px com 70ch de texto no meio deixa a coluna boiando */
+.faixa { --faixa: 1240px; }
 @media (min-width: 1024px) { main.colado .faixa { padding-top: 30px; } }
 
 .leitor {

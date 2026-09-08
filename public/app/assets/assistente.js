@@ -23,20 +23,20 @@ const CHAVE_SALVOS = 'assistente-salvos'
    As opções vêm dos fatores administrativos do capítulo VI e dos quatro
    cardápios de exemplo dos anexos. */
 const SERVICOS = [
-  { id: 'institucional', rot: 'Coletiva institucional', desc: 'Empresa, indústria, hospital' },
-  { id: 'bufe', rot: 'Bufê por peso', desc: 'Comercial, self-service' },
-  { id: 'infantil', rot: 'Escola ou creche', desc: 'Público infantil' },
-  { id: 'repouso', rot: 'Casa de repouso', desc: 'Preparações mais macias' },
+  { id: 'institucional', rot: 'Coletiva institucional', desc: 'Empresa, indústria, hospital', icone: 'i-predio' },
+  { id: 'bufe', rot: 'Bufê por peso', desc: 'Comercial, self-service', icone: 'i-bandeja' },
+  { id: 'infantil', rot: 'Escola ou creche', desc: 'Público infantil', icone: 'i-crianca' },
+  { id: 'repouso', rot: 'Casa de repouso', desc: 'Preparações mais macias', icone: 'i-coracao' },
 ]
 const PADROES = [
-  { id: 'popular', rot: 'Popular', desc: 'Preparações simples, custo menor' },
-  { id: 'medio', rot: 'Médio ou diferenciado', desc: 'Mais elaborado, maior variedade' },
-  { id: 'luxo', rot: 'Executivo ou de luxo', desc: 'Cardápio mais sofisticado' },
+  { id: 'popular', rot: 'Popular', desc: 'Preparações simples, custo menor', icone: 'i-prato' },
+  { id: 'medio', rot: 'Médio ou diferenciado', desc: 'Mais elaborado, maior variedade', icone: 'i-cardapio' },
+  { id: 'luxo', rot: 'Executivo ou de luxo', desc: 'Cardápio mais sofisticado', icone: 'i-estrela' },
 ]
 const EQUIPAMENTOS = [
-  { id: 'forno', rot: 'Forno', desc: 'Assados e gratinados', metodos: ['assado', 'gratinado'] },
-  { id: 'fritadeira', rot: 'Fritadeira', desc: 'Fritos e empanados', metodos: ['frito', 'empanado'] },
-  { id: 'chapa', rot: 'Chapa ou grelha', desc: 'Grelhados', metodos: ['grelhado'] },
+  { id: 'forno', rot: 'Forno', desc: 'Assados e gratinados', icone: 'i-forno', metodos: ['assado', 'gratinado'] },
+  { id: 'fritadeira', rot: 'Fritadeira', desc: 'Fritos e empanados', icone: 'i-fritadeira', metodos: ['frito', 'empanado'] },
+  { id: 'chapa', rot: 'Chapa ou grelha', desc: 'Grelhados', icone: 'i-grelha', metodos: ['grelhado'] },
 ]
 // Restringir pela categoria do livro nao basta: bacon, presunto, linguica e
 // calabresa aparecem em salada, arroz, feijao e ate em ovo. Filtrar so a
@@ -44,15 +44,15 @@ const EQUIPAMENTOS = [
 // Por isso a restricao le o nome e a descricao de cada preparacao. Num filtro
 // alimentar o erro tem de cair para o lado de excluir demais.
 const RESTRICOES = [
-  { id: 'sem-suina', rot: 'Sem carne suína', desc: 'Inclui bacon, presunto e embutidos',
+  { id: 'sem-suina', rot: 'Sem carne suína', desc: 'Inclui bacon, presunto e embutidos', icone: 'i-proibido',
     referencias: ['Carne suína'],
     termos: ['suin', 'porco', 'bacon', 'presunto', 'linguic', 'calabres', 'pernil', 'pancetta',
              'copa lombo', 'copa-lombo', 'tender', 'torresmo', 'paio', 'salsich', 'lombo'] },
-  { id: 'sem-mar', rot: 'Sem frutos do mar', desc: 'Peixes, crustáceos e moluscos',
+  { id: 'sem-mar', rot: 'Sem frutos do mar', desc: 'Peixes, crustáceos e moluscos', icone: 'i-proibido',
     referencias: ['Pescados'],
     termos: ['peixe', 'pescad', 'camarao', 'lula', 'polvo', 'mexilh', 'marisco', 'siri', 'caranguejo',
              'bacalhau', 'atum', 'sardinha', 'salmao', 'tilapia', 'merluza', 'anchova', 'fruto do mar'] },
-  { id: 'sem-bovina', rot: 'Sem carne bovina', desc: 'Inclui charque e carne seca',
+  { id: 'sem-bovina', rot: 'Sem carne bovina', desc: 'Inclui charque e carne seca', icone: 'i-proibido',
     referencias: ['Carne bovina'],
     termos: ['bovin', 'bife', 'alcatra', 'patinho', 'coxao', 'acem', 'musculo', 'costela', 'picanha',
              'maminha', 'file mignon', 'charque', 'carne seca', 'carne moida', 'contrafil',
@@ -65,9 +65,9 @@ const RESTRICOES = [
    nenhum cardápio alcançava. Entram como escolha, porque nem todo serviço
    oferece os três. */
 const COMPOSICAO = [
-  { id: 'sopa', rot: 'Sopa na entrada', desc: '50 sopas e caldos do acervo' },
-  { id: 'molho', rot: 'Molho como complemento', desc: '51 molhos quentes e frios' },
-  { id: 'tipico', rot: 'Prato típico brasileiro', desc: 'Capítulo X: 321 preparações típicas, doces e salgadas' },
+  { id: 'sopa', rot: 'Sopa na entrada', desc: '50 sopas e caldos do acervo', icone: 'i-sopa' },
+  { id: 'molho', rot: 'Molho como complemento', desc: '51 molhos quentes e frios', icone: 'i-gota' },
+  { id: 'tipico', rot: 'Prato típico brasileiro', desc: 'Capítulo X: 321 preparações típicas', icone: 'i-mapa' },
 ]
 
 /* Fator sensorial 3.9: o livro manda evitar a oferta CONCENTRADA de alimentos
@@ -363,7 +363,352 @@ function conferir(cardapio) {
   ]
 }
 
-/* ================================================================== tela */
+/* ================================================================== tela
+   Três estados na mesma página: apresentação, montagem e resultado. A
+   montagem era um <dialog> de 680px que crescia e encolhia a cada passo,
+   sem saída visível e sem endereço: agora é a própria página, cada passo
+   tem hash, e o botão Voltar do navegador anda no fluxo em vez de sair
+   dele. */
+
+const TELAS = { abertura: 'apresentacao', wizard: 'wizard', resultado: 'painelCardapio' }
+let telaAtual = 'abertura'
+
+function mostrarTela(qual) {
+  telaAtual = qual
+  for (const [chave, id] of Object.entries(TELAS)) $(id).hidden = chave !== qual
+  if (qual !== 'resultado') fecharGaveta()
+  const acoes = qual === 'resultado'
+  $('btPerfil')?.toggleAttribute('hidden', !acoes)
+}
+
+/* ------------------------------------------------------- acervo vivo
+   Quanto do livro sobra depois dos filtros. É o retorno que faltava: dava
+   para marcar três restrições sem nenhuma pista de que a semana não fecharia. */
+let cacheAcervo = { chave: null, valor: null }
+function acervoDisponivel(perfil) {
+  if (!base) return { livres: 0, total: 0, pct: 0 }
+  const chave = JSON.stringify([perfil.restricoes, perfil.equipamentos, perfil.refeicoes, perfil.servico])
+  if (cacheAcervo.chave === chave) return cacheAcervo.valor
+  const bloqRefs = referenciasBloqueadas(perfil)
+  const bloqTermos = termosBloqueados(perfil)
+  const bloqMetodos = metodosBloqueados(perfil)
+  let livres = 0
+  for (const p of base.preparacoes) {
+    if (bloqRefs.has(p.referencia)) continue
+    if (p.metodo && bloqMetodos.has(p.metodo)) continue
+    if (temIngredienteProibido(p, bloqTermos)) continue
+    livres++
+  }
+  const total = base.preparacoes.length
+  cacheAcervo = { chave, valor: { livres, total, pct: total ? Math.round((livres / total) * 100) : 0 } }
+  return cacheAcervo.valor
+}
+
+const nomeDoMes = (v) => MESES.find(([x]) => x === v)?.[1] ?? ''
+const itensNaSafra = (v) => (base?.sazonalidade ?? []).filter((s) => s.meses.includes(v))
+
+/* ==================================================== 1. apresentação */
+
+function pintarNumeros() {
+  const total = base.meta?.totalReal ?? base.preparacoes.length
+  const categorias = new Set(base.preparacoes.map((p) => p.categoria)).size
+  $('numerosAcervo').innerHTML = [
+    [total.toLocaleString('pt-BR'), 'preparações no livro'],
+    [String(categorias), 'categorias de preparação'],
+    [String(base.sazonalidade.length), 'itens com safra mapeada'],
+  ].map(([n, q]) => `<li><span class="n">${esc(n)}</span><span class="q">${esc(q)}</span></li>`).join('')
+}
+
+/** Três dias montados pelo motor de verdade: a prévia não é maquete. */
+function pintarPrevia() {
+  const guardaRelax = estado.relaxados
+  const guardaRepete = estado.repetidos
+  let r
+  try {
+    r = montar({ mes: estado.mes, dias: 3, semente: 7, perfil: { ...PERFIL_PADRAO } })
+  } catch {
+    $('previa').hidden = true
+    return
+  } finally {
+    estado.relaxados = guardaRelax
+    estado.repetidos = guardaRepete
+  }
+
+  // nome inteiro numa célula de prévia estica a linha para 260px no celular:
+  // aqui a prévia só precisa dizer que tipo de prato sai em cada espaço
+  const curto = (n) => (n.length > 46 ? `${n.slice(0, 45).replace(/[\s,]+$/, '')}…` : n)
+  const linhas = r.estrutura.map((l) => l.espaco).slice(0, 5)
+  const cabeca = `<tr><th></th>${r.cardapio.map((d) =>
+    `<th>${esc(CURTOS[d.dia] ?? d.dia)}</th>`).join('')}</tr>`
+  const corpo = linhas.map((espaco, li) => {
+    const celulas = r.cardapio.map((d) => {
+      const item = d.itens[li]
+      return `<td>${item && !item.vazio ? esc(curto(item.nome)) : '—'}</td>`
+    }).join('')
+    return `<tr><th>${esc(espaco.replace(' · ', ' '))}</th>${celulas}</tr>`
+  }).join('')
+
+  $('previaGrade').innerHTML = `<table><thead>${cabeca}</thead><tbody>${corpo}</tbody></table>`
+}
+
+/* ========================================================== 2. wizard */
+
+const PASSOS = [
+  { curto: 'Serviço', rot: 'Que serviço você atende?' },
+  { curto: 'Padrão', rot: 'Qual o padrão do cardápio?' },
+  { curto: 'Volume', rot: 'Quantas refeições por dia?' },
+  { curto: 'Cozinha', rot: 'O que você tem na cozinha?' },
+  { curto: 'Composição', rot: 'O que entra na composição?' },
+  { curto: 'Restrições', rot: 'O que evitar?' },
+  { curto: 'Quando', rot: 'Para quando é este cardápio?' },
+  { curto: 'Revisar', rot: 'Confira antes de montar' },
+]
+const TOTAL_PASSOS = PASSOS.length
+const DIGESTAO = { id: 'sim', rot: 'Evitar concentrar alimentos pesados no mesmo dia',
+                   desc: 'Fator 3.9: difícil digestão e flatulentos, pelas listas do livro',
+                   icone: 'i-relogio' }
+let passo = 1
+let maiorPassoVisto = 1
+
+const OPCOES = {
+  servico: SERVICOS, padrao: PADROES, equipamentos: EQUIPAMENTOS,
+  restricoes: RESTRICOES, composicao: COMPOSICAO, digestao: [DIGESTAO],
+}
+
+function marcado(campo, id, tipo) {
+  if (tipo === 'booleano') return estado.perfil[campo] === true
+  if (tipo === 'multiplo') return estado.perfil[campo].includes(id)
+  return estado.perfil[campo] === id
+}
+
+function pintarOpcoes() {
+  for (const caixa of $$('#formPerfil .opcoes')) {
+    const campo = caixa.dataset.campo
+    const tipo = caixa.dataset.tipo
+    const unico = tipo === 'unico'
+    if (unico) caixa.setAttribute('role', 'radiogroup')
+    caixa.innerHTML = (OPCOES[campo] ?? []).map((o) => {
+      const on = marcado(campo, o.id, tipo)
+      // escolha única é rádio de verdade: uma parada de tab para o grupo todo e
+      // seta para andar entre as opções, em vez de sete paradas seguidas
+      const papel = unico
+        ? `role="radio" aria-checked="${on}" tabindex="${on ? 0 : -1}"`
+        : `aria-pressed="${on}"`
+      return `<button class="opt" type="button" ${papel}
+        data-campo="${campo}" data-id="${esc(o.id)}" data-tipo="${tipo}">
+        ${o.icone ? `<span class="opt-icone"><svg aria-hidden="true"><use href="#${o.icone}"></use></svg></span>` : ''}
+        <span class="opt-texto">
+          <span class="opt-rot">${esc(o.rot)}</span>
+          ${o.desc ? `<span class="opt-desc">${esc(o.desc)}</span>` : ''}
+        </span>
+        <span class="opt-marca" aria-hidden="true"><svg><use href="#i-check"></use></svg></span>
+      </button>`
+    }).join('')
+    // nenhum rádio marcado deixaria o grupo fora da ordem de tabulação
+    if (unico && !caixa.querySelector('[tabindex="0"]')) {
+      caixa.querySelector('.opt')?.setAttribute('tabindex', '0')
+    }
+  }
+}
+
+function escolher(campo, id, tipo) {
+  if (tipo === 'booleano') {
+    estado.perfil[campo] = !estado.perfil[campo]
+  } else if (tipo === 'multiplo') {
+    const lista = estado.perfil[campo]
+    estado.perfil[campo] = lista.includes(id) ? lista.filter((x) => x !== id) : [...lista, id]
+  } else {
+    if (estado.perfil[campo] === id) return
+    estado.perfil[campo] = id
+  }
+  pintarOpcoes()
+  aposMudar()
+}
+
+/** Redesenha tudo que depende do perfil e guarda no aparelho. */
+function aposMudar() {
+  pintarLado()
+  pintarForma()
+  atualizarNotaVolume()
+  atualizarNotaEquipamento()
+  if (passo === TOTAL_PASSOS) pintarRevisao()
+  guardarPerfil()
+}
+
+function pintarTrilha() {
+  $('trilha').innerHTML = PASSOS.map((p, i) => {
+    const n = i + 1
+    const estadoP = n === passo ? 'atual' : n < passo || n <= maiorPassoVisto ? 'feito' : ''
+    return `<li class="${estadoP}">
+      <button type="button" data-ir="${n}"${n === passo ? ' aria-current="step"' : ''}>
+        <span class="n">${n < passo ? '<svg aria-hidden="true"><use href="#i-check"></use></svg>' : n}</span>
+        <span class="r">${esc(p.curto)}</span>
+      </button></li>`
+  }).join('')
+}
+
+function pintarLado() {
+  const { livres, total, pct } = acervoDisponivel(estado.perfil)
+  const apertado = livres < total * 0.45
+  $('acervoVivo').innerHTML = `
+    <span class="rot">Acervo disponível</span>
+    <span class="n">${livres.toLocaleString('pt-BR')}</span>
+    <span class="q">preparações passam pelo que você marcou</span>
+    <span class="barra${apertado ? ' apertado' : ''}"><i style="width:${Math.max(pct, 2)}%"></i></span>
+    <span class="pe">${pct}% do acervo do livro${apertado ? ' · a semana pode precisar repetir prato' : ''}</span>`
+
+  $('resumoVivo').innerHTML = `<span class="rot">Suas respostas</span>` +
+    resumoDoPerfil().map(({ n, rot, valor }) => `
+      <button class="linha-resumo${n === passo ? ' atual' : ''}${n > maiorPassoVisto ? ' futuro' : ''}"
+              type="button" data-ir="${n}">
+        <span class="q">${esc(rot)}</span>
+        <span class="v">${esc(valor)}</span>
+      </button>`).join('')
+}
+
+function resumoDoPerfil() {
+  const p = estado.perfil
+  const nomes = (lista, fonte) => fonte.filter((x) => lista.includes(x.id)).map((x) => x.rot)
+  const comp = nomes(p.composicao ?? [], COMPOSICAO)
+  const restr = nomes(p.restricoes, RESTRICOES)
+  if (p.digestao) restr.push('Sem concentrar pesados')
+  return [
+    { n: 1, rot: 'Serviço', valor: SERVICOS.find((x) => x.id === p.servico)?.rot ?? '—' },
+    { n: 2, rot: 'Padrão', valor: PADROES.find((x) => x.id === p.padrao)?.rot ?? '—' },
+    { n: 3, rot: 'Volume', valor: `${p.refeicoes} refeições por dia` },
+    { n: 4, rot: 'Cozinha', valor: p.equipamentos.length
+        ? nomes(p.equipamentos, EQUIPAMENTOS).join(', ') : 'Nenhum equipamento' },
+    { n: 5, rot: 'Composição', valor: comp.length ? comp.join(', ') : 'A composição padrão do livro' },
+    { n: 6, rot: 'Restrições', valor: restr.length ? restr.join(', ') : 'Nenhuma' },
+    { n: 7, rot: 'Quando', valor: `${nomeDoMes(estado.mes)}, ${estado.dias} dias` },
+  ]
+}
+
+function pintarRevisao() {
+  $('revisao').innerHTML = resumoDoPerfil().map(({ n, rot, valor }) => `
+    <button class="linha-revisao" type="button" data-ir="${n}">
+      <span class="q">${esc(rot)}</span>
+      <span class="v">${esc(valor)}</span>
+      <span class="e" aria-hidden="true">Mudar</span>
+    </button>`).join('')
+}
+
+/** Desenha a ordem da refeição que sai do que foi marcado no passo 5. */
+function pintarForma() {
+  $('formaLinhas').innerHTML = estruturaDoServico(estado.perfil)
+    .map((l) => `<li>${esc(l.espaco.replace(' · ', ': '))}</li>`).join('')
+}
+
+function pintarMeses() {
+  $('meses').innerHTML = MESES.map(([v, n]) => {
+    const on = estado.mes === v
+    return `<button class="chip-mes" type="button" role="radio" aria-checked="${on}"
+      tabindex="${on ? 0 : -1}" data-mes="${v}" aria-label="${esc(n)}, ${itensNaSafra(v).length} itens na safra">
+      <span class="m">${esc(n.slice(0, 3))}</span>
+      <span class="q">${itensNaSafra(v).length}</span>
+    </button>`
+  }).join('')
+}
+
+function pintarDiasOpcao() {
+  $('diasOpcao').innerHTML = [[5, '5 dias', 'Segunda a sexta'], [6, '6 dias', 'Inclui sábado'],
+    [7, '7 dias', 'Semana inteira']].map(([v, rot, desc]) => {
+    const on = estado.dias === v
+    return `<button class="chip-dia" type="button" role="radio" aria-checked="${on}"
+      tabindex="${on ? 0 : -1}" data-dias="${v}">
+      <span class="m">${rot}</span><span class="q">${desc}</span></button>`
+  }).join('')
+}
+
+function atualizarNotaVolume() {
+  const n = estado.perfil.refeicoes
+  $('notaVolume').innerHTML = n >= 400
+    ? `Acima de 400 refeições o assistente deixa de sugerir <b>grelhados e empanados</b>:
+       no volume, prato feito um a um não sai.`
+    : `Até 400 refeições o assistente considera todos os métodos que o seu equipamento permite.`
+}
+
+function atualizarNotaEquipamento() {
+  const faltando = EQUIPAMENTOS.filter((e) => !estado.perfil.equipamentos.includes(e.id))
+  $('notaEquipamento').innerHTML = faltando.length
+    ? `Sem ${esc(faltando.map((e) => e.rot.toLowerCase()).join(' e '))}, o assistente não sugere
+       ${esc(faltando.flatMap((e) => e.metodos).join(', '))}.`
+    : `Com os três, nenhum método de cocção do livro fica de fora.`
+}
+
+function atualizarNotaSafra() {
+  const itens = itensNaSafra(estado.mes).map((s) => s.item)
+  $('notaSafra').innerHTML = itens.length
+    ? `Em <b>${esc(nomeDoMes(estado.mes))}</b> o livro marca ${itens.length} itens na safra,
+       entre eles ${esc(itens.slice(0, 5).join(', ').toLowerCase())}.`
+    : `O livro não marca nenhum item de safra em ${esc(nomeDoMes(estado.mes))}.`
+}
+
+function mostrarPasso(n, comFoco = true) {
+  passo = Math.max(1, Math.min(n, TOTAL_PASSOS))
+  maiorPassoVisto = Math.max(maiorPassoVisto, passo)
+
+  let atual = null
+  for (const etapa of $$('#formPerfil .etapa')) {
+    const dela = +etapa.dataset.passo === passo
+    etapa.hidden = !dela
+    if (dela) atual = etapa
+  }
+
+  pintarTrilha()
+  pintarLado()
+  if (passo === 3) {
+    $('refeicoes').value = estado.perfil.refeicoes
+    sincronizarRange()
+    atualizarNotaVolume()
+  }
+  if (passo === 4) atualizarNotaEquipamento()
+  if (passo === 5) pintarForma()
+  if (passo === 7) { pintarMeses(); pintarDiasOpcao(); atualizarNotaSafra() }
+  if (passo === TOTAL_PASSOS) pintarRevisao()
+
+  $('wizVoltar').innerHTML = '<svg aria-hidden="true"><use href="#i-esq"></use></svg>Voltar'
+  $('wizAvancar').textContent = passo === TOTAL_PASSOS ? 'Montar minha semana' : 'Continuar'
+  $('wizConta').textContent = `Passo ${passo} de ${TOTAL_PASSOS}`
+  $('wizAviso').textContent = `Passo ${passo} de ${TOTAL_PASSOS}: ${PASSOS[passo - 1].rot}`
+
+  // a caixa tem altura mínima, então o botão Continuar não anda de lugar entre
+  // um passo e outro: antes ele descia 80px e a pessoa reposicionava o mouse
+  if (comFoco) atual?.focus({ preventScroll: true })
+  const topo = $('wizard').getBoundingClientRect().top + window.scrollY - 12
+  if (window.scrollY > topo) window.scrollTo({ top: topo, behavior: 'smooth' })
+}
+
+/* ---------------------------------------------------- endereço de cada passo */
+function aplicarHash() {
+  const bruto = decodeURIComponent(location.hash.replace(/^#/, ''))
+  if (bruto.startsWith('montar')) {
+    const n = Number(bruto.split('/')[1]) || 1
+    if (telaAtual !== 'wizard') { mostrarTela('wizard'); pintarOpcoes() }
+    mostrarPasso(n)
+    return
+  }
+  if (bruto === 'cardapio') {
+    if (!estado.cardapio) gerar(); else mostrarTela('resultado')
+    return
+  }
+  mostrarTela('abertura')
+}
+
+const irPara = (hash) => { if (location.hash !== hash) location.hash = hash }
+
+function abrirWizard(n = 1) {
+  pintarOpcoes()
+  maiorPassoVisto = Math.max(maiorPassoVisto, n)
+  irPara(`#montar/${n}`)
+  if (telaAtual !== 'wizard') { mostrarTela('wizard'); mostrarPasso(n) }
+}
+
+function guardarPerfil() {
+  memoria.gravar(CHAVE_PERFIL, { ...estado.perfil, mes: estado.mes, dias: estado.dias })
+}
+
+/* ======================================================= 3. resultado */
 
 function rotuloPerfil() {
   const p = estado.perfil
@@ -381,10 +726,6 @@ function rotuloPerfil() {
       <svg aria-hidden="true"><use href="#i-ajuste"></use></svg>Ajustar</button>`
 }
 
-/* A grade tinha uma etiqueta colorida por informação em cada célula, e num
-   cardápio de 50 células isso vira ruído: as etiquetas ficavam com mais peso
-   visual que o nome do prato. Agora o nome manda, e o resto é uma linha de
-   apoio. A folha marca safra; o detalhe do prato conta o resto. */
 const sinais = (item) => {
   const partes = []
   if (item.safra) {
@@ -397,52 +738,62 @@ const sinais = (item) => {
 }
 
 /** Roda o motor e redesenha. */
-function mostrarPainel() {
-  $('apresentacao').hidden = true
-  $('painelCardapio').hidden = false
-}
-
 function gerar() {
-  mostrarPainel()
+  mostrarTela('resultado')
+  irPara('#cardapio')
   const r = montar(estado)
   estado.cardapio = r.cardapio
+  estado.trocas = 0
   estrutura = r.estrutura
   if (estado.diaVisivel >= estado.cardapio.length) estado.diaVisivel = 0
   pintar()
 }
 
-/** Redesenha a partir do estado, sem passar pelo motor. */
+/**
+ * Remontar joga fora as trocas feitas na mão. Antes trocar o mês fazia isso em
+ * silêncio, e o trabalho sumia sem aviso.
+ */
+function regerar(motivo) {
+  if (estado.trocas > 0 &&
+      !confirm(`${motivo} refaz a semana inteira e descarta ${estado.trocas} troca${
+        estado.trocas > 1 ? 's' : ''} que você fez na mão. Continuar?`)) {
+    $('mes').value = estado.mes
+    $('dias').value = String(estado.dias)
+    return false
+  }
+  return true
+}
+
 function pintar() {
   const c = estado.cardapio
 
   $('perfil').innerHTML = rotuloPerfil()
-  $('ajustarPerfil').addEventListener('click', () => abrirPerfil())
+  $('ajustarPerfil').addEventListener('click', () => abrirWizard(1))
 
   pintarConferencia()
-  pintarAvisos()
-
-  // grade da semana (telas largas)
-  $('grade').querySelector('thead').innerHTML =
-    '<tr><th scope="col">Espaço</th>' + c.map((d) => `<th scope="col">${d.dia}</th>`).join('') + '</tr>'
-
-  $('grade').querySelector('tbody').innerHTML = estrutura.map((linha, li) => {
-    const celulas = c.map((dia, di) => {
-      const item = dia.itens[li]
-      if (!item || item.vazio) return '<td><div class="vazio">sem opção disponível</div></td>'
-      return `<td>
-        <button class="prato" data-dia="${di}" data-linha="${li}" type="button">
-          <span class="nome">${esc(item.nome)}</span>
-          ${sinais(item)}
-        </button></td>`
-    }).join('')
-    return `<tr><th scope="row">${esc(linha.espaco)}</th>${celulas}</tr>`
-  }).join('')
-
   pintarTiraDias()
   pintarDia()
+  pintarAvisos()
 
-  for (const botao of $$('.prato')) {
-    botao.addEventListener('click', () => abrirPrato(+botao.dataset.dia, +botao.dataset.linha))
+  const cabeca = `<tr><th>Espaço</th>${c.map((d) =>
+    `<th>${esc(d.dia)}</th>`).join('')}</tr>`
+  $('grade').tHead.innerHTML = cabeca
+
+  const corpo = estrutura.map((linha, li) => {
+    const celulas = c.map((dia, di) => {
+      const item = dia.itens[li]
+      if (!item || item.vazio) {
+        return `<td><div class="vazio">sem opção com os filtros de hoje</div></td>`
+      }
+      return `<td><button class="prato" type="button" data-di="${di}" data-li="${li}">
+        <span class="nome">${esc(item.nome)}</span>${sinais(item)}</button></td>`
+    }).join('')
+    return `<tr><th>${esc(linha.espaco)}</th>${celulas}</tr>`
+  }).join('')
+  $('grade').tBodies[0].innerHTML = corpo
+
+  for (const b of $$('#grade .prato')) {
+    b.addEventListener('click', () => abrirPrato(+b.dataset.di, +b.dataset.li))
   }
 }
 
@@ -455,9 +806,9 @@ function pintarConferencia() {
 }
 
 function pintarTiraDias() {
-  $('tiraDias').innerHTML = estado.cardapio.map((d, i) => `
-    <button type="button" role="tab" data-dia="${i}" aria-selected="${i === estado.diaVisivel}">
-      <span class="d">${CURTOS[d.dia] ?? d.dia}</span>
+  $('tiraDias').innerHTML = estado.cardapio.map((d, i) =>
+    `<button type="button" role="tab" aria-selected="${i === estado.diaVisivel}" data-dia="${i}">
+      <span class="d">${esc(CURTOS[d.dia] ?? d.dia)}</span>
       <span class="n">${i + 1}</span>
     </button>`).join('')
   for (const b of $$('#tiraDias button')) {
@@ -473,22 +824,21 @@ function pintarDia() {
   const dia = estado.cardapio[estado.diaVisivel]
   if (!dia) return
   $('cartoesDia').innerHTML = dia.itens.map((item, li) => {
-    if (!item || item.vazio) {
+    if (item.vazio) {
       return `<div class="cartao-prato sem-opcao">
-        <span class="miolo"><span class="espaco">${esc(item?.espaco ?? estrutura[li]?.espaco ?? '')}</span>
-        <span class="nome">sem opção disponível com os filtros de agora</span></span></div>`
+        <span class="miolo"><span class="espaco">${esc(item.espaco)}</span>
+        <span class="nome">sem opção com os filtros de hoje</span></span></div>`
     }
-    return `<button class="cartao-prato" type="button" data-dia="${estado.diaVisivel}" data-linha="${li}">
+    return `<button class="cartao-prato" type="button" data-di="${estado.diaVisivel}" data-li="${li}">
       <span class="miolo">
         <span class="espaco">${esc(item.espaco)}</span>
-        <span class="nome">${esc(item.nome)}</span>
-        ${sinais(item)}
+        <span class="nome">${esc(item.nome)}</span>${sinais(item)}
       </span>
       <svg aria-hidden="true"><use href="#i-dir"></use></svg>
     </button>`
   }).join('')
-  for (const b of $$('#cartoesDia .cartao-prato[data-dia]')) {
-    b.addEventListener('click', () => abrirPrato(+b.dataset.dia, +b.dataset.linha))
+  for (const b of $$('#cartoesDia .cartao-prato[data-di]')) {
+    b.addEventListener('click', () => abrirPrato(+b.dataset.di, +b.dataset.li))
   }
 }
 
@@ -518,11 +868,44 @@ function pintarAvisos() {
       <span>${texto}</span></div>`).join('')
 }
 
-/* ---------------------------------------------- detalhe e troca do prato */
+/* ============================================ gaveta: detalhe e troca
+   No desktop ela é <dialog> não modal e o palco encolhe do lado: a semana
+   continua visível e clicável, então dá para pular de um prato para outro
+   sem fechar nada. No celular não sobra tela para as duas coisas, e aí ela
+   volta a ser folha modal. */
 let alvoAtual = { di: 0, li: 0 }
+let quemAbriuGaveta = null
+const telaLarga = () => window.matchMedia('(min-width: 1024px)').matches
 
 function itemAtual() {
-  return estado.cardapio[alvoAtual.di].itens[alvoAtual.li]
+  return estado.cardapio?.[alvoAtual.di]?.itens?.[alvoAtual.li]
+}
+
+function abrirGaveta() {
+  const g = $('gavetaPrato')
+  prepararDialogo(g)
+  if (telaLarga()) {
+    document.querySelector('.casca').classList.add('com-gaveta')
+    if (!g.open) g.show()
+  } else {
+    document.querySelector('.casca').classList.remove('com-gaveta')
+    if (!g.open) abrirDialogo(g)
+  }
+}
+
+function fecharGaveta() {
+  const g = $('gavetaPrato')
+  if (g?.open) g.close()
+}
+
+/** Devolve a tela ao estado sem gaveta, venha o fechamento de onde vier. */
+function limparGaveta() {
+  document.querySelector('.casca').classList.remove('com-gaveta')
+  for (const b of $$('.prato.vendo, .cartao-prato.vendo')) b.classList.remove('vendo')
+  // a folha do celular tranca a rolagem da página ao abrir
+  if (!document.querySelector('dialog[open]')) document.documentElement.style.overflow = ''
+  if (quemAbriuGaveta?.isConnected) quemAbriuGaveta.focus({ preventScroll: true })
+  quemAbriuGaveta = null
 }
 
 function abrirPrato(di, li) {
@@ -538,16 +921,33 @@ function abrirPrato(di, li) {
     item.safra ? `<span class="etiq safra">${esc(item.safra)} na safra</span>` : '',
   ].join('')
 
-  $('pratoDescricao').textContent = item.descricao
-    ? item.descricao
-    : 'O livro não traz descrição para esta preparação.'
+  $('pratoDescricao').textContent = item.descricao || 'O livro não traz descrição para esta preparação.'
   $('pratoDescricao').classList.toggle('sem-texto', !item.descricao)
+  $('pratoMotivos').innerHTML = motivosDoPrato(item).map((m) => `<li>${m}</li>`).join('')
+  $('contaTroca').textContent = (item.alternativas ?? []).length
 
-  $('pratoMotivos').innerHTML = motivosDoPrato(item)
-    .map((m) => `<li>${m}</li>`).join('')
+  mostrarAba('detalhe')
+  $('filtroTroca').value = ''
+  // a gaveta do desktop não é modal, então o foco não entra sozinho: sem isso
+  // quem navega por teclado abria a gaveta e continuava tabulando na grade
+  const jaAberta = $('gavetaPrato').open
+  if (!jaAberta) quemAbriuGaveta = document.activeElement
+  abrirGaveta()
+  $('pratoNome').focus({ preventScroll: true })
+  // realça na grade o prato que a gaveta está mostrando
+  for (const b of $$('#grade .prato, #cartoesDia .cartao-prato')) {
+    b.classList.toggle('vendo', +b.dataset.di === di && +b.dataset.li === li)
+  }
+}
 
-  mostrarDetalhe()
-  abrirDialogo($('dlgPrato'))
+function mostrarAba(qual) {
+  const detalhe = qual === 'detalhe'
+  $('abaDetalhe').setAttribute('aria-selected', String(detalhe))
+  $('abaTroca').setAttribute('aria-selected', String(!detalhe))
+  $('painelDetalhe').hidden = !detalhe
+  $('painelTroca').hidden = detalhe
+  if (!detalhe) pintarTroca($('filtroTroca').value)
+  $('gavetaPrato').querySelector('.gaveta-corpo').scrollTo({ top: 0 })
 }
 
 /** Traduz para texto a regra do capítulo VI que colocou o prato naquele espaço. */
@@ -558,187 +958,80 @@ function motivosDoPrato(item) {
       variedade de ingredientes, aplicada ao longo da semana.`)
   } else if (item.referencia) {
     motivos.push(`Escolhido dentro de <b>${esc(item.referencia)}</b>, a categoria que o livro
-      define para o espaço <b>${esc(item.espaco.toLowerCase())}</b>.`)
+      indica para este espaço da refeição.`)
   }
   if (item.safra) {
     motivos.push(`Ganhou peso porque <b>${esc(item.safra)}</b> está na safra do mês. Regra 3.1,
       estação do ano.`)
   }
   if (item.metodo) {
-    motivos.push(`Método de cocção <b>${esc(item.metodo)}</b>, diferente do resto do dia
-      sempre que o acervo permite. Regra 3.2, variedade de cocção.`)
+    motivos.push(`Método de cocção <b>${esc(item.metodo)}</b>, diferente do resto do dia sempre
+      que o acervo permite. Regra 3.2, variedade de cocção.`)
   }
-  if (estado.perfil.digestao) {
-    motivos.push(`A semana evita concentrar alimentos de difícil digestão no mesmo dia,
-      pelas listas de 3.9.1 e 3.9.2.`)
+  if (!motivos.length) {
+    motivos.push(`Sorteado entre as preparações que cabem neste espaço com os filtros do seu serviço.`)
   }
   return motivos
 }
 
-function mostrarDetalhe() {
-  $('pratoDetalhe').hidden = false
-  $('pratoTroca').hidden = true
-  $('voltarDetalhe').hidden = true
-  $('verOutras').hidden = false
-}
-
-function mostrarTroca() {
-  $('pratoDetalhe').hidden = true
-  $('pratoTroca').hidden = false
-  $('voltarDetalhe').hidden = false
-  $('verOutras').hidden = true
-  $('filtroTroca').value = ''
-  pintarTroca('')
-}
-
 function pintarTroca(filtro) {
   const item = itemAtual()
-  const alvo = semAcento(filtro.trim())
-  const lista = item.alternativas
-    .map((a, i) => ({ a, i }))
-    .filter(({ a }) => !alvo || semAcento(`${a.nome} ${a.descricao || ''}`).includes(alvo))
+  const alvo = semAcento(filtro ?? '')
+  const lista = (item?.alternativas ?? []).filter((a) =>
+    !alvo || semAcento(`${a.nome} ${a.descricao ?? ''}`).includes(alvo))
 
   $('trocaLista').innerHTML = lista.length
-    ? lista.map(({ a, i }) => `
-      <button class="escolha" data-i="${i}" type="button">
+    ? lista.map((a, i) => `<button class="escolha" type="button" data-troca="${i}">
         <span class="n">${esc(a.nome)}</span>
         ${a.descricao ? `<span class="d">${esc(a.descricao)}</span>` : ''}
-        ${sinais(a)}
-      </button>`).join('')
-    : `<div class="sem-salvos">Nenhuma outra opção${alvo ? ' com esse filtro' : ''} neste espaço.</div>`
+        <span class="meta">
+          ${a.metodo ? `<span class="etiq">${esc(a.metodo)}</span>` : ''}
+          ${a.categoria ? `<span class="etiq teal">${esc(a.categoria)}</span>` : ''}
+          ${a.safra ? `<span class="etiq safra">${esc(a.safra)} na safra</span>` : ''}
+        </span></button>`).join('')
+    : `<div class="sem-salvos">Nenhuma opção com esse filtro.</div>`
 
-  for (const opcao of $$('.escolha', $('trocaLista'))) {
-    opcao.addEventListener('click', () => trocarPor(+opcao.dataset.i))
+  for (const b of $$('#trocaLista .escolha')) {
+    b.addEventListener('click', () => trocarPor(lista[+b.dataset.troca]))
   }
 }
 
-function trocarPor(indice) {
+function trocarPor(nova) {
+  if (!nova) return
   const item = itemAtual()
-  const nova = item.alternativas[indice]
-  const antigo = {
-    nome: item.nome, metodo: item.metodo, safra: item.safra,
-    descricao: item.descricao, referencia: item.referencia, categoria: item.categoria,
+  const antiga = { id: nova.id, nome: item.nome, metodo: item.metodo, descricao: item.descricao,
+                   referencia: item.referencia, categoria: item.categoria, safra: item.safra }
+  const restantes = (item.alternativas ?? []).filter((a) => a.id !== nova.id)
+  estado.cardapio[alvoAtual.di].itens[alvoAtual.li] = {
+    espaco: item.espaco, nome: nova.nome, metodo: nova.metodo, descricao: nova.descricao,
+    referencia: nova.referencia, categoria: nova.categoria, safra: nova.safra,
+    alternativas: [antiga, ...restantes],
   }
-  Object.assign(item, {
-    nome: nova.nome, metodo: nova.metodo, safra: nova.safra,
-    descricao: nova.descricao, referencia: nova.referencia, categoria: nova.categoria,
-  })
-  item.alternativas = item.alternativas.filter((_, k) => k !== indice)
-  item.alternativas.unshift(antigo)
-  $('dlgPrato').close()
-  // trocar um prato não pode refazer o resto da semana
+  estado.trocas = (estado.trocas ?? 0) + 1
   redesenharCelulas()
-  avisar('Prato trocado.')
+  pintarConferencia()
+  abrirPrato(alvoAtual.di, alvoAtual.li)
+  avisar('Prato trocado. O resto da semana ficou como estava.')
 }
 
 function redesenharCelulas() {
-  pintarConferencia()
-  for (const botao of $$('.prato')) {
-    const item = estado.cardapio[+botao.dataset.dia].itens[+botao.dataset.linha]
-    botao.innerHTML = `<span class="nome">${esc(item.nome)}</span>${sinais(item)}`
+  const celula = $$('#grade .prato').find((b) =>
+    +b.dataset.di === alvoAtual.di && +b.dataset.li === alvoAtual.li)
+  const item = itemAtual()
+  if (celula && item) {
+    celula.innerHTML = `<span class="nome">${esc(item.nome)}</span>${sinais(item)}`
   }
   pintarDia()
-}
-
-/* ------------------------------------------------------ perfil em passos */
-const TOTAL_PASSOS = 7
-let passo = 1
-
-function pintarOpcoes() {
-  const mapa = {
-    servico: SERVICOS, padrao: PADROES, equipamentos: EQUIPAMENTOS,
-    restricoes: RESTRICOES, composicao: COMPOSICAO,
-    digestao: [{ id: 'sim', rot: 'Evitar concentrar alimentos pesados no mesmo dia',
-                 desc: 'Fator 3.9: difícil digestão e flatulentos, pelas listas do livro' }],
-  }
-  for (const caixa of $$('.opcoes')) {
-    const campo = caixa.dataset.campo
-    const booleano = caixa.dataset.tipo === 'booleano'
-    const multiplo = caixa.dataset.tipo === 'multiplo'
-    caixa.innerHTML = mapa[campo].map((o) => {
-      const marcado = booleano ? estado.perfil[campo] === true
-        : multiplo ? estado.perfil[campo].includes(o.id) : estado.perfil[campo] === o.id
-      return `<button class="opt" type="button" data-campo="${campo}" data-id="${o.id}"
-        data-tipo="${caixa.dataset.tipo}" aria-pressed="${marcado}">${esc(o.rot)}${
-        o.desc ? `<span class="desc">${esc(o.desc)}</span>` : ''}</button>`
-    }).join('')
-  }
-  for (const botao of $$('.opt')) {
-    botao.addEventListener('click', () => {
-      const { campo, id, tipo } = botao.dataset
-      if (tipo === 'booleano') {
-        estado.perfil[campo] = !estado.perfil[campo]
-      } else if (tipo === 'multiplo') {
-        const lista = estado.perfil[campo]
-        estado.perfil[campo] = lista.includes(id) ? lista.filter((x) => x !== id) : [...lista, id]
-      } else {
-        estado.perfil[campo] = id
-      }
-      pintarOpcoes()
-    })
-  }
-}
-
-function mostrarPasso(n) {
-  passo = Math.max(1, Math.min(n, TOTAL_PASSOS))
-  for (const grupo of $$('#formPerfil .grupo')) grupo.hidden = +grupo.dataset.passo !== passo
-  $('trilhaPassos').innerHTML = Array.from({ length: TOTAL_PASSOS }, (_, i) =>
-    `<span class="${i < passo ? 'feito' : ''}"></span>`).join('')
-  $('perfilVoltar').hidden = passo === 1
-  $('pularPerfil').hidden = passo !== 1
-  $('pularPerfil').textContent = 'Montar sem responder'
-  $('perfilAvancar').textContent = passo === TOTAL_PASSOS ? 'Montar meu cardápio' : 'Continuar'
-  $('dlgPerfil').querySelector('.modal-corpo')?.scrollTo({ top: 0 })
-  atualizarNotaVolume()
-  atualizarNotaSafra()
-}
-
-function atualizarNotaVolume() {
-  const n = Number($('refeicoes').value) || 0
-  $('notaVolume').textContent = n >= 400
-    ? 'Acima de 400 refeições o assistente deixa de sugerir grelhados e empanados: no volume, prato feito um a um não sai.'
-    : 'Até 400 refeições o assistente considera todos os métodos que o seu equipamento permite.'
-}
-
-function abrirPerfil() {
-  $('refeicoes').value = estado.perfil.refeicoes
-  $('mesWizard').value = estado.mes
-  $('diasWizard').value = String(estado.dias)
-  pintarOpcoes()
-  mostrarPasso(1)
-  abrirDialogo($('dlgPerfil'))
-}
-
-/** Diz quantos itens estão na safra do mês escolhido, com a lista do livro. */
-function atualizarNotaSafra() {
-  if (!base?.sazonalidade) return
-  const mes = $('mesWizard').value
-  const itens = base.sazonalidade.filter((s) => s.meses.includes(mes)).map((s) => s.item)
-  const nome = MESES.find(([v]) => v === mes)?.[1] ?? ''
-  $('notaSafra').textContent = itens.length
-    ? `Em ${nome} o livro marca ${itens.length} itens na safra, entre eles ${itens.slice(0, 4).join(', ').toLowerCase()}.`
-    : `O livro não marca nenhum item de safra em ${nome}.`
-}
-
-function guardarPerfil() {
-  estado.perfil.refeicoes = Math.max(10, Math.min(5000, Number($('refeicoes').value) || 200))
-  estado.mes = $('mesWizard').value
-  estado.dias = Number($('diasWizard').value) || 5
-  // a barra de cima continua servindo para trocar mês e dias depois de montado
-  $('mes').value = estado.mes
-  $('dias').value = String(estado.dias)
-  memoria.gravar(CHAVE_PERFIL, estado.perfil)
 }
 
 /* ------------------------------------------------------------ salvos */
 const lerSalvos = () => memoria.ler(CHAVE_SALVOS, [])
 
 function salvarCardapio() {
-  const mes = MESES.find(([v]) => v === estado.mes)?.[1] ?? ''
   const salvos = lerSalvos()
   salvos.unshift({
     id: Date.now(),
-    nome: `${mes} · ${estado.dias} dias`,
+    nome: `${nomeDoMes(estado.mes)} · ${estado.dias} dias`,
     criadoEm: new Date().toISOString(),
     mes: estado.mes,
     dias: estado.dias,
@@ -795,19 +1088,20 @@ function carregarSalvo(id) {
   estado.relaxados = []
   estado.repetidos = []
   estado.diaVisivel = 0
-  estrutura = s.estrutura ?? estruturaDoServico(estado.perfil.servico)
+  estado.trocas = 0
+  estrutura = s.estrutura ?? estruturaDoServico(estado.perfil)
   $('mes').value = estado.mes
   $('dias').value = String(estado.dias)
   $('dlgSalvos').close()
-  mostrarPainel()
+  mostrarTela('resultado')
+  irPara('#cardapio')
   pintar()
   avisar('Cardápio carregado.')
 }
 
 /* ------------------------------------------------------------ texto */
 function cardapioEmTexto() {
-  const mes = MESES.find(([v]) => v === estado.mes)?.[1] ?? ''
-  const linhas = [`Cardápio — ${mes}, ${estado.dias} dias`, '']
+  const linhas = [`Cardápio — ${nomeDoMes(estado.mes)}, ${estado.dias} dias`, '']
   for (const dia of estado.cardapio) {
     linhas.push(dia.dia.toUpperCase())
     for (const item of dia.itens) {
@@ -819,59 +1113,174 @@ function cardapioEmTexto() {
   return linhas.join('\n')
 }
 
-/* ------------------------------------------------------------ início */
-function ligarEventos() {
-  for (const d of [$('dlgPerfil'), $('dlgPrato'), $('dlgSalvos'), $('dlgAjuda')]) prepararDialogo(d)
-  $('verOutras').addEventListener('click', mostrarTroca)
-  $('voltarDetalhe').addEventListener('click', mostrarDetalhe)
+/* ------------------------------------------------------------ eventos */
 
-  $('mes').addEventListener('change', (e) => { estado.mes = e.target.value; gerar() })
-  $('dias').addEventListener('change', (e) => { estado.dias = +e.target.value; gerar() })
-  $('outra').addEventListener('click', () => { estado.semente++; gerar(); avisar('Nova sugestão montada.') })
+function sincronizarRange() {
+  $('refeicoesRange').value = String(Math.min(estado.perfil.refeicoes, 1000))
+}
+
+function mudarVolume(valor) {
+  estado.perfil.refeicoes = Math.max(10, Math.min(5000, Math.round(valor / 10) * 10 || 200))
+  $('refeicoes').value = estado.perfil.refeicoes
+  sincronizarRange()
+  aposMudar()
+}
+
+/** Setas dentro de um grupo de rádio, como manda o padrão de teclado. */
+function andarNoGrupo(grupo, atual, passoTeclado) {
+  const itens = $$('[role=radio]', grupo)
+  const i = itens.indexOf(atual)
+  if (i < 0) return
+  const alvo = itens[(i + passoTeclado + itens.length) % itens.length]
+  alvo.click()
+  // o clique redesenha o grupo inteiro, então o botão de antes já saiu do
+  // documento: focar nele mandaria o foco para o body
+  const chave = alvo.dataset.id ?? alvo.dataset.mes ?? alvo.dataset.dias
+  const atributo = alvo.dataset.id ? 'data-id' : alvo.dataset.mes ? 'data-mes' : 'data-dias'
+  grupo.querySelector(`[${atributo}="${CSS.escape(chave)}"]`)?.focus()
+}
+
+function ligarEventos() {
+  prepararDialogo($('dlgSalvos'))
+  prepararDialogo($('gavetaPrato'))
+
+  /* --- apresentação --- */
+  $('comecar').addEventListener('click', () => abrirWizard(1))
+  $('verSalvosApresentacao').addEventListener('click', () => { pintarSalvos(); abrirDialogo($('dlgSalvos')) })
+  $('btSalvos')?.addEventListener('click', () => { pintarSalvos(); abrirDialogo($('dlgSalvos')) })
+  $('btPerfil')?.addEventListener('click', () => abrirWizard(1))
+
+  /* --- wizard --- */
+  const form = $('formPerfil')
+  form.addEventListener('click', (ev) => {
+    const opt = ev.target.closest('.opt')
+    if (opt) { escolher(opt.dataset.campo, opt.dataset.id, opt.dataset.tipo); return }
+    const mes = ev.target.closest('[data-mes]')
+    if (mes) {
+      estado.mes = mes.dataset.mes
+      pintarMeses(); atualizarNotaSafra(); pintarLado(); guardarPerfil()
+      $('meses').querySelector(`[data-mes="${CSS.escape(estado.mes)}"]`)?.focus()
+      return
+    }
+    const dias = ev.target.closest('[data-dias]')
+    if (dias) {
+      estado.dias = +dias.dataset.dias
+      pintarDiasOpcao(); pintarLado(); guardarPerfil()
+      $('diasOpcao').querySelector(`[data-dias="${estado.dias}"]`)?.focus()
+      return
+    }
+    const ir = ev.target.closest('[data-ir]')
+    if (ir) irPara(`#montar/${ir.dataset.ir}`)
+  })
+
+  form.addEventListener('keydown', (ev) => {
+    const alvo = ev.target.closest('[role=radio]')
+    if (!alvo) return
+    const direcao = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key]
+    if (!direcao) return
+    ev.preventDefault()
+    andarNoGrupo(alvo.closest('[role=radiogroup]'), alvo, direcao)
+  })
+
+  $('wizard').addEventListener('click', (ev) => {
+    const ir = ev.target.closest('[data-ir]')
+    if (ir) irPara(`#montar/${ir.dataset.ir}`)
+  })
+
+  $('wizVoltar').addEventListener('click', () => {
+    if (passo === 1) { irPara(estado.cardapio ? '#cardapio' : '#'); return }
+    irPara(`#montar/${passo - 1}`)
+  })
+  $('wizAvancar').addEventListener('click', () => {
+    if (passo < TOTAL_PASSOS) { irPara(`#montar/${passo + 1}`); return }
+    guardarPerfil()
+    gerar()
+  })
+  $('sairWizard').addEventListener('click', () => irPara(estado.cardapio ? '#cardapio' : '#'))
+
+  // Enter em qualquer lugar do formulário avança, menos dentro de um campo de
+  // número, onde Enter costuma significar "confirmei este valor"
+  form.addEventListener('keydown', (ev) => {
+    if (ev.key !== 'Enter' || ev.target.matches('input[type=number], input[type=range]')) return
+    if (ev.target.closest('.opt, [data-mes], [data-dias], [data-ir]')) return
+    ev.preventDefault()
+    $('wizAvancar').click()
+  })
+
+  $('refeicoes').addEventListener('input', (ev) => {
+    const n = Number(ev.target.value)
+    if (!Number.isFinite(n) || n <= 0) return
+    estado.perfil.refeicoes = Math.max(10, Math.min(5000, n))
+    sincronizarRange()
+    aposMudar()
+  })
+  $('refeicoes').addEventListener('blur', () => mudarVolume(Number($('refeicoes').value)))
+  $('refeicoesRange').addEventListener('input', (ev) => mudarVolume(Number(ev.target.value)))
+  for (const b of $$('[data-passo-num]')) {
+    b.addEventListener('click', () => mudarVolume(estado.perfil.refeicoes + Number(b.dataset.passoNum)))
+  }
+
+  /* --- resultado --- */
+  $('mes').addEventListener('change', (e) => {
+    if (!regerar('Trocar o mês')) return
+    estado.mes = e.target.value
+    guardarPerfil()
+    gerar()
+  })
+  $('dias').addEventListener('change', (e) => {
+    if (!regerar('Trocar o número de dias')) return
+    estado.dias = +e.target.value
+    guardarPerfil()
+    gerar()
+  })
+  $('outra').addEventListener('click', () => {
+    if (!regerar('Gerar outra semana')) return
+    estado.semente++
+    gerar()
+    avisar('Nova sugestão montada.')
+  })
   $('salvar').addEventListener('click', salvarCardapio)
   $('imprimir').addEventListener('click', () => window.print())
   $('copiar').addEventListener('click', () => copiar(cardapioEmTexto(), 'Cardápio copiado como texto.'))
 
-  $('comecar').addEventListener('click', () => abrirPerfil())
-  $('verSalvosApresentacao').addEventListener('click', () => { pintarSalvos(); abrirDialogo($('dlgSalvos')) })
-  $('btPerfil')?.addEventListener('click', () => abrirPerfil())
-  $('btAjuda')?.addEventListener('click', () => abrirDialogo($('dlgAjuda')))
-  $('btSalvos')?.addEventListener('click', () => { pintarSalvos(); abrirDialogo($('dlgSalvos')) })
+  /* --- gaveta --- */
+  $('abaDetalhe').addEventListener('click', () => mostrarAba('detalhe'))
+  $('abaTroca').addEventListener('click', () => mostrarAba('troca'))
+  // O evento close do <dialog> não chega em todo navegador; observar o atributo
+  // open pega qualquer caminho de fechamento: botão, Esc, clique fora.
+  const gaveta = $('gavetaPrato')
+  new MutationObserver(() => { if (!gaveta.open) limparGaveta() })
+    .observe(gaveta, { attributes: true, attributeFilter: ['open'] })
+  // <dialog> não modal não fecha sozinho no Esc
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' && $('gavetaPrato').open && telaLarga()) fecharGaveta()
+  })
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', fecharGaveta)
 
-  $('perfilVoltar').addEventListener('click', () => mostrarPasso(passo - 1))
-  $('perfilAvancar').addEventListener('click', () => {
-    if (passo < TOTAL_PASSOS) { mostrarPasso(passo + 1); return }
-    guardarPerfil()
-    $('dlgPerfil').close()
-    gerar()
+  let relogioFiltro
+  $('filtroTroca').addEventListener('input', (ev) => {
+    clearTimeout(relogioFiltro)
+    const valor = ev.target.value
+    relogioFiltro = setTimeout(() => pintarTroca(valor), 130)
   })
-  // sem cardápio na tela, fechar o questionário sem montar deixaria a pessoa
-  // olhando para a apresentação de novo; pular monta com o que já está marcado
-  $('pularPerfil').addEventListener('click', () => {
-    guardarPerfil()
-    $('dlgPerfil').close()
-    gerar()
-  })
-  $('refeicoes').addEventListener('input', atualizarNotaVolume)
-  $('mesWizard').addEventListener('change', atualizarNotaSafra)
-  for (const b of $$('[data-passo-num]')) {
-    b.addEventListener('click', () => {
-      const atual = Number($('refeicoes').value) || 200
-      $('refeicoes').value = Math.max(10, Math.min(5000, atual + Number(b.dataset.passoNum)))
-      atualizarNotaVolume()
-    })
-  }
 
-  let debounceFiltro
-  $('filtroTroca').addEventListener('input', (e) => {
-    clearTimeout(debounceFiltro)
-    const valor = e.target.value
-    debounceFiltro = setTimeout(() => pintarTroca(valor), 130)
-  })
+  window.addEventListener('hashchange', aplicarHash)
 }
 
+/* ------------------------------------------------------------ início */
 async function iniciar() {
   ligarEventos()
+
+  const salvo = memoria.ler(CHAVE_PERFIL)
+  if (salvo) {
+    estado.perfil = { ...PERFIL_PADRAO, ...salvo }
+    if (salvo.mes) estado.mes = salvo.mes
+    if (salvo.dias) estado.dias = salvo.dias
+    // mes e dias moram fora do perfil; guardá-los juntos foi o jeito de a
+    // pessoa voltar e achar tudo como deixou
+    delete estado.perfil.mes
+    delete estado.perfil.dias
+  }
 
   let resposta
   try {
@@ -883,24 +1292,25 @@ async function iniciar() {
   if (!resposta.ok) return falhar('O acervo não está disponível agora. Tente de novo em instantes.')
   base = await resposta.json()
 
-  const opcoesDeMes = MESES.map(([v, n]) =>
-    `<option value="${v}"${v === estado.mes ? ' selected' : ''}>${n}</option>`).join('')
-  $('mes').innerHTML = opcoesDeMes
-  $('mesWizard').innerHTML = opcoesDeMes
-
   // Cabeçalhos das tabelas do livro que a extração trouxe como preparação
   base.preparacoes = base.preparacoes.filter((p) => !ehCabecalho(p))
 
-  const salvo = memoria.ler(CHAVE_PERFIL)
-  if (salvo) estado.perfil = { ...PERFIL_PADRAO, ...salvo }
+  const opcoesDeMes = MESES.map(([v, n]) =>
+    `<option value="${v}"${v === estado.mes ? ' selected' : ''}>${n}</option>`).join('')
+  $('mes').innerHTML = opcoesDeMes
+  $('mes').value = estado.mes
+  $('dias').value = String(estado.dias)
 
-  // A tela abre pela apresentação: quem chega precisa entender de onde vem cada
-  // prato antes de responder qualquer coisa. O questionário vem no clique.
+  pintarNumeros()
+  pintarPrevia()
+  aplicarHash()
 }
 
 function falhar(recado) {
-  $('avisos').innerHTML = `<div class="recado erro">
+  const caixa = `<div class="recado erro">
     <svg aria-hidden="true"><use href="#i-atencao"></use></svg><span>${esc(recado)}</span></div>`
+  $('avisos').innerHTML = caixa
+  $('previaGrade').innerHTML = caixa
 }
 
 iniciar()

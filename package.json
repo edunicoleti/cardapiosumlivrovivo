@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "app": "node scripts/harness-local.mjs",
     "build": "vite build && node scripts/pos-build.mjs",
     "lint": "eslint .",
     "preview": "vite preview"

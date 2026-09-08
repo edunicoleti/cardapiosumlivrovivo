@@ -128,13 +128,16 @@
    dois lugares. Coluna única, dois destinos, nada competindo por atenção.
    ========================================================================== */
 
-.faixa.estreita-media { width: min(880px, 100%); }
+/* A faixa agora acompanha o trilho; aqui o limite é da leitura, não do bloco:
+   os dois destinos ficam lado a lado quando há largura para isso. */
+.faixa.estreita-media { --faixa: 1280px; }
 
 .abertura { padding: 6px 0 30px; }
 .abertura h1 { margin: 9px 0 10px; max-width: 20ch; }
 .abertura .linha-apoio { font-size: 1.05rem; }
 
-.destinos { display: flex; flex-direction: column; gap: 16px; }
+.destinos { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
+@media (min-width: 1180px) { .destinos { grid-template-columns: 1fr 1fr; } }
 
 .destino {
   display: grid;
@@ -148,6 +151,8 @@
   transition: transform var(--mov), box-shadow var(--mov), border-color var(--mov);
 }
 @media (min-width: 660px) { .destino { grid-template-columns: 168px minmax(0, 1fr); } }
+/* lado a lado a coluna fica estreita demais para a ilustração de 168px */
+@media (min-width: 1180px) and (max-width: 1420px) { .destino { grid-template-columns: 1fr; } }
 
 .destino:hover {
   transform: translateY(-2px);

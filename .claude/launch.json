@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "app",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["scripts/harness-local.mjs"],
+      "port": 5178,
+      "url": "http://localhost:5178"
+    },
+    {
+      "name": "lp",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--no-open"],
+      "autoPort": true
+    }
+  ]
+}

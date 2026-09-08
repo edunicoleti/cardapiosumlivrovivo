@@ -194,21 +194,27 @@ function marcarAtualNoSumario() {
   for (const b of $$('.sumario button')) b.setAttribute('aria-current', String(+b.dataset.i === atual))
 }
 
+/**
+ * Os botões traziam o título do capítulo seguinte, e títulos como
+ * "VII. INSTRUMENTOS DE MONITORAMENTO DA QUALIDADE DOS CARDÁPIOS NA PRODUÇÃO
+ * DE REFEIÇÕES" faziam a barra inteira mudar de tamanho de capítulo para
+ * capítulo. O nome do capítulo já está no sumário e no topo do texto: aqui
+ * basta a direção, e a posição, que era o que faltava saber.
+ */
 function htmlPassos() {
   const anterior = secoes[atual - 1]
   const proximo = secoes[atual + 1]
-  return `<div class="passos">
-    <button class="passo" type="button" data-i="${atual - 1}" ${anterior ? '' : 'disabled'}>
-      <svg aria-hidden="true"><use href="#i-esq"></use></svg>
-      <span class="txt"><span class="q">Anterior</span>
-        <span class="t">${anterior ? esc(anterior.titulo) : '—'}</span></span>
+  return `<nav class="passos" aria-label="Navegar entre capítulos">
+    <button class="passo" type="button" data-i="${atual - 1}" ${anterior ? '' : 'disabled'}
+      ${anterior ? `title="${esc(anterior.titulo)}"` : ''}>
+      <svg aria-hidden="true"><use href="#i-esq"></use></svg><span>Anterior</span>
     </button>
-    <button class="passo adiante" type="button" data-i="${atual + 1}" ${proximo ? '' : 'disabled'}>
-      <svg aria-hidden="true"><use href="#i-dir"></use></svg>
-      <span class="txt"><span class="q">Próximo</span>
-        <span class="t">${proximo ? esc(proximo.titulo) : '—'}</span></span>
+    <span class="posicao">${atual + 1} <i>de</i> ${secoes.length}</span>
+    <button class="passo" type="button" data-i="${atual + 1}" ${proximo ? '' : 'disabled'}
+      ${proximo ? `title="${esc(proximo.titulo)}"` : ''}>
+      <span>Próximo</span><svg aria-hidden="true"><use href="#i-dir"></use></svg>
     </button>
-  </div>`
+  </nav>`
 }
 
 /* ------------------------------------------------------------ realce */

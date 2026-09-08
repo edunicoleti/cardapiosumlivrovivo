@@ -171,6 +171,18 @@
 .destino.laranja .ilustra { background: linear-gradient(150deg, #FDF3E7 0%, #F7EFD9 120%); }
 
 .destino .simbolo { position: relative; z-index: 1; width: 40px; height: 40px; color: var(--verde-prof); }
+
+/* O mockup vem sobre fundo branco. multiply faz o branco sumir no creme do
+   painel e a sombra do mockup cair sobre ele, sem precisar recortar alfa. */
+.destino .ilustra.com-capa { padding: 18px 0; }
+.destino .capa {
+  position: relative;
+  z-index: 1;
+  width: 104px;
+  height: auto;
+  mix-blend-mode: multiply;
+}
+@media (min-width: 660px) { .destino .capa { width: 118px; } }
 .destino.laranja .simbolo { color: var(--laranja-esc); }
 
 .destino .tracos {

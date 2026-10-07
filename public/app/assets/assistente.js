@@ -97,6 +97,20 @@ const FAIXA_DO_LIVRO = {
   luxo: 'pelo menos 3 pratos proteicos e 2 acompanhamentos, sobremesas mais elaboradas e frutas mais diversificadas',
 }
 
+/* As mesmas faixas, por seção da refeição, para aparecerem ao lado da decisão.
+   [mínimo, máximo]; null no máximo = "ou mais". Seção sem número no livro
+   (entradas do luxo, por exemplo) não mostra faixa. */
+const FAIXA_POR_SECAO = {
+  Entrada: { itens: ['sopa', 'saladaCrua', 'saladaCozida', 'saladaMolho'],
+             popular: [1, 5], medio: [1, 8] },
+  'Prato principal': { itens: ['principal'], nome: 'pratos proteicos',
+                       popular: [1, 2], medio: [2, 3], luxo: [3, null] },
+  Acompanhamento: { itens: ['acompanhamento'], popular: [1, 1], medio: [1, 2], luxo: [2, null] },
+  Sobremesa: { itens: ['fruta', 'doce'], popular: [1, 2], medio: [3, null] },
+}
+const textoFaixa = ([min, max]) => max === null ? `${min} ou mais`
+  : min === max ? `${min}` : max === min + 1 ? `${min} ou ${max}` : `de ${min} a ${max}`
+
 function sugestaoDoLivro(perfil) {
   const q = { ...(SUGESTAO_DO_LIVRO[perfil.padrao] ?? SUGESTAO_DO_LIVRO.medio) }
   // bufê por peso põe mais salada e mais prato quente no balcão
@@ -650,48 +664,146 @@ function escolher(campo, id, tipo) {
 }
 
 /* ------------------------------------------------------- quantidades
-   As linhas são desenhadas uma vez só. Redesenhar a cada tecla tiraria o
-   foco do campo em que a pessoa está digitando: depois disso só os valores
-   são atualizados, e o campo em foco fica como a pessoa deixou. */
-function pintarQuantidades() {
-  const caixa = $('quantidades')
-  if (!caixa.childElementCount) {
-    let secao = ''
-    caixa.innerHTML = QUANTIDADES.map((item) => {
-      const titulo = item.secao !== secao ? `<span class="qtd-secao">${esc(item.secao)}</span>` : ''
-      secao = item.secao
-      return `${titulo}<div class="qtd-linha">
-        <label class="qtd-texto" for="qtd-${item.id}">
-          <span class="qtd-rot">${esc(item.rot)}</span>
-          <span class="qtd-desc">${esc(item.desc)}</span>
-        </label>
-        <div class="qtd-controle">
-          <button class="bt-icone contornado" type="button" data-qtd-passo="-1" data-qtd-id="${item.id}"
-                  aria-label="Uma opção a menos de ${esc(item.rot.toLowerCase())}">
-            <svg aria-hidden="true"><use href="#i-menos"></use></svg>
-          </button>
-          <input type="number" id="qtd-${item.id}" data-qtd="${item.id}" min="0" max="${MAX_QUANTIDADE}"
-                 step="1" inputmode="numeric">
-          <button class="bt-icone contornado" type="button" data-qtd-passo="1" data-qtd-id="${item.id}"
-                  aria-label="Uma opção a mais de ${esc(item.rot.toLowerCase())}">
-            <svg aria-hidden="true"><use href="#i-mais"></use></svg>
-          </button>
-        </div>
-      </div>`
-    }).join('')
+   Uma coluna na ordem da refeição. Item com zero não é um campo cinza que
+   parece travado: vira um botão "+ Nome" no pé da seção. Arroz branco e
+   feijão aparecem no prato base, travados, em vez de num aviso à parte.
+
+   Editar um número NÃO redesenha a lista: o campo em foco perderia o foco.
+   Só quando um item entra ou sai (vai a zero ou sai do zero) a seção muda de
+   forma, e isso espera o campo perder o foco. */
+const SECOES = [...new Set(QUANTIDADES.map((x) => x.secao))]
+const FIXOS_DA_SECAO = { 'Prato base': ['Arroz branco', 'Feijão'] }
+let formaDesenhada = ''
+
+function formaDasQuantidades(q) {
+  const focado = document.activeElement?.dataset?.qtd
+  return QUANTIDADES.map((x) => (q[x.id] > 0 || x.id === focado ? '1' : '0')).join('')
+}
+
+function linhaDeQuantidade(item) {
+  return `<div class="qtd-linha" data-linha="${item.id}">
+    <label class="qtd-texto" for="qtd-${item.id}">
+      <span class="qtd-rot">${esc(item.rot)}</span>
+      <span class="qtd-desc">${esc(item.desc)}</span>
+    </label>
+    <div class="qtd-controle">
+      <button class="bt-icone contornado" type="button" data-qtd-passo="-1" data-qtd-id="${item.id}"
+              aria-label="Uma opção a menos de ${esc(item.rot.toLowerCase())}">
+        <svg aria-hidden="true"><use href="#i-menos"></use></svg>
+      </button>
+      <input type="number" id="qtd-${item.id}" data-qtd="${item.id}" min="0" max="${MAX_QUANTIDADE}"
+             step="1" inputmode="numeric" aria-label="${esc(item.rot)} por dia">
+      <button class="bt-icone contornado" type="button" data-qtd-passo="1" data-qtd-id="${item.id}"
+              aria-label="Uma opção a mais de ${esc(item.rot.toLowerCase())}">
+        <svg aria-hidden="true"><use href="#i-mais"></use></svg>
+      </button>
+    </div>
+  </div>`
+}
+
+function desenharQuantidades(q) {
+  const focado = document.activeElement?.dataset?.qtd
+  $('quantidades').innerHTML = SECOES.map((secao) => {
+    const itens = QUANTIDADES.filter((x) => x.secao === secao)
+    const ativos = itens.filter((x) => q[x.id] > 0 || x.id === focado)
+    const fora = itens.filter((x) => !ativos.includes(x))
+    const fixos = (FIXOS_DA_SECAO[secao] ?? []).map((nome) => `<div class="qtd-linha fixa">
+        <span class="qtd-texto"><span class="qtd-rot">${esc(nome)}</span></span>
+        <span class="qtd-fixo"><svg aria-hidden="true"><use href="#i-check"></use></svg>todo dia</span>
+      </div>`).join('')
+    const adicionar = fora.length ? `<div class="qtd-adicionar">
+        <span class="r">${ativos.length || fixos ? 'Também pode entrar' : 'Fora do cardápio'}</span>
+        ${fora.map((x) => `<button class="chip-adicionar" type="button" data-qtd-adicionar="${x.id}">
+          <svg aria-hidden="true"><use href="#i-mais"></use></svg>${esc(x.um)}</button>`).join('')}
+      </div>` : ''
+    return `<section class="qtd-secao" data-secao="${esc(secao)}">
+      <header><h3>${esc(secao)}</h3><span class="qtd-faixa" data-faixa="${esc(secao)}"></span></header>
+      ${fixos}${ativos.map(linhaDeQuantidade).join('')}${adicionar}
+    </section>`
+  }).join('')
+  formaDesenhada = formaDasQuantidades(q)
+}
+
+/** A faixa do livro ao lado de cada seção, com nota leve quando passa dela. */
+function pintarFaixas(q) {
+  const padrao = estado.perfil.padrao
+  const rotPadrao = PADROES.find((x) => x.id === padrao)?.rot.toLowerCase() ?? ''
+  for (const caixa of $$('#quantidades [data-faixa]')) {
+    const regra = FAIXA_POR_SECAO[caixa.dataset.faixa]
+    const faixa = regra?.[padrao]
+    if (!faixa) { caixa.textContent = ''; caixa.className = 'qtd-faixa'; continue }
+    const total = regra.itens.reduce((t, id) => t + q[id], 0)
+    const fora = total < faixa[0] || (faixa[1] !== null && total > faixa[1])
+    caixa.className = `qtd-faixa${fora ? ' fora' : ''}`
+    caixa.textContent = fora
+      ? `você pôs ${total}; o livro sugere ${textoFaixa(faixa)} no ${rotPadrao}`
+      : `livro: ${textoFaixa(faixa)} no ${rotPadrao}`
   }
+}
+
+/* Quantas preparações do livro cabem em cada item, com o padrão e as
+   restrições marcados. Serve para avisar antes de montar que a semana vai
+   repetir prato. O equipamento fica de fora: o motor cede nele antes de
+   repetir. */
+let cacheAcervoItem = { chave: null, valor: null }
+function acervoPorItem(perfil) {
+  if (!base) return {}
+  const chave = JSON.stringify([perfil.padrao, perfil.restricoes, perfil.servico])
+  if (cacheAcervoItem.chave === chave) return cacheAcervoItem.valor
+  const bloqRefs = referenciasBloqueadas(perfil)
+  const bloqTermos = termosBloqueados(perfil)
+  const valor = {}
+  for (const item of QUANTIDADES) {
+    const linha = LINHAS_DO_ITEM[item.id]
+    valor[item.id] = base.preparacoes.filter((p) =>
+      (!linha.slot || p.slot === linha.slot) &&
+      (!linha.filtro || linha.filtro(p)) &&
+      (!linha.referencias || linha.referencias.includes(p.referencia)) &&
+      !bloqRefs.has(p.referencia) && !temIngredienteProibido(p, bloqTermos) &&
+      cabeNoPadrao(p, perfil.padrao)).length
+  }
+  cacheAcervoItem = { chave, valor }
+  return valor
+}
+
+function pintarResumoQuantidades(q) {
+  const porDia = 2 + QUANTIDADES.reduce((t, x) => t + q[x.id], 0)
+  $('qtdTotalDia').textContent = `${porDia} preparações`
+  $('qtdTotalSemana').textContent = `${porDia * estado.dias} em ${estado.dias} dias`
+
+  const acervo = acervoPorItem(estado.perfil)
+  const rotPadrao = PADROES.find((x) => x.id === estado.perfil.padrao)?.rot.toLowerCase() ?? ''
+  const avisos = QUANTIDADES.filter((x) => q[x.id] * estado.dias > (acervo[x.id] ?? Infinity))
+    .map((x) => `<p><svg aria-hidden="true"><use href="#i-atencao"></use></svg><span><b>${esc(x.rot)}:</b>
+      o livro tem ${acervo[x.id]} no padrão ${esc(rotPadrao)}${estado.perfil.restricoes.length
+        ? ' com as suas restrições' : ''}. Com ${q[x.id]} por dia em ${estado.dias} dias, algum prato
+      vai repetir.</span></p>`)
+  $('qtdAvisos').innerHTML = avisos.join('')
+}
+
+function pintarSugestao() {
+  const proprias = estado.perfil.quantidadesProprias
+  const rotPadrao = PADROES.find((x) => x.id === estado.perfil.padrao)?.rot.toLowerCase() ?? ''
+  $('sugestaoTitulo').textContent = `Sugestão do livro para o padrão ${rotPadrao}`
+  $('sugestaoFaixa').textContent = `${FAIXA_DO_LIVRO[estado.perfil.padrao] ?? ''} (fator 1.1)`
+  $('sugestaoSelo').textContent = proprias ? 'Personalizado' : 'Em uso'
+  $('cartaoSugestao').classList.toggle('em-uso', !proprias)
+  $('usarSugestao').hidden = !proprias
+}
+
+function pintarQuantidades() {
   const q = quantidadesDo(estado.perfil)
+  if (formaDasQuantidades(q) !== formaDesenhada || !$('quantidades').childElementCount) {
+    desenharQuantidades(q)
+  }
   for (const campo of $$('#quantidades [data-qtd]')) {
     const n = q[campo.dataset.qtd]
     campo.closest('.qtd-linha').classList.toggle('zerada', n === 0)
     if (campo !== document.activeElement) campo.value = String(n)
   }
-  const proprias = estado.perfil.quantidadesProprias
-  const padrao = PADROES.find((x) => x.id === estado.perfil.padrao)?.rot.toLowerCase() ?? ''
-  $('notaQuantidades').innerHTML = `Para o padrão <b>${esc(padrao)}</b> o livro fala em
-    ${esc(FAIXA_DO_LIVRO[estado.perfil.padrao] ?? '')} (fator 1.1).${proprias
-      ? ' Os números acima são os seus.' : ' Os números acima partem daí.'}`
-  $('usarSugestao').hidden = !proprias
+  pintarFaixas(q)
+  pintarSugestao()
+  pintarResumoQuantidades(q)
 }
 
 /** Grava uma quantidade digitada ou tocada. A partir daqui os números são da pessoa. */
@@ -703,6 +815,15 @@ function mudarQuantidade(id, valor) {
   estado.perfil.quantidades = q
   estado.perfil.quantidadesProprias = true
   aposMudar()
+}
+
+/* O botão que a pessoa tocou some quando a lista muda de forma (o "−" que
+   zera vira "+ Nome", e o "+ Nome" vira linha). O foco vai para o equivalente
+   na forma nova, para quem usa teclado não cair no topo da página. */
+function focarNaQuantidade(id) {
+  const alvo = $('quantidades').querySelector(`[data-qtd="${id}"]`) ??
+    $('quantidades').querySelector(`[data-qtd-adicionar="${id}"]`)
+  alvo?.focus({ preventScroll: true })
 }
 
 function usarSugestao() {
@@ -736,10 +857,13 @@ function pintarEtapas() {
   pintarRevisao()
 }
 
-/** Redesenha tudo que depende do perfil e guarda no aparelho. */
+/**
+ * Redesenha tudo que depende do perfil e guarda no aparelho. Não mede o palco:
+ * medir mostra por um instante as etapas de cima, o navegador compensa a
+ * rolagem e a página pulava 300px a cada número trocado.
+ */
 function aposMudar() {
   pintarEtapas()
-  medirPalco()
   guardarPerfil()
 }
 
@@ -793,15 +917,8 @@ function pintarRevisao() {
 
 /** Desenha a ordem da refeição que sai do que foi marcado no passo 5. */
 function pintarForma() {
-  const q = quantidadesDo(estado.perfil)
-  const itens = []
-  for (const x of QUANTIDADES) {
-    if (x.id === 'arrozComposto') itens.push('Arroz branco')
-    if (x.id === 'leguminosa') itens.push('Feijão')
-    if (q[x.id] === 1) itens.push(x.um)
-    if (q[x.id] > 1) itens.push(`${x.rot} × ${q[x.id]}`)
-  }
-  $('formaLinhas').innerHTML = itens.map((t) => `<li>${esc(t)}</li>`).join('')
+  $('formaLinhas').innerHTML = estruturaDoServico(estado.perfil)
+    .map((l) => `<li${l.fixo ? ' class="fixo"' : ''}>${esc(l.espaco)}</li>`).join('')
 }
 
 function pintarMeses() {
@@ -869,8 +986,12 @@ function medirPalco() {
   // navegador nao esta desenhando, e ai a altura nunca era aplicada. Sao oito
   // leituras de offsetHeight numa subarvore pequena.
   palco.style.minHeight = '0px'
+  // sem ancoragem enquanto as etapas de cima aparecem e somem
+  document.documentElement.style.overflowAnchor = 'none'
   let maior = 0
-  for (const etapa of $$('#formPerfil .etapa')) {
+  // a etapa das quantidades cresce com o que se adiciona e fica de fora: com
+  // ela na conta, o passo do padrão ganhava 800px de vazio embaixo
+  for (const etapa of $$('#formPerfil .etapa:not([data-alta])')) {
     const oculta = etapa.hidden
     etapa.hidden = false
     etapa.style.flex = 'none'
@@ -881,6 +1002,7 @@ function medirPalco() {
   // 2px de folga: medida e render diferem por arredondamento de subpixel, e
   // dois pixels de diferenca ja fazem o botao piscar de lugar
   palco.style.minHeight = `${Math.ceil(maior) + 2}px`
+  document.documentElement.style.overflowAnchor = ''
 }
 
 function mostrarPasso(n, comFoco = true) {
@@ -1490,21 +1612,45 @@ function ligarEventos() {
   })
 
   $('quantidades').addEventListener('click', (ev) => {
+    const mais = ev.target.closest('[data-qtd-adicionar]')
+    if (mais) {
+      mudarQuantidade(mais.dataset.qtdAdicionar, 1)
+      focarNaQuantidade(mais.dataset.qtdAdicionar)
+      return
+    }
     const b = ev.target.closest('[data-qtd-passo]')
     if (!b) return
     const id = b.dataset.qtdId
     mudarQuantidade(id, quantidadesDo(estado.perfil)[id] + Number(b.dataset.qtdPasso))
+    if (!b.isConnected) focarNaQuantidade(id)
   })
   $('quantidades').addEventListener('input', (ev) => {
     const campo = ev.target.closest('[data-qtd]')
     // campo vazio no meio da digitação não vira zero: espera o número
     if (campo && campo.value !== '') mudarQuantidade(campo.dataset.qtd, campo.value)
   })
+  // tocar no campo seleciona o número, e digitar já troca o valor
+  $('quantidades').addEventListener('focusin', (ev) => {
+    if (ev.target.matches('[data-qtd]')) ev.target.select()
+  })
   $('quantidades').addEventListener('focusout', (ev) => {
     const campo = ev.target.closest('[data-qtd]')
-    if (campo) campo.value = String(quantidadesDo(estado.perfil)[campo.dataset.qtd])
+    if (!campo) return
+    // a forma da lista espera o campo perder o foco: quem digita 0 para trocar
+    // por 2 não vê a linha sumir no meio
+    // se o destino do foco sumiu com o redesenho, o foco vai para o
+    // equivalente; clicar fora não devolve o foco ao campo
+    const destino = ev.relatedTarget
+    setTimeout(() => {
+      pintarQuantidades()
+      if (destino && !destino.isConnected) focarNaQuantidade(campo.dataset.qtd)
+    })
   })
-  $('usarSugestao').addEventListener('click', usarSugestao)
+  $('usarSugestao').addEventListener('click', () => {
+    usarSugestao()
+    // o botão some quando a sugestão volta a valer
+    $('cartaoSugestao').focus({ preventScroll: true })
+  })
 
   $('wizard').addEventListener('click', (ev) => {
     const ir = ev.target.closest('[data-ir]')

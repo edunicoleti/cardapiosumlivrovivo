@@ -125,23 +125,38 @@
           <p class="nota" id="notaEquipamento"></p>
         </fieldset>
 
-        <fieldset class="etapa" data-passo="5" tabindex="-1" hidden>
-          <legend>Quantas opções de cada item?</legend>
-          <p class="origem">Capítulo VI, B: a composição da refeição. Zero tira o item do cardápio.</p>
-          <div class="fixos-base">
-            <svg aria-hidden="true"><use href="#i-check"></use></svg>
-            <span><b>Arroz branco e feijão</b> entram todos os dias e não precisam de número.</span>
-          </div>
-          <div class="quantidades" id="quantidades"></div>
-          <div class="nota nota-quantidades">
-            <span id="notaQuantidades"></span>
-            <button class="bt bt-fantasma bt-pequeno" id="usarSugestao" type="button">
-              <svg aria-hidden="true"><use href="#i-atualizar"></use></svg>Usar a sugestão do livro
+        <!-- data-alta: esta etapa cresce com o que a pessoa adiciona, e não
+             entra na medida que fixa a altura das outras -->
+        <fieldset class="etapa" data-passo="5" data-alta tabindex="-1" hidden>
+          <legend>Quantas opções o cliente encontra no balcão, por dia?</legend>
+          <p class="origem">Não é porção nem per capita. Cada opção vira uma linha do cardápio,
+            com um prato diferente a cada dia.</p>
+
+          <div class="cartao-sugestao" id="cartaoSugestao" tabindex="-1">
+            <div class="cartao-sugestao-texto">
+              <span class="t" id="sugestaoTitulo"></span>
+              <span class="d" id="sugestaoFaixa"></span>
+            </div>
+            <span class="selo-sugestao" id="sugestaoSelo"></span>
+            <button class="bt bt-sec bt-pequeno" id="usarSugestao" type="button">
+              <svg aria-hidden="true"><use href="#i-atualizar"></use></svg>Voltar à sugestão
             </button>
           </div>
-          <div class="forma-refeicao">
-            <span class="rot">A refeição fica assim</span>
-            <ol id="formaLinhas"></ol>
+
+          <div class="qtd-layout">
+            <div class="quantidades" id="quantidades"></div>
+            <aside class="qtd-resumo" aria-label="Resumo do dia">
+              <div class="qtd-total">
+                <span class="r">Por dia</span>
+                <span class="n" id="qtdTotalDia"></span>
+                <span class="s" id="qtdTotalSemana"></span>
+              </div>
+              <div class="qtd-avisos" id="qtdAvisos" aria-live="polite"></div>
+              <div class="qtd-dia">
+                <span class="r">Um dia fica assim</span>
+                <ol id="formaLinhas"></ol>
+              </div>
+            </aside>
           </div>
         </fieldset>
 

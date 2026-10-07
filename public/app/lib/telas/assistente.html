@@ -126,9 +126,19 @@
         </fieldset>
 
         <fieldset class="etapa" data-passo="5" tabindex="-1" hidden>
-          <legend>O que entra na composição?</legend>
-          <p class="origem">Capítulo VI, B: a ordem da refeição principal</p>
-          <div class="opcoes" data-campo="composicao" data-tipo="multiplo"></div>
+          <legend>Quantas opções de cada item?</legend>
+          <p class="origem">Capítulo VI, B: a composição da refeição. Zero tira o item do cardápio.</p>
+          <div class="fixos-base">
+            <svg aria-hidden="true"><use href="#i-check"></use></svg>
+            <span><b>Arroz branco e feijão</b> entram todos os dias e não precisam de número.</span>
+          </div>
+          <div class="quantidades" id="quantidades"></div>
+          <div class="nota nota-quantidades">
+            <span id="notaQuantidades"></span>
+            <button class="bt bt-fantasma bt-pequeno" id="usarSugestao" type="button">
+              <svg aria-hidden="true"><use href="#i-atualizar"></use></svg>Usar a sugestão do livro
+            </button>
+          </div>
           <div class="forma-refeicao">
             <span class="rot">A refeição fica assim</span>
             <ol id="formaLinhas"></ol>

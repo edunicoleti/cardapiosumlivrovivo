@@ -395,6 +395,58 @@ main.colado .faixa { padding-top: 16px; }
 }
 @keyframes entrar { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
+/* --- quantidades, no passo 5 ---
+   Uma linha por item, agrupada pela ordem da refeicao do capitulo VI, B. Duas
+   colunas no desktop para os doze itens nao virarem uma lista de rolar. */
+.fixos-base {
+  display: flex; align-items: center; gap: 10px;
+  font-size: var(--t-sm); color: var(--tinta-sv);
+  background: var(--verde-cl); border: 1px solid var(--linha); border-radius: var(--r-md);
+  padding: 11px 14px; margin-bottom: 18px;
+}
+.fixos-base svg { width: 16px; height: 16px; color: var(--verde); flex: none; }
+.fixos-base b { color: var(--verde-prof); font-weight: 600; }
+
+.quantidades {
+  display: grid; gap: 0 28px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) { .quantidades { grid-template-columns: 1fr 1fr; } }
+.qtd-secao {
+  grid-column: 1 / -1;
+  font-family: var(--display); font-size: var(--t-xs); font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-fr);
+  margin: 16px 0 2px;
+}
+.qtd-secao:first-child { margin-top: 0; }
+.qtd-linha {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--linha-fr);
+}
+.qtd-texto { min-width: 0; cursor: pointer; }
+.qtd-rot { display: block; font-size: var(--t-md); font-weight: 600; color: var(--tinta); line-height: 1.3; }
+.qtd-desc { display: block; font-size: var(--t-sm); color: var(--tinta-fr); line-height: 1.4; margin-top: 2px; }
+.qtd-linha.zerada .qtd-rot { color: var(--tinta-fr); font-weight: 500; }
+.qtd-controle { display: flex; align-items: center; gap: 6px; flex: none; }
+.qtd-controle .bt-icone { width: 38px; min-height: 38px; }
+.qtd-controle .bt-icone svg { width: 17px; height: 17px; }
+.qtd-controle input {
+  width: 54px; min-height: 40px; text-align: center;
+  font-family: var(--display); font-size: 1.15rem; font-weight: 700; color: var(--verde-prof);
+  font-variant-numeric: tabular-nums;
+}
+.qtd-linha.zerada .qtd-controle input { color: var(--tinta-fr); font-weight: 500; }
+.qtd-controle input::-webkit-outer-spin-button,
+.qtd-controle input::-webkit-inner-spin-button { appearance: none; margin: 0; }
+.qtd-controle input[type=number] { appearance: textfield; }
+
+.nota-quantidades { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: space-between; }
+.nota-quantidades > span { flex: 1 1 320px; }
+.bt-pequeno { min-height: 36px; padding: 6px 12px; font-size: var(--t-sm); }
+.bt-pequeno svg { width: 15px; height: 15px; }
+.bt-pequeno[hidden] { display: none; }
+
 /* --- meses e dias ---
    Os dois grupos moram na mesma grade de seis colunas: antes o mes vinha em
    seis e o dia em tres, com gaps diferentes, e as bordas nao batiam. */
@@ -751,6 +803,21 @@ main.colado .faixa { padding-top: 16px; }
   box-shadow: 1px 0 0 var(--linha-fr);
 }
 .rolagem-grade td { padding: 0; }
+/* uma faixa por bloco da refeicao, como nas tabelas do Anexo III */
+.rolagem-grade tbody tr.secao th {
+  position: static;
+  width: auto;
+  background: var(--creme);
+  color: var(--tinta-sv);
+  font-size: var(--t-xs);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  box-shadow: none;
+}
+/* arroz branco e feijao se repetem a semana toda: discretos para nao
+   competir com o que muda */
+.prato.fixo .nome { color: var(--tinta-sv); font-weight: 400; }
 
 .prato {
   width: 100%;
@@ -856,6 +923,14 @@ main.colado .faixa { padding-top: 16px; }
 .cartao-prato .sinais { margin-top: 8px; }
 .cartao-prato > svg { width: 19px; height: 19px; color: var(--tinta-fr); flex: none; }
 .cartao-prato.sem-opcao { cursor: default; }
+.cartao-prato.fixo .nome { color: var(--tinta-sv); font-weight: 400; }
+.secao-dia {
+  display: block;
+  font-family: var(--display); font-size: var(--t-xs); font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-fr);
+  margin: 10px 2px 0;
+}
+.secao-dia:first-child { margin-top: 0; }
 .cartao-prato.sem-opcao .nome { color: var(--tinta-fr); font-style: italic; }
 
 .legenda-grade {
@@ -960,6 +1035,7 @@ main.colado .faixa { padding-top: 16px; }
   transition: color var(--mov-rap), border-color var(--mov-rap);
 }
 .gaveta-abas button:hover { color: var(--verde-prof); }
+.gaveta-abas button[hidden] { display: none; }
 .gaveta-abas button[aria-selected="true"] { color: var(--verde-prof); border-bottom-color: var(--laranja); }
 .gaveta-abas .conta {
   font-size: var(--t-xs); font-weight: 700;

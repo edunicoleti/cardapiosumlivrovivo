@@ -66,7 +66,7 @@ function Ilustra({ n, w, h = w, tom = 'verde' }) {
 
 // ─── Ticker Banner ────────────────────────────────────────────────────────────
 function TickerBanner() {
-  const items = Array(12).fill('✦ Novo · E-book em PDF + Gerador de cardápio · De R$ 160 por R$ 120 · 12x de R$ 10 ');
+  const items = Array(12).fill('✦ Novo · E-book em PDF + Gerador de cardápio · De R$ 160 por R$ 120 · em até 12x no cartão ');
   return (
     <div className="bg-[#ED8627] overflow-hidden py-2.5 border-b border-[#D67822]">
       <div className="flex whitespace-nowrap animate-ticker">
@@ -271,7 +271,7 @@ function HeroSection() {
                 Quero o livro e o gerador
               </CTAButton>
               <p className="text-center text-xs text-[#5A5A5A]">
-                De <s>R$ 160</s> por <strong className="text-[#448D76]">12x de R$ 10</strong> · pagamento único
+                De <s>R$ 160</s> por <strong className="text-[#448D76]">R$ 120</strong> · ou 12x de R$ 10
               </p>
             </motion.div>
 
@@ -319,7 +319,7 @@ function HeroSection() {
                 Quero o livro e o gerador
               </CTAButton>
               <p className="text-sm text-[#5A5A5A] pl-2">
-                De <s>R$ 160</s> por <strong className="text-[#448D76] text-base">12x de R$ 10</strong> · pagamento único
+                De <s>R$ 160</s> por <strong className="text-[#448D76] text-base">R$ 120</strong> · ou 12x de R$ 10
               </p>
             </motion.div>
 
@@ -1210,11 +1210,12 @@ function CheckoutSection() {
               de <s>R$ 160,00</s> por
             </div>
             <div className="flex items-end justify-center gap-1.5 md:gap-2 mt-1">
-              <span className="text-[#5A5A5A] text-base md:text-lg font-semibold mb-1.5 md:mb-2">12x de R$</span>
-              <span className="font-serif text-5xl sm:text-6xl font-bold text-[#448D76] leading-none">10</span>
+              <span className="text-[#5A5A5A] text-base md:text-lg font-semibold mb-1.5 md:mb-2">R$</span>
+              <span className="font-serif text-5xl sm:text-6xl font-bold text-[#448D76] leading-none">120</span>
+              <span className="text-[#5A5A5A] text-base md:text-lg mb-1.5 md:mb-2">,00</span>
             </div>
-            <div className="text-[#5A5A5A] text-sm mt-3">
-              ou <strong>R$ 120</strong> à vista
+            <div className="text-gray-500 text-sm mt-3">
+              ou em até 12x de R$ 10 no cartão
             </div>
             <div className="inline-block bg-white text-[#0C718B] text-xs font-semibold rounded-full px-3 py-1 mt-3 border border-[#E2E5BE]">
               Pagamento único, não é assinatura

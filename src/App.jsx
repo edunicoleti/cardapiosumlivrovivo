@@ -1197,12 +1197,13 @@ function CheckoutSection() {
           </div>
 
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#448D76] leading-tight mb-3 md:mb-4">
-            O livro e o gerador, por menos do que só o livro custava.
+            O livro e o gerador de cardápio, por menos do que só o livro custava.
           </h2>
 
           <p className="text-[#5A5A5A] mb-6 md:mb-8 leading-relaxed text-sm md:text-base">
             O e-book completo em PDF, com <strong className="text-[#448D76]">2.298 preparações</strong> e onze
-            capítulos de método, mais o gerador que monta a sua semana com as regras do livro.
+            capítulos de método, mais o gerador de cardápio, que monta a semana do seu serviço
+            com as regras do livro.
           </p>
 
           <div className="bg-[#EEF0D2] rounded-xl md:rounded-2xl p-6 md:p-8 mb-6 md:mb-8 border border-[#E2E5BE]">

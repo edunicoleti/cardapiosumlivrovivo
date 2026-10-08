@@ -1197,7 +1197,7 @@ function CheckoutSection() {
           </div>
 
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#448D76] leading-tight mb-3 md:mb-4">
-            O livro e o gerador de cardápio, por menos do que só o livro custava.
+            O livro completo e o gerador de cardápio
           </h2>
 
           <p className="text-[#5A5A5A] mb-6 md:mb-8 leading-relaxed text-sm md:text-base">

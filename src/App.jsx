@@ -66,7 +66,7 @@ function Ilustra({ n, w, h = w, tom = 'verde' }) {
 
 // ─── Ticker Banner ────────────────────────────────────────────────────────────
 function TickerBanner() {
-  const items = Array(12).fill('✦ Novo · E-book em PDF + Gerador de cardápio · De R$ 160 por R$ 120 · em até 12x no cartão ');
+  const items = Array(12).fill('✦ Novo · E-book em PDF + Gerador de Cardápio · De R$ 160 por R$ 120 · em até 12x no cartão ');
   return (
     <div className="bg-[#ED8627] overflow-hidden py-2.5 border-b border-[#D67822]">
       <div className="flex whitespace-nowrap animate-ticker">
@@ -121,7 +121,7 @@ function CredencialAutora({ className = '' }) {
 
 const SELOS_HERO = [
   { icon: '⚡', text: 'Acesso imediato' },
-  { icon: '♾️', text: 'Gerador vitalício' },
+  { icon: '♾️', text: 'Gerador de Cardápio vitalício' },
   { icon: '📖', text: 'Novas edições incluídas' },
 ];
 
@@ -138,7 +138,7 @@ function MiniGerador({ className = '' }) {
         <span className="w-7 h-7 rounded-lg bg-[#ED8627] text-white flex items-center justify-center shrink-0">
           <UtensilsCrossed size={15} aria-hidden="true" />
         </span>
-        <span className="text-[11px] font-bold tracking-wider uppercase text-[#ED8627]">Gerador de cardápio</span>
+        <span className="text-[11px] font-bold tracking-wider uppercase text-[#ED8627]">Gerador de Cardápio</span>
       </div>
       <ul className="space-y-1.5">
         {linhas.map(([dia, prato]) => (
@@ -149,7 +149,7 @@ function MiniGerador({ className = '' }) {
         ))}
       </ul>
       <div className="mt-3 pt-2.5 border-t border-[#E2E5BE] flex items-center gap-1.5 text-[11px] text-[#448D76] font-semibold">
-        <Check size={13} aria-hidden="true" /> Montado pelo método do livro
+        <Check size={13} aria-hidden="true" /> Sugerido pelo método do livro
       </div>
     </div>
   );
@@ -225,7 +225,7 @@ function HeroSection() {
                 transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
                 className="absolute left-2 sm:-left-3 top-[55%] bg-white text-[#ED8627] rounded-xl px-3 py-2 shadow-xl border border-[#E2E5BE] z-20"
               >
-                <div className="text-xs font-bold whitespace-nowrap">2.298 Preparações</div>
+                <div className="text-xs font-bold whitespace-nowrap">+2.500 Receitas</div>
               </motion.div>
 
               {/* O gerador, a segunda metade da oferta */}
@@ -238,7 +238,7 @@ function HeroSection() {
                   <UtensilsCrossed size={13} aria-hidden="true" />
                 </span>
                 <div>
-                  <div className="text-xs font-bold whitespace-nowrap text-[#0C718B]">+ Gerador de cardápio</div>
+                  <div className="text-xs font-bold whitespace-nowrap text-[#0C718B]">+ Gerador de Cardápio</div>
                   <div className="text-[10px] text-gray-500">Acesso vitalício</div>
                 </div>
               </motion.div>
@@ -247,7 +247,7 @@ function HeroSection() {
 
           <motion.div {...stagger(0)} className="space-y-5">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">E-book em PDF + Gerador de cardápio</span>
+              <span className="badge">E-book em PDF + Gerador de Cardápio</span>
             </motion.div>
 
             <motion.h1
@@ -262,13 +262,13 @@ function HeroSection() {
               className="font-sans text-sm sm:text-base text-[#5A5A5A] leading-relaxed"
             >
               O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> traz o livro completo
-              em PDF, com 2.298 preparações e o método técnico por trás delas, e um gerador que monta a sua
+              em PDF, com mais de 2.500 receitas e o método técnico por trás delas, e o Gerador de Cardápio, que sugere a sua
               semana seguindo as regras do próprio livro.
             </motion.p>
 
             <motion.div {...stagger(0.4)} className="space-y-2">
               <CTAButton href="#checkout" size="lg" className="w-full text-center !py-3.5 !text-sm sm:!py-4 sm:!text-base">
-                Quero o livro e o gerador
+                Quero o livro e o Gerador de Cardápio
               </CTAButton>
               <p className="text-center text-xs text-[#5A5A5A]">
                 De <s>R$ 160</s> por <strong className="text-[#448D76]">R$ 120</strong> · ou 12x de R$ 10
@@ -295,7 +295,7 @@ function HeroSection() {
 
           <motion.div {...stagger(0)} className="space-y-7">
             <motion.div {...stagger(0.1)}>
-              <span className="badge">E-book em PDF + Gerador de cardápio</span>
+              <span className="badge">E-book em PDF + Gerador de Cardápio</span>
             </motion.div>
 
             <motion.h1
@@ -310,13 +310,13 @@ function HeroSection() {
               className="font-sans text-xl text-[#5A5A5A] leading-relaxed max-w-lg"
             >
               O <strong className="text-[#448D76]">Cardápios: Um Livro Vivo</strong> traz o livro completo
-              em PDF, com 2.298 preparações e o método técnico por trás delas, e um gerador que monta a sua
+              em PDF, com mais de 2.500 receitas e o método técnico por trás delas, e o Gerador de Cardápio, que sugere a sua
               semana seguindo as regras do próprio livro.
             </motion.p>
 
             <motion.div {...stagger(0.4)} className="flex flex-col items-start gap-3">
               <CTAButton href="#checkout" size="lg">
-                Quero o livro e o gerador
+                Quero o livro e o Gerador de Cardápio
               </CTAButton>
               <p className="text-sm text-[#5A5A5A] pl-2">
                 De <s>R$ 160</s> por <strong className="text-[#448D76] text-base">R$ 120</strong> · ou 12x de R$ 10
@@ -396,14 +396,14 @@ function PainPointsSection() {
       title: 'Horas montando a semana',
       description:
         'Fechar um cardápio do zero consome horas de planilha que deveriam ir para a cozinha, a equipe e o atendimento.',
-      tag: 'O gerador resolve',
+      tag: 'O Gerador de Cardápio resolve',
     },
     {
       icon: <RefreshCw size={26} />,
       title: 'Cardápio que se repete',
       description:
         'A mesma rotação volta toda semana, sem olhar a safra do mês nem variar o método de cocção. Quem come percebe antes de você.',
-      tag: 'O gerador resolve',
+      tag: 'O Gerador de Cardápio resolve',
     },
     {
       icon: <ShieldAlert size={26} />,
@@ -463,7 +463,7 @@ function OfferSection() {
       titulo: 'O livro completo',
       cor: '#448D76',
       itens: [
-        'Banco de 2.298 preparações em 23 categorias, cada uma com o modo de preparo',
+        'Banco com mais de 2.500 receitas em 23 categorias, cada uma com o modo de preparo',
         'Onze capítulos de técnica de cozinha, planejamento, ficha técnica, custo e qualidade',
         'Glossário, calendário de sazonalidade e 4 cardápios completos',
         'Abre no celular, no tablet e no computador, e funciona sem internet',
@@ -472,11 +472,11 @@ function OfferSection() {
     {
       icon: <UtensilsCrossed size={24} />,
       selo: 'Acesso vitalício',
-      titulo: 'O gerador de cardápio',
+      titulo: 'O Gerador de Cardápio',
       cor: '#ED8627',
       itens: [
         'Você responde sete perguntas sobre o seu serviço',
-        'Ele monta a semana usando apenas preparações do livro',
+        'Ele sugere a semana usando apenas receitas do livro',
         'Respeita a safra do mês e varia ingredientes e métodos de cocção, como manda o capítulo VI',
         'Você abre o preparo de cada prato, troca o que quiser, salva e imprime',
       ],
@@ -497,7 +497,7 @@ function OfferSection() {
           <span className="badge">O que você recebe</span>
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#448D76] leading-tight mt-4">
             Um livro para entender.<br />
-            <span className="text-[#0C718B]">Um gerador para aplicar.</span>
+            <span className="text-[#0C718B]">Um Gerador de Cardápio para aplicar.</span>
           </h2>
           <p className="text-[#5A5A5A] text-base md:text-lg leading-relaxed mt-4">
             O método da Lúcia em duas formas: o livro que ensina a decidir, e a ferramenta que aplica
@@ -544,8 +544,8 @@ function OfferSection() {
           className="mt-6 md:mt-8 rounded-2xl md:rounded-3xl border border-dashed border-[#448D76]/40 p-5 md:p-7 flex flex-col md:flex-row md:items-center gap-4 md:gap-8"
         >
           <p className="text-[#5A5A5A] text-sm md:text-base leading-relaxed flex-1">
-            <strong className="text-[#448D76]">Os dois conversam.</strong> O gerador não inventa pratos nem
-            usa inteligência artificial: escolhe entre as 2.298 preparações do livro e mostra, prato a prato,
+            <strong className="text-[#448D76]">Os dois conversam.</strong> O Gerador de Cardápio não inventa pratos nem
+            usa inteligência artificial: escolhe entre as mais de 2.500 receitas do livro e mostra, prato a prato,
             qual regra da autora o colocou ali.
           </p>
           <CTAButton href="#checkout" size="md" className="w-full md:w-auto shrink-0 !py-3.5 !text-sm sm:!text-base">
@@ -637,7 +637,7 @@ function GeradorDemo() {
         <span className="w-2.5 h-2.5 rounded-full bg-[#E2E5BE]" />
         <span className="w-2.5 h-2.5 rounded-full bg-[#E2E5BE]" />
         <span className="ml-2 text-[11px] font-bold tracking-wider uppercase text-[#ED8627] truncate">
-          Gerador de cardápio · Outubro
+          Gerador de Cardápio · Outubro
         </span>
       </div>
 
@@ -702,7 +702,7 @@ function GeneratorSection() {
     },
     {
       icon: <CalendarDays size={20} />,
-      titulo: 'Receba a semana montada',
+      titulo: 'Receba a semana sugerida',
       desc: 'Entrada, prato principal, acompanhamento, arroz, feijão e sobremesa, escolhidos entre as preparações do livro.',
     },
     {
@@ -721,14 +721,14 @@ function GeneratorSection() {
       <div className="max-w-6xl mx-auto px-4 sm:px-5 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           <motion.div {...fadeUp} className="space-y-6">
-            <span className="badge">O gerador em ação</span>
+            <span className="badge">O Gerador de Cardápio em ação</span>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#448D76] leading-tight">
               Sete perguntas.<br />
               <span className="text-[#0C718B]">Uma semana inteira.</span>
             </h2>
             <p className="text-[#5A5A5A] text-base md:text-lg leading-relaxed">
               As perguntas são os fatores de planejamento do capítulo VI. A partir das suas respostas, o
-              gerador distribui os pratos seguindo as regras de composição da autora.
+              Gerador de Cardápio sugere os pratos seguindo as regras de composição da autora.
             </p>
 
             <ol className="space-y-4">
@@ -752,7 +752,7 @@ function GeneratorSection() {
           <motion.div {...stagger(0.2)}>
             <GeradorDemo />
             <p className="text-xs text-[#5A5A5A] mt-3 text-center leading-relaxed">
-              Semana real montada pelo gerador. Toque nos dias para ver cada um.
+              Semana real sugerida pelo Gerador de Cardápio. Toque nos dias para ver cada um.
             </p>
           </motion.div>
         </div>
@@ -786,7 +786,7 @@ function ContentsSection() {
       icon: <ClipboardList size={22} />,
       capitulos: 'Capítulos V a IX',
       titulo: 'Planejamento, custo e qualidade',
-      resumo: 'O método que transforma preparações soltas em cardápio. É dele que o gerador tira as regras.',
+      resumo: 'O método que transforma preparações soltas em cardápio. É dele que o Gerador de Cardápio tira as regras.',
       topicos: [
         'Fatores de planejamento',
         'Planejamento horizontal',
@@ -803,8 +803,8 @@ function ContentsSection() {
     {
       icon: <BookOpen size={22} />,
       capitulos: 'Capítulo X',
-      titulo: 'Banco de 2.298 preparações',
-      resumo: 'Cada uma com a descrição do modo de preparo, em 23 categorias. É o acervo de onde o gerador escolhe.',
+      titulo: 'Banco com mais de 2.500 receitas',
+      resumo: 'Cada uma com a descrição do modo de preparo, em 23 categorias. É o acervo de onde o Gerador de Cardápio escolhe.',
       topicos: [
         'Carne bovina',
         'Aves',
@@ -1100,8 +1100,8 @@ function DeliverySection() {
     },
     {
       icon: <UtensilsCrossed size={24} />,
-      titulo: 'Baixa o livro e monta a semana',
-      desc: 'Na mesma área você baixa o PDF completo e usa o gerador quando quiser. As novas edições aparecem ali.',
+      titulo: 'Baixa o livro e recebe a semana sugerida',
+      desc: 'Na mesma área você baixa o PDF completo e usa o Gerador de Cardápio quando quiser. As novas edições aparecem ali.',
     },
   ];
 
@@ -1111,7 +1111,7 @@ function DeliverySection() {
         <motion.div {...fadeUp} className="text-center mb-10 md:mb-14">
           <span className="badge">Como funciona a entrega</span>
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#448D76] leading-tight mt-4">
-            Uma compra, um acesso,<br className="hidden sm:block" /> o livro e o gerador.
+            Uma compra, um acesso,<br className="hidden sm:block" /> o livro e o Gerador de Cardápio.
           </h2>
         </motion.div>
 
@@ -1145,7 +1145,7 @@ const INCLUIDO = [
   {
     grupo: 'Livro em PDF',
     itens: [
-      'Banco com 2.298 preparações em 23 categorias',
+      'Banco com mais de 2.500 receitas em 23 categorias',
       'Onze capítulos de técnica, planejamento e controle de qualidade',
       'Ficha técnica de preparação e indicadores culinários',
       'Glossário, calendário de sazonalidade e 4 cardápios completos',
@@ -1153,10 +1153,10 @@ const INCLUIDO = [
     ],
   },
   {
-    grupo: 'Gerador de cardápio',
+    grupo: 'Gerador de Cardápio',
     itens: [
       'Acesso vitalício',
-      'Semana montada com as regras de composição do livro',
+      'Semana sugerida com as regras de composição do livro',
       'Troca de pratos, preparo de cada um, salvar e imprimir',
       'Espaço para pedir pesquisas à autora',
     ],
@@ -1197,12 +1197,12 @@ function CheckoutSection() {
           </div>
 
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#448D76] leading-tight mb-3 md:mb-4">
-            O livro completo e o gerador de cardápio
+            O livro completo e o Gerador de Cardápio
           </h2>
 
           <p className="text-[#5A5A5A] mb-6 md:mb-8 leading-relaxed text-sm md:text-base">
-            O e-book completo em PDF, com <strong className="text-[#448D76]">2.298 preparações</strong> e onze
-            capítulos de método, mais o gerador de cardápio, que monta a semana do seu serviço
+            O e-book completo em PDF, com <strong className="text-[#448D76]">mais de 2.500 receitas</strong> e onze
+            capítulos de método, mais o Gerador de Cardápio, que sugere a semana do seu serviço
             com as regras do livro.
           </p>
 
@@ -1265,20 +1265,20 @@ const PERGUNTAS = [
     'Não. Você paga uma vez, R$ 120 à vista ou em até 12x de R$ 10 no cartão, e não existe cobrança mensal depois disso.',
   ],
   [
-    'Por quanto tempo posso usar o gerador?',
-    'O acesso ao gerador é vitalício. O PDF, depois de baixado, é seu.',
+    'Por quanto tempo posso usar o Gerador de Cardápio?',
+    'O acesso ao Gerador de Cardápio é vitalício. O PDF, depois de baixado, é seu.',
   ],
   [
-    'O gerador usa inteligência artificial?',
-    'Não. Ele segue as regras de composição do capítulo VI e escolhe apenas entre as 2.298 preparações do livro. Não inventa pratos nem consulta a internet para decidir.',
+    'O Gerador de Cardápio usa inteligência artificial?',
+    'Não. Ele segue as regras de composição do capítulo VI e escolhe apenas entre as mais de 2.500 receitas do livro. Não inventa pratos nem consulta a internet para decidir.',
   ],
   [
     'Serve para o meu tipo de serviço?',
-    'O gerador foi pensado para quatro perfis: coletiva institucional (empresa, indústria, hospital), bufê por peso, escola ou creche e casa de repouso. O livro cobre os tipos de cardápio para UAN comercial e coletiva.',
+    'O Gerador de Cardápio foi pensado para quatro perfis: coletiva institucional (empresa, indústria, hospital), bufê por peso, escola ou creche e casa de repouso. O livro cobre os tipos de cardápio para UAN comercial e coletiva.',
   ],
   [
     'Funciona no celular?',
-    'Sim. O PDF abre no celular, no tablet e no computador, e funciona sem internet. O gerador roda no navegador de qualquer um desses aparelhos, com internet.',
+    'Sim. O PDF abre no celular, no tablet e no computador, e funciona sem internet. O Gerador de Cardápio roda no navegador de qualquer um desses aparelhos, com internet.',
   ],
   [
     'Os cardápios que eu montar ficam salvos?',
@@ -1324,7 +1324,7 @@ function FaqSection() {
 
         <motion.div {...fadeUp} className="text-center mt-10">
           <CTAButton href="#checkout" size="md" className="w-full sm:w-fit !py-3.5 !text-sm sm:!py-4 sm:!text-base">
-            Quero o livro e o gerador
+            Quero o livro e o Gerador de Cardápio
           </CTAButton>
         </motion.div>
       </div>

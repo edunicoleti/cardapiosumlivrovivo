@@ -35,8 +35,8 @@ const trocar = (html, toks) => {
 
 const DESTINOS = [
   { chave: 'inicio', url: '/app/', rotulo: 'Início', curto: 'Início', icone: 'i-casa', desc: 'Seu painel' },
-  { chave: 'livro', url: '/app/livro/', rotulo: 'O livro', curto: 'Livro', icone: 'i-livro', desc: 'Ler e buscar' },
-  { chave: 'assistente', url: '/app/assistente/', rotulo: 'Assistente de cardápio', curto: 'Cardápio', icone: 'i-cardapio', desc: 'Montar a semana' },
+  { chave: 'livro', url: '/app/livro/', rotulo: 'O livro', curto: 'Livro', icone: 'i-livro', desc: 'Baixar em PDF' },
+  { chave: 'assistente', url: '/app/assistente/', rotulo: 'Gerador de Cardápio', curto: 'Cardápio', icone: 'i-cardapio', desc: 'Sugere a semana' },
 ]
 
 function renderizar({ titulo, chave, topoTitulo, topoAcoes = '', classeMain = '', cabeca = '', rodape = '', conteudo }) {
@@ -106,7 +106,7 @@ http.createServer((req, res) => {
     const v = Date.now()
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store, must-revalidate' })
     res.end(renderizar({
-      titulo: 'Assistente de cardápio', chave: 'assistente', topoTitulo: 'Assistente',
+      titulo: 'Gerador de Cardápio', chave: 'assistente', topoTitulo: 'Gerador de Cardápio',
       topoAcoes: pedaco(corpo, 'topo-acoes'), classeMain: 'colado',
       cabeca: `<link rel="stylesheet" href="/app/assets/assistente.css?v=${v}">`,
       rodape: `<script src="/app/assets/assistente.js?v=${v}" type="module"></script>`,
@@ -120,12 +120,23 @@ http.createServer((req, res) => {
     const v = Date.now()
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store, must-revalidate' })
     res.end(renderizar({
-      titulo: 'O livro', chave: 'livro', topoTitulo: 'O livro',
-      topoAcoes: pedaco(corpo, 'topo-acoes'), classeMain: 'colado',
+      titulo: 'O livro', chave: 'livro', topoTitulo: 'O livro', classeMain: 'colado',
       cabeca: `<link rel="stylesheet" href="/app/assets/livro.css?v=${v}">`,
-      rodape: `<script src="/app/assets/livro.js?v=${v}" type="module"></script>`,
-      conteudo: semPedacos(corpo),
+      conteudo: corpo,
     }))
+    return
+  }
+
+  // baixar.php: no servidor o PDF mora na pasta de dados; aqui vem de LIVRO_PDF
+  if (p === '/app/livro/baixar.php') {
+    const pdf = process.env.LIVRO_PDF
+    if (pdf && fs.existsSync(pdf)) {
+      res.writeHead(200, { 'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename="Cardapios-um-livro-vivo.pdf"',
+        'Content-Length': fs.statSync(pdf).size })
+      fs.createReadStream(pdf).pipe(res); return
+    }
+    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('O PDF ainda não está disponível (defina LIVRO_PDF).')
     return
   }
 

@@ -64,6 +64,11 @@ if (!ehAdmin()) {
 }
 
 // ------------------------------------------------------------------ acoes
+// Envio maior que post_max_size chega com $_POST vazio: sem este aviso o
+// formulario do PDF simplesmente nao fazia nada.
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$_POST && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+    $erro = 'O arquivo passou do limite de envio do servidor (' . ini_get('post_max_size') . ').';
+}
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     if (isset($_POST['liberar'])) {
         $email = trim((string) ($_POST['email'] ?? ''));
@@ -79,6 +84,25 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         $ok = revogarAcesso($email, 'revogado manualmente')
             ? 'Acesso de ' . e($email) . ' revogado.'
             : 'Não encontrei esse e-mail.';
+    }
+    if (isset($_POST['enviar_pdf'])) {
+        $envio = $_FILES['pdf'] ?? null;
+        $codigo = (int) ($envio['error'] ?? UPLOAD_ERR_NO_FILE);
+        if ($codigo === UPLOAD_ERR_INI_SIZE || $codigo === UPLOAD_ERR_FORM_SIZE) {
+            $erro = 'O arquivo passou do limite de envio do servidor (' . ini_get('upload_max_filesize') . ').';
+        } elseif ($codigo !== UPLOAD_ERR_OK || !is_uploaded_file((string) $envio['tmp_name'])) {
+            $erro = 'O envio não chegou inteiro. Tente de novo.';
+        } elseif ((string) file_get_contents((string) $envio['tmp_name'], false, null, 0, 5) !== '%PDF-') {
+            $erro = 'Esse arquivo não é um PDF.';
+        } else {
+            // grava ao lado e troca de nome: quem estiver baixando o antigo nao recebe meio arquivo
+            $destino = arquivoLivroPdf();
+            if (move_uploaded_file((string) $envio['tmp_name'], $destino . '.novo') && rename($destino . '.novo', $destino)) {
+                $ok = 'PDF do livro atualizado.';
+            } else {
+                $erro = 'Não consegui gravar o PDF em ' . pastaDados() . '.';
+            }
+        }
     }
     if (isset($_POST['segredo'])) {
         definirSegredoWebhook(trim((string) ($_POST['webhook_secret'] ?? '')));
@@ -124,6 +148,23 @@ abrirTela('Administração', null);
     <label for="email_revogar">E-mail</label>
     <input type="email" id="email_revogar" name="email_revogar" required>
     <button type="submit" name="revogar" value="1" class="secundario" style="width:100%">Revogar</button>
+  </form>
+
+  <form class="cartao" method="post" enctype="multipart/form-data">
+    <h3>PDF do livro</h3>
+    <?php $pdf = arquivoLivroPdf(); ?>
+    <p style="margin-bottom:14px">
+      <?php if (is_readable($pdf)): ?>
+        No ar: <?= e(number_format(filesize($pdf) / 1048576, 1, ',', '.')) ?> MB,
+        enviado em <?= e(date('d/m/Y H:i', (int) filemtime($pdf))) ?>.
+      <?php else: ?>
+        Nenhum PDF enviado ainda: o botão de download do livro mostra um aviso.
+      <?php endif; ?>
+      Limite do servidor: <?= e((string) ini_get('upload_max_filesize')) ?>.
+    </p>
+    <label for="pdf">Arquivo PDF</label>
+    <input type="file" id="pdf" name="pdf" accept="application/pdf" required>
+    <button type="submit" name="enviar_pdf" value="1" class="secundario" style="width:100%">Enviar</button>
   </form>
 
   <form class="cartao" method="post">

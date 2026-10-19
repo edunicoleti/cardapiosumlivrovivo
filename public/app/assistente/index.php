@@ -8,10 +8,10 @@ $corpo = tela('assistente');
 $versao = e(versaoDosAssets());
 
 renderizarTela([
-    'titulo' => 'Assistente de cardápio',
+    'titulo' => 'Gerador de Cardápio',
     'chave' => 'assistente',
     'usuario' => $usuario,
-    'topoTitulo' => 'Assistente',
+    'topoTitulo' => 'Gerador de Cardápio',
     'topoAcoes' => pedacoDoGabarito($corpo, 'topo-acoes'),
     'classeMain' => 'colado',
     'cabeca' => '<link rel="stylesheet" href="/app/assets/assistente.css?v=' . $versao . '">',

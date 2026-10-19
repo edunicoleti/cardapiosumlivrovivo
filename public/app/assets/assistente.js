@@ -159,13 +159,11 @@ function ehLeguminosa(p) {
 }
 
 /* ------------------------------------------------ padrão de cada prato
-   O livro define o padrão pelo cardápio inteiro (fator 1.1: complexidade e
-   custo), mas não marca prato por prato. Até a autora marcar o acervo, a
-   classificação é provisória e lê os ingredientes de custo alto no nome e na
-   descrição. Conferida contra o exemplo de cardápio popular do Anexo III:
-   todos os pratos dele que existem no acervo saem como popular. Quando a
-   preparação trouxer o campo `padrao`, vindo da planilha da autora, ele
-   manda e a lista abaixo deixa de valer para ela. */
+   A autora marca o padrão receita por receita no Banco de Receitas: P
+   (popular), M (médio) e L (liberal, de luxo ou executivo). O campo `padrao`
+   chega ao acervo por scripts/padroes-do-livro.py e manda. P serve em todos
+   os padrões, M no médio e no executivo, L só no executivo (cabeNoPadrao).
+   A lista de custo abaixo só vale para o que o livro não marcou. */
 const NIVEL = { popular: 0, medio: 1, luxo: 2 }
 const CUSTO_DE_LUXO = [
   'camarao', 'lagosta', 'lagostim', 'lula', 'polvo', 'marisco', 'mexilhao', 'ostra', 'siri',
@@ -946,15 +944,15 @@ function pintarDiasOpcao() {
 function atualizarNotaVolume() {
   const n = estado.perfil.refeicoes
   $('notaVolume').innerHTML = n >= 400
-    ? `Acima de 400 refeições o assistente deixa de sugerir <b>grelhados e empanados</b>:
+    ? `Acima de 400 refeições o Gerador de Cardápio deixa de sugerir <b>grelhados e empanados</b>:
        no volume, prato feito um a um não sai.`
-    : `Até 400 refeições o assistente considera todos os métodos que o seu equipamento permite.`
+    : `Até 400 refeições o Gerador de Cardápio considera todos os métodos que o seu equipamento permite.`
 }
 
 function atualizarNotaEquipamento() {
   const faltando = EQUIPAMENTOS.filter((e) => !estado.perfil.equipamentos.includes(e.id))
   const recado = faltando.length
-    ? `Sem ${esc(faltando.map((e) => e.rot.toLowerCase()).join(' e '))}, o assistente não sugere
+    ? `Sem ${esc(faltando.map((e) => e.rot.toLowerCase()).join(' e '))}, o Gerador de Cardápio não sugere
        ${esc(faltando.flatMap((e) => e.metodos).join(', '))}.`
     : `Com os três, nenhum método de cocção do livro fica de fora.`
   $('notaEquipamento').innerHTML = `${recado} ${frasedoAcervo()}`
@@ -1244,7 +1242,7 @@ function pintarAvisos() {
   }
   if (estado.relaxados.length) {
     avisos.push(['atencao', `<b>Equipamento:</b> em ${esc(estado.relaxados.join(', ').toLowerCase())} o acervo ` +
-      `não tinha opção compatível com o que você informou, então o assistente usou o que havia. ` +
+      `não tinha opção compatível com o que você informou, então o Gerador de Cardápio usou o que havia. ` +
       `Confira esses pratos antes de fechar.`])
   }
   if (estado.foraDoPadrao?.length) {
@@ -1273,7 +1271,7 @@ function pintarAvisos() {
   const temRestricao = estado.perfil.restricoes.length > 0
   $('ressalvaRestricoes').hidden = !temRestricao
   if (temRestricao) {
-    $('ressalvaRestricoes').innerHTML = `<b>Sobre as exclusões:</b> o assistente lê o nome e a
+    $('ressalvaRestricoes').innerHTML = `<b>Sobre as exclusões:</b> o Gerador de Cardápio lê o nome e a
       descrição de cada preparação, não uma ficha de ingredientes. Uma preparação que não
       mencione o item pode passar. Confira antes de servir.`
   }
@@ -1379,8 +1377,8 @@ function motivosDoPrato(item) {
     const rot = PADROES.find((x) => x.id === item.nivel)?.rot.toLowerCase()
     motivos.push(item.nivelProvisorio
       ? `Preparação de padrão <b>${esc(rot)}</b> numa classificação <b>provisória</b>, feita pelo
-         custo dos ingredientes do nome e da descrição, até a autora marcar o acervo. Fator 1.1.`
-      : `Preparação de padrão <b>${esc(rot)}</b>, como a autora marcou no acervo. Fator 1.1.`)
+         custo dos ingredientes do nome e da descrição, porque o livro não marcou esta. Fator 1.1.`
+      : `Preparação de padrão <b>${esc(rot)}</b>, como a autora classificou no Banco de Receitas. Fator 1.1.`)
   }
   const principal = item.grupo ? item.grupo === 'principal' : item.espaco === 'Prato principal'
   if (principal && item.referencia) {
@@ -1537,7 +1535,7 @@ function cardapioEmTexto() {
     }
     linhas.push('')
   }
-  linhas.push('Montado com o Assistente de Cardápio de "Cardápios: um livro vivo".')
+  linhas.push('Sugerido pelo Gerador de Cardápio de "Cardápios: um livro vivo".')
   return linhas.join('\n')
 }
 
@@ -1707,7 +1705,7 @@ function ligarEventos() {
     if (!regerar('Gerar outra semana')) return
     estado.semente++
     gerar()
-    avisar('Nova sugestão montada.')
+    avisar('Nova sugestão pronta.')
   })
   $('salvar').addEventListener('click', salvarCardapio)
   $('imprimir').addEventListener('click', () => window.print())

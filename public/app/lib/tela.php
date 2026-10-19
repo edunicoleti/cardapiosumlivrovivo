@@ -100,9 +100,9 @@ function destinos(): array
         ['chave' => 'inicio', 'url' => '/app/', 'rotulo' => 'Início',
          'curto' => 'Início', 'icone' => 'i-casa', 'desc' => 'Seu painel'],
         ['chave' => 'livro', 'url' => '/app/livro/', 'rotulo' => 'O livro',
-         'curto' => 'Livro', 'icone' => 'i-livro', 'desc' => 'Ler e buscar'],
-        ['chave' => 'assistente', 'url' => '/app/assistente/', 'rotulo' => 'Assistente de cardápio',
-         'curto' => 'Cardápio', 'icone' => 'i-cardapio', 'desc' => 'Montar a semana'],
+         'curto' => 'Livro', 'icone' => 'i-livro', 'desc' => 'Baixar em PDF'],
+        ['chave' => 'assistente', 'url' => '/app/assistente/', 'rotulo' => 'Gerador de Cardápio',
+         'curto' => 'Cardápio', 'icone' => 'i-cardapio', 'desc' => 'Sugere a semana'],
     ];
 }
 

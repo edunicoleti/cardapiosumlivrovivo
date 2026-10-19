@@ -107,6 +107,12 @@ function arquivoConfig(): string
     return pastaDados() . '/config.json';
 }
 
+/** O PDF do livro. Fora do site para nao ir parar no repositorio publico. */
+function arquivoLivroPdf(): string
+{
+    return pastaDados() . '/livro-vivo.pdf';
+}
+
 /** Leitura tolerante: arquivo ausente ou corrompido devolve lista vazia. */
 function lerJson(string $caminho, array $padrao = []): array
 {

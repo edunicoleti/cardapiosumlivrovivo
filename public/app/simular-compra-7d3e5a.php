@@ -188,12 +188,12 @@ abrirTela('Simulação de compra', null);
   <div class="produto">
     <span class="selo-fake">Simulação · não cobra nada</span>
     <h3><?= e(PRODUTO) ?></h3>
-    <div class="obs">E-book completo e assistente de cardápio</div>
+    <div class="obs">E-book completo e Gerador de Cardápio</div>
     <div class="preco">R$ 160,00</div>
     <div class="obs">à vista no PIX ou em até 12x no cartão</div>
     <ul>
       <li>Livro completo com busca</li>
-      <li>Assistente de cardápio</li>
+      <li>Gerador de Cardápio</li>
       <li>Novas edições incluídas</li>
     </ul>
   </div>

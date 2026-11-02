@@ -39,7 +39,7 @@ const DESTINOS = [
   { chave: 'assistente', url: '/app/assistente/', rotulo: 'Gerador de Cardápio', curto: 'Cardápio', icone: 'i-cardapio', desc: 'Sugere a semana' },
 ]
 
-function renderizar({ titulo, chave, topoTitulo, topoAcoes = '', classeMain = '', cabeca = '', rodape = '', conteudo }) {
+function renderizar({ titulo, chave, topoTitulo, topoAcoes = '', classeCasca = '', classeMain = '', cabeca = '', rodape = '', conteudo }) {
   let casca = ler(path.join(APP, 'lib/casca.html'))
   const mTrilho = pedaco(casca, 'item-trilho')
   const mAbas = pedaco(casca, 'item-abas')
@@ -57,7 +57,7 @@ function renderizar({ titulo, chave, topoTitulo, topoAcoes = '', classeMain = ''
 
   return trocar(casca, {
     TITULO: titulo, VERSAO: Date.now(), CABECA: cabeca, RODAPE: rodape,
-    CLASSE_CASCA: '', CLASSE_MAIN: classeMain,
+    CLASSE_CASCA: classeCasca, CLASSE_MAIN: classeMain,
     NAV_TRILHO: navTrilho, NAV_ABAS: navAbas, QUEM: quem,
     TOPO_TITULO: topoTitulo ?? titulo, TOPO_ACOES: topoAcoes, CONTEUDO: conteudo,
   })
@@ -124,6 +124,21 @@ http.createServer((req, res) => {
       cabeca: `<link rel="stylesheet" href="/app/assets/livro.css?v=${v}">`,
       conteudo: corpo,
     }))
+    return
+  }
+
+  // admin.php: so a entrada (o painel em si depende do PHP). ?esqueci=1 e
+  // ?primeiro=1 mostram os outros dois formularios; ?erro=1 mostra o recado.
+  if (p === '/app/admin.php') {
+    const gab = trocar(ler(path.join(APP, 'lib/telas/admin-entrar.html')), {
+      RECADO: u.searchParams.has('erro')
+        ? '<div class="recado erro"><svg aria-hidden="true"><use href="#i-atencao"></use></svg><span>Senha incorreta.</span></div>'
+        : '',
+    })
+    const qual = u.searchParams.has('esqueci') ? 'recuperar' : u.searchParams.has('primeiro') ? 'definir' : 'entrar'
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' })
+    res.end(renderizar({ titulo: 'Administração', chave: '', classeCasca: ' sem-trilho limpa', classeMain: 'colado nu',
+      conteudo: semPedacos(gab).replace('<!--formulario-->', pedaco(gab, qual)) }))
     return
   }
 

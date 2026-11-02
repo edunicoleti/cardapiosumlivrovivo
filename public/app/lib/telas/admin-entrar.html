@@ -1,0 +1,118 @@
+<!-- Entrada da administração. Mesmo layout da entrada dos compradores, com
+     três formulários no fim do arquivo; admin.php põe um deles no lugar do
+     marcador "formulario", escolhendo pelo pedaço:
+       entrar     senha da administração
+       recuperar  código de recuperação + senha nova (esqueci a senha)
+       definir    primeira senha, quando ninguém definiu ainda -->
+<div class="entrada admin">
+
+  <div class="vitrine">
+    <svg class="folhagem" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+      <path d="M20 220c-8-70 22-140 130-168 8 48 12 142-130 168Z" stroke="#EEF0D2" stroke-width="3"/>
+      <path d="M70 176c18-36 46-60 84-74" stroke="#EEF0D2" stroke-width="3" stroke-linecap="round"/>
+      <path d="M98 200c6-46 26-84 60-108" stroke="#EEF0D2" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="150" cy="52" r="7" fill="#EEF0D2"/>
+      <circle cx="182" cy="86" r="5" fill="#EEF0D2"/>
+    </svg>
+
+    <a class="marca-alta" href="/">
+      <span class="selo"><svg aria-hidden="true"><use href="#i-folha"></use></svg></span>
+      Cardápios: Um Livro Vivo
+    </a>
+
+    <p class="fala">Administração da <b>plataforma</b>.</p>
+
+    <ul class="tarefas">
+      <li>Liberar e revogar o acesso de quem comprou</li>
+      <li>Enviar o PDF do livro</li>
+      <li>Ligar a plataforma às vendas da Cakto</li>
+    </ul>
+  </div>
+
+  <div class="lado">
+    <div class="caixa">
+      <div class="marca-baixa">
+        <span class="selo"><svg aria-hidden="true"><use href="#i-folha"></use></svg></span>
+        Cardápios: Um Livro Vivo
+      </div>
+
+<!--formulario-->
+    </div>
+  </div>
+
+</div>
+
+<!-- ====================== formularios (admin.php troca o marcador acima por um deles) -->
+<!--{entrar}-->
+      <span class="olho">Administração</span>
+      <h1>Entrar na administração</h1>
+      <p class="linha-apoio">Área da equipe. A administração tem uma senha só, sem usuário.</p>
+
+      <form method="post" action="/app/admin.php">
+        {{RECADO}}
+        <div>
+          <label class="rot" for="senha">Senha da administração</label>
+          <input type="password" id="senha" name="senha" required autofocus
+                 autocomplete="current-password">
+        </div>
+        <button class="bt bt-prim" type="submit" name="entrar" value="1">Entrar</button>
+      </form>
+
+      <p class="ajuda-pe">
+        <a href="/app/admin.php?esqueci=1">Esqueci a senha</a><br>
+        É comprador? <a href="/app/">Entre pela sua área</a>.
+      </p>
+<!--{/entrar}-->
+
+<!--{recuperar}-->
+      <span class="olho">Administração</span>
+      <h1>Criar uma senha nova</h1>
+      <p class="linha-apoio">
+        Use o código de recuperação da administração. Ele vale uma vez só:
+        depois de usado, gere outro lá dentro.
+      </p>
+
+      <form method="post" action="/app/admin.php?esqueci=1">
+        {{RECADO}}
+        <div>
+          <label class="rot" for="codigo">Código de recuperação</label>
+          <input type="text" id="codigo" name="codigo" required autofocus
+                 autocomplete="off" autocapitalize="characters" spellcheck="false"
+                 placeholder="XXXXX-XXXXX-XXXXX-XXXXX" maxlength="40">
+        </div>
+        <div>
+          <label class="rot" for="nova">Senha nova</label>
+          <input type="password" id="nova" name="nova" required minlength="10"
+                 autocomplete="new-password">
+          <p class="pista">Pelo menos 10 caracteres.</p>
+        </div>
+        <div>
+          <label class="rot" for="confirma">Repita a senha nova</label>
+          <input type="password" id="confirma" name="confirma" required minlength="10"
+                 autocomplete="new-password">
+        </div>
+        <button class="bt bt-prim" type="submit" name="recuperar" value="1">Salvar senha e entrar</button>
+      </form>
+
+      <p class="ajuda-pe"><a href="/app/admin.php">Voltar para a senha</a></p>
+<!--{/recuperar}-->
+
+<!--{definir}-->
+      <span class="olho">Primeiro acesso</span>
+      <h1>Definir a senha da administração</h1>
+      <p class="linha-apoio">
+        Ninguém definiu ainda. Quem abrir esta página primeiro escolhe a senha,
+        então faça isso agora.
+      </p>
+
+      <form method="post" action="/app/admin.php">
+        {{RECADO}}
+        <div>
+          <label class="rot" for="senha">Senha nova</label>
+          <input type="password" id="senha" name="senha" required minlength="10" autofocus
+                 autocomplete="new-password">
+          <p class="pista">Pelo menos 10 caracteres.</p>
+        </div>
+        <button class="bt bt-prim" type="submit" name="definir" value="1">Definir senha</button>
+      </form>
+<!--{/definir}-->

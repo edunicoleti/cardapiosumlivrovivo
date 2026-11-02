@@ -114,11 +114,28 @@
   line-height: 1.6;
 }
 
+/* entrada da administração: mesma casca, com a lista do que se faz lá dentro
+   no lugar dos números do livro */
+.entrada.admin .vitrine .tarefas {
+  position: relative; list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 10px;
+  font-size: var(--t-md); color: #CFE0D8;
+}
+.entrada.admin .vitrine .tarefas li { display: flex; gap: 10px; align-items: baseline; }
+.entrada.admin .vitrine .tarefas li::before {
+  content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--laranja); transform: translateY(-2px);
+}
+.entrada .caixa .olho { display: block; text-align: center; }
+.entrada .pista { font-size: var(--t-xs); color: var(--tinta-fr); margin-top: 6px; }
+.entrada input[name=codigo]::placeholder { letter-spacing: .08em; }
+
 @media (min-width: 900px) {
   .entrada { grid-template-columns: 1.05fr 1fr; }
   .entrada .vitrine { display: flex; }
   .entrada .caixa .marca-baixa { display: none; }
   .entrada h1, .entrada .linha-apoio { text-align: left; }
+  .entrada .caixa .olho, .entrada .ajuda-pe { text-align: left; }
   .entrada .lado { align-items: flex-start; padding: 40px 56px; }
 }
 

@@ -38,6 +38,24 @@ const CONVITE_HASH = '208b96b841c9789c0d50748728bdb558f602dbffeff51fab91ca4468e4
 const CONVITE_ATE = '';
 const CONVITE_NOME = 'Visita de demonstração';
 
+/**
+ * Recuperacao da senha da administracao ("Esqueci a senha").
+ *
+ * Nao ha e-mail confiavel neste servidor, entao a prova de que e a equipe e um
+ * codigo de recuperacao: 20 caracteres sorteados (100 bits), guardado fora do
+ * codigo. Aqui fica so o SHA-256 dele, porque este repositorio e publico; com
+ * essa entropia, o hash publico nao ajuda a adivinhar o codigo.
+ *
+ * Este e o codigo de partida. Ele vale uma vez: depois de usado, a
+ * administracao gera outro, cujo hash fica no config.json (fora do site) e
+ * passa a ser o unico valido.
+ */
+const RECUPERACAO_ADMIN_HASH = 'f6d81712d64c982f60750e1e789038fede365a578f35ba90ee863444d05f4e58';
+
+/** Tentativas erradas de senha ou codigo antes de travar por um tempo. */
+const ADMIN_TENTATIVAS = 5;
+const ADMIN_JANELA_SEG = 15 * 60;
+
 function convitePassou(): bool
 {
     if (CONVITE_ATE === '') {
@@ -359,6 +377,129 @@ function autenticarAdmin(string $senha): bool
     session_regenerate_id(true);
     $_SESSION['admin'] = true;
     return true;
+}
+
+/** Troca a senha da administracao conferindo a atual. */
+function trocarSenhaAdmin(string $atual, string $nova): bool
+{
+    $config = lerJson(arquivoConfig());
+    if (empty($config['admin_hash']) || !password_verify($atual, $config['admin_hash'])) {
+        return false;
+    }
+    definirSenhaAdmin($nova);
+    return true;
+}
+
+/** Tira espacos e tracos e passa para maiuscula: o codigo e aceito do jeito que for colado. */
+function normalizarCodigoRecuperacao(string $codigo): string
+{
+    return strtoupper((string) preg_replace('/[^A-Za-z0-9]/', '', $codigo));
+}
+
+/**
+ * Hash do codigo de recuperacao que vale agora: o gerado pela administracao,
+ * se existir; senao o de partida, enquanto nao tiver sido usado.
+ */
+function hashRecuperacaoValido(): string
+{
+    $config = lerJson(arquivoConfig());
+    if (!empty($config['recuperacao_hash'])) {
+        return (string) $config['recuperacao_hash'];
+    }
+    $usados = (array) ($config['recuperacao_usados'] ?? []);
+    if (RECUPERACAO_ADMIN_HASH === '' || in_array(RECUPERACAO_ADMIN_HASH, $usados, true)) {
+        return '';
+    }
+    return RECUPERACAO_ADMIN_HASH;
+}
+
+/**
+ * Troca a senha usando o codigo de recuperacao. O codigo e gasto na hora:
+ * quem pegar o mesmo codigo depois nao consegue usar de novo.
+ */
+function recuperarSenhaAdmin(string $codigo, string $nova): bool
+{
+    $valido = hashRecuperacaoValido();
+    $informado = hash('sha256', normalizarCodigoRecuperacao($codigo));
+    if ($valido === '' || !hash_equals($valido, $informado)) {
+        return false;
+    }
+    $config = lerJson(arquivoConfig());
+    unset($config['recuperacao_hash']);
+    $config['recuperacao_usados'] = array_values(array_unique(array_merge(
+        (array) ($config['recuperacao_usados'] ?? []),
+        [$valido]
+    )));
+    $config['admin_hash'] = password_hash($nova, PASSWORD_DEFAULT);
+    $config['definido_em'] = date('c');
+    gravarJson(arquivoConfig(), $config);
+    autenticarAdmin($nova);
+    return true;
+}
+
+/** Gera um codigo de recuperacao novo e invalida o anterior. Mostrado uma vez so. */
+function gerarCodigoRecuperacao(): string
+{
+    $alfabeto = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sem 0/O e 1/I/L
+    $bruto = '';
+    for ($i = 0; $i < 20; $i++) {
+        $bruto .= $alfabeto[random_int(0, strlen($alfabeto) - 1)];
+    }
+    $config = lerJson(arquivoConfig());
+    $config['recuperacao_hash'] = hash('sha256', $bruto);
+    $config['recuperacao_gerado_em'] = date('c');
+    gravarJson(arquivoConfig(), $config);
+    return implode('-', str_split($bruto, 5));
+}
+
+/** Se ja existe codigo de recuperacao valido, para avisar na administracao. */
+function temCodigoRecuperacao(): bool
+{
+    return hashRecuperacaoValido() !== '';
+}
+
+/**
+ * Trava por IP depois de muitas tentativas erradas (senha ou codigo), para a
+ * tela de login nao virar alvo de chute automatico.
+ */
+function arquivoTentativasAdmin(): string
+{
+    return pastaDados() . '/admin-tentativas.json';
+}
+
+function tentativasRecentesAdmin(): array
+{
+    $ip = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
+    $todas = lerJson(arquivoTentativasAdmin());
+    $limite = time() - ADMIN_JANELA_SEG;
+    return array_values(array_filter((array) ($todas[$ip] ?? []), static fn($t): bool => (int) $t > $limite));
+}
+
+function adminTravado(): bool
+{
+    return count(tentativasRecentesAdmin()) >= ADMIN_TENTATIVAS;
+}
+
+function registrarFalhaAdmin(string $tipo): void
+{
+    $ip = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
+    $todas = lerJson(arquivoTentativasAdmin());
+    $limite = time() - ADMIN_JANELA_SEG;
+    foreach ($todas as $chave => $lista) {
+        $todas[$chave] = array_values(array_filter((array) $lista, static fn($t): bool => (int) $t > $limite));
+        if (!$todas[$chave]) {
+            unset($todas[$chave]);
+        }
+    }
+    $todas[$ip][] = time();
+    gravarJson(arquivoTentativasAdmin(), $todas);
+    registrarLog('admin-negado.log', ['ip' => $ip, 'tipo' => $tipo]);
+}
+
+function sairDoAdmin(): void
+{
+    iniciarSessao();
+    unset($_SESSION['admin']);
 }
 
 function ehAdmin(): bool

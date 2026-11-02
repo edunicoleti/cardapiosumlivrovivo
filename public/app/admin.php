@@ -6,11 +6,35 @@ require __DIR__ . '/lib/tela.php';
 $erro = '';
 $ok = '';
 $codigoGerado = null;
+$codigoRecuperacao = null;
+$metodo = $_SERVER['REQUEST_METHOD'] ?? '';
+
+/** Entrada da administracao, no layout da entrada dos compradores. */
+function telaDeEntradaAdmin(string $pedaco, string $titulo, string $erro = '', string $aviso = ''): void
+{
+    $recado = '';
+    if ($erro !== '') {
+        $recado = '<div class="recado erro"><svg aria-hidden="true"><use href="#i-atencao"></use></svg>'
+            . '<span>' . e($erro) . '</span></div>';
+    } elseif ($aviso !== '') {
+        $recado = '<div class="recado ok"><span>' . e($aviso) . '</span></div>';
+    }
+    $gabarito = tela('admin-entrar', ['RECADO' => $recado]);
+    renderizarTela([
+        'titulo' => $titulo,
+        'usuario' => null,
+        'classeCasca' => ' sem-trilho limpa',
+        'classeMain' => 'colado nu',
+        'conteudo' => str_replace('<!--formulario-->', pedacoDoGabarito($gabarito, $pedaco), semPedacos($gabarito)),
+    ]);
+    exit;
+}
+
+$travado = 'Muitas tentativas erradas. Espere 15 minutos e tente de novo.';
 
 // Na primeira visita ninguem tem senha ainda: quem chega primeiro define a dele.
-// Por isso vale abrir esta pagina logo depois de publicar, e nao dias depois.
 if (!adminConfigurado()) {
-    if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['definir'])) {
+    if ($metodo === 'POST' && isset($_POST['definir'])) {
         $senha = (string) ($_POST['senha'] ?? '');
         if (strlen($senha) < 10) {
             $erro = 'Use pelo menos 10 caracteres.';
@@ -21,46 +45,49 @@ if (!adminConfigurado()) {
             exit;
         }
     }
-    abrirTela('Configurar administração', null);
-    ?>
-    <h1 style="text-align:center">Definir a senha de administração</h1>
-    <p class="sub" style="text-align:center;margin:0 auto 24px">
-      Ninguém definiu ainda. A primeira pessoa que abrir esta página escolhe a senha,
-      então faça isso agora.
-    </p>
-    <form class="caixa" method="post">
-      <?php if ($erro !== ''): ?><div class="erro"><?= e($erro) ?></div><?php endif; ?>
-      <label for="senha">Senha de administração</label>
-      <input type="password" id="senha" name="senha" required minlength="10" autocomplete="new-password">
-      <button type="submit" name="definir" value="1">Definir senha</button>
-    </form>
-    <?php
-    fecharTela();
-    exit;
+    telaDeEntradaAdmin('definir', 'Configurar administração', $erro);
+}
+
+// ------------------------------------------------------- esqueci a senha
+if (!ehAdmin() && isset($_GET['esqueci'])) {
+    if ($metodo === 'POST' && isset($_POST['recuperar'])) {
+        $nova = (string) ($_POST['nova'] ?? '');
+        if (adminTravado()) {
+            $erro = $travado;
+        } elseif (strlen($nova) < 10) {
+            $erro = 'A senha nova precisa de pelo menos 10 caracteres.';
+        } elseif ($nova !== (string) ($_POST['confirma'] ?? '')) {
+            $erro = 'As duas senhas não são iguais.';
+        } elseif (recuperarSenhaAdmin((string) ($_POST['codigo'] ?? ''), $nova)) {
+            header('Location: /app/admin.php?recuperada=1');
+            exit;
+        } else {
+            registrarFalhaAdmin('codigo');
+            $erro = 'Código de recuperação inválido ou já usado.';
+        }
+    }
+    telaDeEntradaAdmin('recuperar', 'Recuperar acesso', $erro);
 }
 
 // ------------------------------------------------------------------ login
 if (!ehAdmin()) {
-    if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['entrar'])) {
-        if (autenticarAdmin((string) ($_POST['senha'] ?? ''))) {
+    if ($metodo === 'POST' && isset($_POST['entrar'])) {
+        if (adminTravado()) {
+            $erro = $travado;
+        } elseif (autenticarAdmin((string) ($_POST['senha'] ?? ''))) {
             header('Location: /app/admin.php');
             exit;
+        } else {
+            registrarFalhaAdmin('senha');
+            $erro = 'Senha incorreta.';
         }
-        $erro = 'Senha incorreta.';
-        registrarLog('admin-negado.log', ['ip' => $_SERVER['REMOTE_ADDR'] ?? '']);
     }
-    abrirTela('Administração', null);
-    ?>
-    <h1 style="text-align:center">Administração</h1>
-    <form class="caixa" method="post" style="margin-top:22px">
-      <?php if ($erro !== ''): ?><div class="erro"><?= e($erro) ?></div><?php endif; ?>
-      <label for="senha">Senha</label>
-      <input type="password" id="senha" name="senha" required autocomplete="current-password">
-      <button type="submit" name="entrar" value="1">Entrar</button>
-    </form>
-    <?php
-    fecharTela();
-    exit;
+    $aviso = isset($_GET['saiu']) ? 'Você saiu da administração.' : '';
+    telaDeEntradaAdmin('entrar', 'Administração', $erro, $aviso);
+}
+
+if (isset($_GET['recuperada'])) {
+    $ok = 'Senha nova salva. O código que você usou não vale mais: gere outro no quadro "Sua senha".';
 }
 
 // ------------------------------------------------------------------ acoes
@@ -104,6 +131,26 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             }
         }
     }
+    if (isset($_POST['sair'])) {
+        sairDoAdmin();
+        header('Location: /app/admin.php?saiu=1');
+        exit;
+    }
+    if (isset($_POST['trocar_senha'])) {
+        $nova = (string) ($_POST['nova'] ?? '');
+        if (strlen($nova) < 10) {
+            $erro = 'A senha nova precisa de pelo menos 10 caracteres.';
+        } elseif ($nova !== (string) ($_POST['confirma'] ?? '')) {
+            $erro = 'As duas senhas novas não são iguais.';
+        } elseif (!trocarSenhaAdmin((string) ($_POST['atual'] ?? ''), $nova)) {
+            $erro = 'A senha atual não confere.';
+        } else {
+            $ok = 'Senha trocada.';
+        }
+    }
+    if (isset($_POST['gerar_recuperacao'])) {
+        $codigoRecuperacao = gerarCodigoRecuperacao();
+    }
     if (isset($_POST['segredo'])) {
         definirSegredoWebhook(trim((string) ($_POST['webhook_secret'] ?? '')));
         $ok = 'Segredo do webhook salvo.';
@@ -115,12 +162,24 @@ $ativos = count(array_filter($lista, static fn(array $c): bool => ($c['ativo'] ?
 
 abrirTela('Administração', null);
 ?>
+<form method="post" style="float:right;margin:4px 0 0">
+  <button type="submit" name="sair" value="1" class="secundario">Sair</button>
+</form>
 <h1>Administração</h1>
 <p class="sub"><?= count($lista) ?> pessoa(s) cadastrada(s), <?= $ativos ?> com acesso ativo.
    Dados guardados em <code><?= e(pastaDados()) ?></code>.</p>
 
 <?php if ($ok !== ''): ?><div class="ok"><?= $ok ?></div><?php endif; ?>
 <?php if ($erro !== ''): ?><div class="erro"><?= e($erro) ?></div><?php endif; ?>
+
+<?php if ($codigoRecuperacao !== null): ?>
+  <div class="aviso">
+    <strong>Seu código de recuperação:</strong>
+    <code style="font-size:1.15em;letter-spacing:.08em"><?= e($codigoRecuperacao) ?></code><br>
+    Guarde num gerenciador de senhas agora: ele não aparece de novo. É ele que libera o
+    "Esqueci a senha", e vale uma vez só. O código anterior deixou de valer.
+  </div>
+<?php endif; ?>
 
 <?php if ($codigoGerado !== null): ?>
   <div class="aviso">
@@ -166,6 +225,29 @@ abrirTela('Administração', null);
     <input type="file" id="pdf" name="pdf" accept="application/pdf" required>
     <button type="submit" name="enviar_pdf" value="1" class="secundario" style="width:100%">Enviar</button>
   </form>
+
+  <div class="cartao">
+    <h3>Sua senha</h3>
+    <form method="post">
+      <p style="margin-bottom:14px">Para trocar, confirme a senha atual.</p>
+      <label for="atual">Senha atual</label>
+      <input type="password" id="atual" name="atual" required autocomplete="current-password">
+      <label for="nova">Senha nova</label>
+      <input type="password" id="nova" name="nova" required minlength="10" autocomplete="new-password">
+      <label for="confirma">Repita a senha nova</label>
+      <input type="password" id="confirma" name="confirma" required minlength="10" autocomplete="new-password">
+      <button type="submit" name="trocar_senha" value="1" class="secundario" style="width:100%">Trocar senha</button>
+    </form>
+    <form method="post" style="margin-top:18px">
+      <p style="margin-bottom:10px">
+        <b>Código de recuperação</b>, para o "Esqueci a senha".
+        <?= temCodigoRecuperacao()
+            ? 'Existe um válido. Gerar outro invalida o atual.'
+            : 'Nenhum válido agora: gere um e guarde.' ?>
+      </p>
+      <button type="submit" name="gerar_recuperacao" value="1" class="secundario" style="width:100%">Gerar código novo</button>
+    </form>
+  </div>
 
   <form class="cartao" method="post">
     <h3>Segredo do webhook</h3>

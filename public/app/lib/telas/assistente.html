@@ -350,9 +350,16 @@
 
     <div id="painelTroca" role="tabpanel" aria-labelledby="abaTroca" hidden>
       <div class="caixa-filtro">
-        <svg class="lupa" aria-hidden="true"><use href="#i-busca"></use></svg>
-        <input type="search" id="filtroTroca" placeholder="Filtrar por nome ou ingrediente"
-               autocomplete="off" aria-label="Filtrar as opções">
+        <div class="troca-proteinas" id="trocaProteinas" hidden>
+          <span class="r" id="trocaProteinasRot">Trocar por</span>
+          <div class="fileira" role="radiogroup" aria-labelledby="trocaProteinasRot"></div>
+        </div>
+        <p class="troca-nota" id="trocaNota" hidden></p>
+        <div class="campo-busca">
+          <svg class="lupa" aria-hidden="true"><use href="#i-busca"></use></svg>
+          <input type="search" id="filtroTroca" placeholder="Filtrar por nome ou ingrediente"
+                 autocomplete="off" aria-label="Filtrar as opções">
+        </div>
       </div>
       <div id="trocaLista"></div>
     </div>

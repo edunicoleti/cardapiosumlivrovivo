@@ -1107,15 +1107,55 @@ main.colado .faixa { padding-top: 16px; }
   background: var(--papel);
   border-bottom: 1px solid var(--linha);
 }
+.campo-busca { position: relative; }
 .caixa-filtro .lupa {
   position: absolute;
-  left: 32px; top: 50%;
+  left: 12px; top: 50%;
   transform: translateY(-50%);
   width: 17px; height: 17px;
   color: var(--tinta-fr);
   pointer-events: none;
 }
 .caixa-filtro input { min-height: 44px; padding-left: 38px; }
+
+/* Prato principal: a troca não fica presa à proteína que o rodízio sorteou.
+   Os tipos ficam no topo fixo da lista, para trocar de tipo sem rolar de
+   volta; no celular viram uma fileira que rola de lado, em vez de três
+   linhas de botão comendo a folha. */
+.troca-proteinas { margin-bottom: 10px; }
+.troca-proteinas .r {
+  display: block; margin-bottom: 6px;
+  font-size: var(--t-xs); font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--tinta-fr);
+}
+.troca-proteinas .fileira { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip-proteina {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 36px; padding: 6px 12px;
+  border: 1px solid var(--linha); border-radius: 999px;
+  background: var(--branco); color: var(--tinta);
+  font-family: var(--corpo); font-size: var(--t-sm); white-space: nowrap;
+  cursor: pointer; transition: all var(--mov-rap);
+}
+.chip-proteina .q { font-size: var(--t-xs); color: var(--tinta-fr); font-variant-numeric: tabular-nums; }
+.chip-proteina:hover:not(:disabled) { border-color: var(--verde); background: var(--papel); }
+.chip-proteina[aria-checked="true"] {
+  background: var(--verde-cl); border-color: var(--verde); box-shadow: var(--anel);
+  color: var(--verde-prof); font-weight: 600;
+}
+.chip-proteina:disabled { opacity: .45; cursor: default; }
+@media (max-width: 1023px) {
+  .troca-proteinas .fileira {
+    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    margin: 0 -20px; padding: 2px 20px 4px;
+  }
+  .troca-proteinas .fileira::-webkit-scrollbar { display: none; }
+}
+.troca-nota {
+  display: flex; gap: 8px; align-items: flex-start;
+  margin: 0 0 10px; font-size: var(--t-xs); line-height: 1.5; color: var(--laranja-esc);
+}
+.troca-nota svg { flex: none; width: 15px; height: 15px; margin-top: 1px; }
 
 #trocaLista .escolha { padding: 14px 20px; }
 #trocaLista .escolha .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }

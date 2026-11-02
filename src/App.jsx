@@ -559,8 +559,9 @@ function OfferSection() {
 
 // ─── O Gerador Em Ação ────────────────────────────────────────────────────────
 
-// Semana real, montada pelo gerador em 06/10/2026: coletiva institucional, padrão
-// médio, 200 refeições por dia, outubro, cozinha com forno, fritadeira e chapa.
+// Semana real, sugerida pelo Gerador de Cardápio em 06/10/2026: coletiva
+// institucional, padrão médio, 200 refeições por dia, outubro, cozinha com
+// forno, fritadeira e chapa. Arroz branco e feijão são fixos, como no app.
 const SEMANA_EXEMPLO = [
   {
     dia: 'Seg', nome: 'Segunda',
@@ -568,8 +569,8 @@ const SEMANA_EXEMPLO = [
       ['Entrada', 'Cenoura'],
       ['Prato principal', 'Costela ao molho de mostarda', 'braseado'],
       ['Acompanhamento', 'Acelga e repolho', 'frito'],
-      ['Arroz', 'De maçã', 'refogado'],
-      ['Feijão', 'Lentilha com batata', 'cozido'],
+      ['Arroz', 'Arroz branco'],
+      ['Feijão', 'Feijão'],
       ['Sobremesa', 'Banana'],
     ],
   },
@@ -579,8 +580,8 @@ const SEMANA_EXEMPLO = [
       ['Entrada', 'Acelga chiffonade, abacaxi em cubos'],
       ['Prato principal', 'Filé de frango ao molho de laranja', 'grelhado'],
       ['Acompanhamento', 'Batata salsa ao vapor com ervas frescas', 'cozido'],
-      ['Arroz', 'Com espinafre', 'refogado'],
-      ['Feijão', 'Proteína de soja à Paris', 'gratinado'],
+      ['Arroz', 'Arroz branco'],
+      ['Feijão', 'Feijão'],
       ['Sobremesa', 'Mamão picado'],
     ],
   },
@@ -590,8 +591,8 @@ const SEMANA_EXEMPLO = [
       ['Entrada', 'Alface e escarola rasgadas'],
       ['Prato principal', 'Bacalhau com rúcula e tomate seco'],
       ['Acompanhamento', 'Abobrinha recheada', 'gratinado'],
-      ['Arroz', 'Multicor', 'cozido'],
-      ['Feijão', 'Revirado de feijão', 'grelhado'],
+      ['Arroz', 'Arroz branco'],
+      ['Feijão', 'Feijão'],
       ['Sobremesa', 'Maçã verde'],
     ],
   },
@@ -601,8 +602,8 @@ const SEMANA_EXEMPLO = [
       ['Entrada', 'Aipo e pepino em julienne, chicória chiffonade, agrião, ovo picado'],
       ['Prato principal', 'Lombo assado com maçã', 'assado'],
       ['Acompanhamento', 'Quiche de espinafre', 'refogado'],
-      ['Arroz', 'Com cenoura e ervilha', 'cozido'],
-      ['Feijão', 'Tutu de feijão', 'cozido'],
+      ['Arroz', 'Arroz branco'],
+      ['Feijão', 'Feijão'],
       ['Sobremesa', 'Suspiro com morango e chantili'],
     ],
   },
@@ -612,8 +613,8 @@ const SEMANA_EXEMPLO = [
       ['Entrada', 'Abobrinha e tomate em rodelas'],
       ['Prato principal', 'Língua ensopada com rodelas de cenoura e cebola', 'ensopado'],
       ['Acompanhamento', 'Creme de beterraba', 'cozido'],
-      ['Arroz', 'À francesa', 'refogado'],
-      ['Feijão', 'Feijão preto, carioca, fradinho e outros', 'cozido'],
+      ['Arroz', 'Arroz branco'],
+      ['Feijão', 'Feijão'],
       ['Sobremesa', 'Laranja'],
     ],
   },
@@ -762,6 +763,30 @@ function GeneratorSection() {
 }
 
 // ─── Dentro do Livro ──────────────────────────────────────────────────────────
+
+// O capítulo X tem 23 seções. Em pílulas soltas elas viravam uma parede de
+// texto do mesmo peso; agrupadas pela refeição, com a letra do sumário, dá
+// para achar "Saladas cozidas simples" sem ler as outras 22.
+function SumarioDoBanco({ grupos }) {
+  return (
+    <div className="columns-1 sm:columns-2 xl:columns-3 gap-6">
+      {grupos.map(([grupo, secoes]) => (
+        <section key={grupo} className="break-inside-avoid mb-5 last:mb-0">
+          <h4 className="text-[11px] font-bold tracking-wider uppercase text-[#0C718B] mb-2">{grupo}</h4>
+          <ul className="bg-white border border-[#E2E5BE] rounded-xl divide-y divide-[#E2E5BE]/70">
+            {secoes.map(([letra, nome]) => (
+              <li key={letra} className="flex items-baseline gap-2.5 px-3 py-2 text-sm text-[#2D2D2D] leading-snug">
+                <span className="text-[#ED8627] font-bold text-xs w-3.5 shrink-0">{letra}</span>
+                {nome}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  );
+}
+
 function ContentsSection() {
   const partes = [
     {
@@ -805,21 +830,34 @@ function ContentsSection() {
       capitulos: 'Capítulo X',
       titulo: 'Banco com mais de 2.500 receitas',
       resumo: 'Cada uma com a descrição do modo de preparo, em 23 categorias. É o acervo de onde o Gerador de Cardápio escolhe.',
-      topicos: [
-        'Carne bovina',
-        'Aves',
-        'Suína',
-        'Peixes e frutos do mar',
-        'Embutidos',
-        'Ovos',
-        'Leguminosas',
-        'Arroz',
-        'Massas',
-        'Molhos quentes e frios',
-        'Sopas',
-        'Saladas',
-        'Sobremesas',
-        'Preparações regionais',
+      largo: true,
+      // as 23 seções do sumário (A a W), na ordem do livro, agrupadas pelo
+      // lugar que ocupam na refeição
+      grupos: [
+        ['Pratos principais', [
+          ['A', 'Carne bovina'], ['B', 'Carne de aves'], ['C', 'Carne suína'],
+          ['D', 'Peixes e frutos do mar'], ['E', 'Carnes e embutidos diversos'],
+        ]],
+        ['Ovos, leguminosas, arroz e massas', [
+          ['F', 'Ovos'], ['G', 'Leguminosas'], ['H', 'Arroz'], ['I', 'Macarrão (massas alimentícias)'],
+        ]],
+        ['Acompanhamentos', [
+          ['J', 'Acompanhamentos diversos com farinhas'], ['K', 'Batata inglesa'],
+          ['L', 'Acompanhamentos com vegetais ricos em carboidratos'], ['M', 'Acompanhamentos vegetais'],
+        ]],
+        ['Molhos e sopas', [
+          ['N', 'Molhos quentes'], ['O', 'Molhos frios'], ['P', 'Sopas'],
+        ]],
+        ['Saladas', [
+          ['Q', 'Saladas mistas com molho de ligação'], ['R', 'Saladas mistas sem molho de ligação'],
+          ['S', 'Saladas cozidas simples'], ['T', 'Saladas cruas simples'],
+        ]],
+        ['Sobremesas', [
+          ['U', 'Sobremesas de frutas'], ['V', 'Sobremesas elaboradas'],
+        ]],
+        ['Cozinha regional', [
+          ['W', 'Alimentos e preparações típicas por região do Brasil'],
+        ]],
       ],
     },
     {
@@ -827,6 +865,7 @@ function ContentsSection() {
       capitulos: 'Capítulo XI e anexos',
       titulo: 'Consulta rápida no expediente',
       resumo: 'O que você consulta no meio da correria, para tirar uma dúvida.',
+      largo: true,
       topicos: [
         'Glossário de técnica dietética',
         'Termos da culinária internacional',
@@ -858,8 +897,13 @@ function ContentsSection() {
             <motion.div
               key={parte.titulo}
               {...stagger(i * 0.1)}
-              className="bg-[#EEF0D2]/40 border border-[#E2E5BE] rounded-2xl md:rounded-3xl p-6 md:p-8 flex flex-col"
+              className={`bg-[#EEF0D2]/40 border border-[#E2E5BE] rounded-2xl md:rounded-3xl p-6 md:p-8 ${
+                parte.largo
+                  ? 'md:col-span-2 lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-10'
+                  : 'flex flex-col'
+              }`}
             >
+              <div>
               <div className="flex items-start gap-3.5 mb-4">
                 <div className="w-11 h-11 rounded-xl bg-white shadow-sm flex items-center justify-center text-[#448D76] shrink-0">
                   {parte.icon}
@@ -874,18 +918,23 @@ function ContentsSection() {
                 </div>
               </div>
 
-              <p className="text-[#5A5A5A] text-sm leading-relaxed mb-5">{parte.resumo}</p>
+              <p className="text-[#5A5A5A] text-sm leading-relaxed mb-5 lg:mb-0">{parte.resumo}</p>
+              </div>
 
-              <ul className="flex flex-wrap gap-2">
-                {parte.topicos.map(topico => (
-                  <li
-                    key={topico}
-                    className="bg-white border border-[#E2E5BE] text-[#448D76] text-xs font-medium rounded-full px-3 py-1.5"
-                  >
-                    {topico}
-                  </li>
-                ))}
-              </ul>
+              {parte.grupos ? (
+                <SumarioDoBanco grupos={parte.grupos} />
+              ) : (
+                <ul className="flex flex-wrap gap-2 content-start">
+                  {parte.topicos.map(topico => (
+                    <li
+                      key={topico}
+                      className="bg-white border border-[#E2E5BE] text-[#448D76] text-xs font-medium rounded-full px-3 py-1.5"
+                    >
+                      {topico}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </motion.div>
           ))}
         </div>
@@ -1274,7 +1323,7 @@ const PERGUNTAS = [
   ],
   [
     'Serve para o meu tipo de serviço?',
-    'O Gerador de Cardápio foi pensado para quatro perfis: coletiva institucional (empresa, indústria, hospital), bufê por peso, escola ou creche e casa de repouso. O livro cobre os tipos de cardápio para UAN comercial e coletiva.',
+    'O Gerador de Cardápio atende dois perfis: coletiva institucional (empresa, indústria, hospital) e bufê por peso. O livro cobre os tipos de cardápio para UAN comercial e coletiva.',
   ],
   [
     'Funciona no celular?',

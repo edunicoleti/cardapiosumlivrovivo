@@ -25,9 +25,11 @@ const CHAVE_SALVOS = 'assistente-salvos'
 const SERVICOS = [
   { id: 'institucional', rot: 'Coletiva institucional', desc: 'Empresa, indústria, hospital', icone: 'i-predio' },
   { id: 'bufe', rot: 'Bufê por peso', desc: 'Comercial, self-service', icone: 'i-bandeja' },
-  { id: 'infantil', rot: 'Escola ou creche', desc: 'Público infantil', icone: 'i-crianca' },
-  { id: 'repouso', rot: 'Casa de repouso', desc: 'Preparações mais macias', icone: 'i-coracao' },
 ]
+// Escola/creche e casa de repouso saíram até a autora marcar as receitas de
+// alta aceitação (infantil) e de fácil ingestão (idoso): sem essa marca o
+// Gerador de Cardápio sugeriria qualquer prato do acervo para esses públicos.
+const SERVICOS_IDS = new Set(SERVICOS.map((s) => s.id))
 const PADROES = [
   { id: 'popular', rot: 'Popular', desc: 'Preparações simples, custo menor', icone: 'i-prato' },
   { id: 'medio', rot: 'Médio ou diferenciado', desc: 'Mais elaborado, maior variedade', icone: 'i-cardapio' },
@@ -42,21 +44,31 @@ const EQUIPAMENTOS = [
 // calabresa aparecem em salada, arroz, feijao e ate em ovo. Filtrar so a
 // categoria "Carne Suína" deixaria passar cinco de cada seis pratos com suino.
 // Por isso a restricao le o nome e a descricao de cada preparacao. Num filtro
-// alimentar o erro tem de cair para o lado de excluir demais.
+// alimentar o erro tem de cair para o lado de excluir demais. A ordem é a dos
+// pratos principais no Banco de Receitas (A a E).
 const RESTRICOES = [
-  { id: 'sem-suina', rot: 'Sem carne suína', desc: 'Inclui bacon, presunto e embutidos', icone: 'i-proibido',
-    referencias: ['Carne suína'],
-    termos: ['suin', 'porco', 'bacon', 'presunto', 'linguic', 'calabres', 'pernil', 'pancetta',
-             'copa lombo', 'copa-lombo', 'tender', 'torresmo', 'paio', 'salsich', 'lombo'] },
-  { id: 'sem-mar', rot: 'Sem frutos do mar', desc: 'Peixes, crustáceos e moluscos', icone: 'i-proibido',
-    referencias: ['Pescados'],
-    termos: ['peixe', 'pescad', 'camarao', 'lula', 'polvo', 'mexilh', 'marisco', 'siri', 'caranguejo',
-             'bacalhau', 'atum', 'sardinha', 'salmao', 'tilapia', 'merluza', 'anchova', 'fruto do mar'] },
   { id: 'sem-bovina', rot: 'Sem carne bovina', desc: 'Inclui charque e carne seca', icone: 'i-proibido',
     referencias: ['Carne bovina'],
     termos: ['bovin', 'bife', 'alcatra', 'patinho', 'coxao', 'acem', 'musculo', 'costela', 'picanha',
              'maminha', 'file mignon', 'charque', 'carne seca', 'carne moida', 'contrafil',
              'fraldinha', 'matambre', 'cupim'] },
+  { id: 'sem-aves', rot: 'Sem frango e aves', desc: 'Inclui peru, chester e pato', icone: 'i-proibido',
+    referencias: ['Carne de frango'],
+    termos: ['frango', 'galinha', 'galeto', 'peru', 'chester', 'pato', 'marreco', 'sobrecoxa',
+             'asinha', 'coxinha da asa', 'canja', 'chicken'] },
+  { id: 'sem-suina', rot: 'Sem carne suína', desc: 'Inclui bacon, presunto e embutidos', icone: 'i-proibido',
+    referencias: ['Carne suína'],
+    termos: ['suin', 'porco', 'bacon', 'presunto', 'linguic', 'calabres', 'pernil', 'pancetta',
+             'copa lombo', 'copa-lombo', 'tender', 'torresmo', 'paio', 'salsich', 'lombo'] },
+  { id: 'sem-mar', rot: 'Sem peixes e frutos do mar', desc: 'Peixes, crustáceos e moluscos', icone: 'i-proibido',
+    referencias: ['Pescados'],
+    termos: ['peixe', 'pescad', 'camarao', 'lula', 'polvo', 'mexilh', 'marisco', 'siri', 'caranguejo',
+             'bacalhau', 'atum', 'sardinha', 'salmao', 'tilapia', 'merluza', 'anchova', 'fruto do mar'] },
+  { id: 'sem-diversas', rot: 'Sem carnes diversas', desc: 'Miúdos, cordeiro, coelho e embutidos', icone: 'i-proibido',
+    referencias: ['Carnes diversas'],
+    termos: ['figado', 'lingua', 'coracao', 'moela', 'dobradinha', 'bucho', 'mocoto', 'rins', 'miudos', 'miudeza',
+             'rabada', 'coelho', 'ovelha', 'cordeiro', 'carneiro', 'cabrito', 'javali', 'kassler',
+             'eisben', 'salsich', 'salame', 'mortadela', 'linguic', 'calabres', 'paio'] },
 ]
 
 /* Capítulo VI, B: a refeição principal tem entrada, prato principal,
@@ -67,9 +79,15 @@ const RESTRICOES = [
    a ordem das linhas do cardápio. */
 const QUANTIDADES = [
   { id: 'sopa', secao: 'Entrada', rot: 'Sopas', um: 'Sopa', desc: 'Entrada quente, comum no inverno' },
-  { id: 'saladaCrua', secao: 'Entrada', rot: 'Saladas cruas', um: 'Salada crua', desc: 'Folhosos, ralados, picados e mistas' },
-  { id: 'saladaCozida', secao: 'Entrada', rot: 'Saladas cozidas', um: 'Salada cozida', desc: 'Vegetais cozidos simples' },
-  { id: 'saladaMolho', secao: 'Entrada', rot: 'Saladas com molho', um: 'Salada com molho', desc: 'Maionese, salpicão e outras elaboradas' },
+  // as quatro saladas na ordem e com os nomes do Banco de Receitas (Q a T)
+  { id: 'saladaMolho', secao: 'Entrada', rot: 'Saladas mistas com molho de ligação', um: 'Salada mista com molho',
+    desc: 'Maionese, salpicão, macarronese' },
+  { id: 'saladaMista', secao: 'Entrada', rot: 'Saladas mistas sem molho de ligação', um: 'Salada mista sem molho',
+    desc: 'Dois ou mais vegetais combinados' },
+  { id: 'saladaCozida', secao: 'Entrada', rot: 'Saladas cozidas simples', um: 'Salada cozida simples',
+    desc: 'Um vegetal cozido' },
+  { id: 'saladaCrua', secao: 'Entrada', rot: 'Saladas cruas simples', um: 'Salada crua simples',
+    desc: 'Um vegetal cru: folhoso, ralado ou picado' },
   { id: 'principal', secao: 'Prato principal', rot: 'Pratos principais', um: 'Prato principal', desc: 'Proteína em rodízio ao longo da semana' },
   { id: 'tipico', secao: 'Prato principal', rot: 'Pratos típicos', um: 'Prato típico', desc: 'Preparações regionais do capítulo X' },
   { id: 'acompanhamento', secao: 'Acompanhamento', rot: 'Acompanhamentos', um: 'Acompanhamento', desc: 'Massas, farinhas, ovos e vegetais' },
@@ -84,11 +102,11 @@ const MAX_QUANTIDADE = 12
 /* Fator 1.1: o livro diz quantas opções cada padrão costuma ter (1.1.1 a
    1.1.3). É só o ponto de partida: a pessoa muda o que quiser. */
 const SUGESTAO_DO_LIVRO = {
-  popular: { sopa: 0, saladaCrua: 1, saladaCozida: 1, saladaMolho: 0, principal: 1, tipico: 0,
+  popular: { sopa: 0, saladaMolho: 0, saladaMista: 0, saladaCozida: 1, saladaCrua: 1, principal: 1, tipico: 0,
              acompanhamento: 1, arrozComposto: 0, leguminosa: 0, molho: 0, fruta: 1, doce: 0 },
-  medio:   { sopa: 0, saladaCrua: 2, saladaCozida: 1, saladaMolho: 1, principal: 2, tipico: 0,
+  medio:   { sopa: 0, saladaMolho: 1, saladaMista: 1, saladaCozida: 1, saladaCrua: 1, principal: 2, tipico: 0,
              acompanhamento: 2, arrozComposto: 1, leguminosa: 0, molho: 0, fruta: 1, doce: 2 },
-  luxo:    { sopa: 0, saladaCrua: 3, saladaCozida: 2, saladaMolho: 2, principal: 3, tipico: 0,
+  luxo:    { sopa: 0, saladaMolho: 2, saladaMista: 2, saladaCozida: 2, saladaCrua: 1, principal: 3, tipico: 0,
              acompanhamento: 2, arrozComposto: 1, leguminosa: 1, molho: 0, fruta: 2, doce: 2 },
 }
 const FAIXA_DO_LIVRO = {
@@ -101,7 +119,7 @@ const FAIXA_DO_LIVRO = {
    [mínimo, máximo]; null no máximo = "ou mais". Seção sem número no livro
    (entradas do luxo, por exemplo) não mostra faixa. */
 const FAIXA_POR_SECAO = {
-  Entrada: { itens: ['sopa', 'saladaCrua', 'saladaCozida', 'saladaMolho'],
+  Entrada: { itens: ['sopa', 'saladaMolho', 'saladaMista', 'saladaCozida', 'saladaCrua'],
              popular: [1, 5], medio: [1, 8] },
   'Prato principal': { itens: ['principal'], nome: 'pratos proteicos',
                        popular: [1, 2], medio: [2, 3], luxo: [3, null] },
@@ -114,21 +132,19 @@ const textoFaixa = ([min, max]) => max === null ? `${min} ou mais`
 function sugestaoDoLivro(perfil) {
   const q = { ...(SUGESTAO_DO_LIVRO[perfil.padrao] ?? SUGESTAO_DO_LIVRO.medio) }
   // bufê por peso põe mais salada e mais prato quente no balcão
-  if (perfil.servico === 'bufe') { q.saladaCrua += 1; q.acompanhamento += 1 }
-  // criança e idoso: sobremesa de fruta em vez de doce elaborado
-  if (perfil.servico === 'infantil' || perfil.servico === 'repouso') {
-    q.fruta = Math.max(q.fruta, 1)
-    q.doce = 0
-  }
+  if (perfil.servico === 'bufe') { q.saladaMista += 1; q.acompanhamento += 1 }
   return q
 }
 
 /** As quantidades do perfil, sempre completas e dentro do limite. */
 function quantidadesDo(perfil) {
-  const base = perfil.quantidadesProprias && perfil.quantidades ? perfil.quantidades : sugestaoDoLivro(perfil)
+  const sugestao = sugestaoDoLivro(perfil)
+  const base = perfil.quantidadesProprias && perfil.quantidades ? perfil.quantidades : sugestao
   const q = {}
   for (const item of QUANTIDADES) {
-    const n = Math.round(Number(base[item.id]))
+    // item que não existia quando o perfil foi guardado (a salada mista sem
+    // molho, por exemplo) começa pela sugestão do livro
+    const n = Math.round(Number(base[item.id] ?? sugestao[item.id]))
     q[item.id] = Number.isFinite(n) ? Math.max(0, Math.min(MAX_QUANTIDADE, n)) : 0
   }
   return q
@@ -226,15 +242,56 @@ function migrarPerfil(perfil) {
     }
     delete p.composicao
   }
+  // escola/creche e casa de repouso saíram por enquanto
+  if (!SERVICOS_IDS.has(p.servico)) p.servico = PERFIL_PADRAO.servico
   return p
 }
 
 const RODIZIO = ['Carne bovina', 'Carne de frango', 'Pescados', 'Carne suína', 'Carnes diversas']
+// como a nutricionista chama cada uma, na ordem do Banco de Receitas (A a E)
+const NOME_DA_PROTEINA = {
+  'Carne bovina': 'Carne bovina', 'Carne de frango': 'Aves', 'Pescados': 'Peixes e frutos do mar',
+  'Carne suína': 'Carne suína', 'Carnes diversas': 'Carnes diversas',
+}
 
 /* Linhas de cabeçalho das tabelas do livro que a extração trouxe como se fossem
    preparação: "MACARRÃO (MASSAS ALIMENTÍCIAS)", "REGIÃO SUL", "FRUTAS". Nome
    sem nenhuma minúscula é a assinatura delas; prato de verdade vem capitalizado. */
 const ehCabecalho = (p) => !/[a-zà-ÿ]/.test(String(p.nome ?? ''))
+
+/* Nas tabelas de batata, macarrão, ovos e arroz o livro escreve só o que vem
+   depois do título da tabela: "Duquesa", "Com camarão", "À la reine". Fora da
+   tabela o nome solto engana (duquesa de quê?), então a preparação ganha o
+   nome inteiro ao carregar: Batata Duquesa, Macarrão com camarão. */
+const NOME_POR_CATEGORIA = {
+  'Batatas Inglesas': { prefixo: 'Batata', ja: /batata/ },
+  'Macarrão': { prefixo: 'Macarrão', ja: /macarr|canelone|lasanha|nhoque|rondelli|yakissoba|cabelo de anjo/ },
+  'Ovos': { prefixo: 'Ovo', ja: /(^|[^a-z])ovos?([^a-z]|$)|omelete|fritada|fortaia|shakshuka/ },
+  'Arroz': { prefixo: 'Arroz', ja: /^arroz/ },
+}
+// nome próprio da preparação clássica fica com maiúscula: Batata Duquesa,
+// Macarrão Alfredo; o resto vira minúscula, como em Ovo mexido com frango
+const PROPRIO = new Set(['Duquesa', 'Boulanger', 'Château', 'Parmentier', 'Saint-Floretin', 'Madalena',
+  'Noisette', 'Alfredo', 'Caruso', 'Don', 'Gabriela', 'La', 'Soubise', 'Dona', 'Popeye'])
+const NOME_REESCRITO = {
+  'Bolinho defumado': 'Bolinho de batata defumado',
+  'Croquetes': 'Croquetes de batata',
+  'Latkes': 'Latkes de batata',
+  'Purê colorido': 'Purê de batata colorido',
+  'Purê de espinafre': 'Purê de batata com espinafre',
+  'Purê fantasia': 'Purê de batata fantasia',
+  'Beneditinos': 'Ovos beneditinos',
+  'Ninhos recheados': 'Ninhos de macarrão recheados',
+  'Pesto de brócolis': 'Macarrão ao pesto de brócolis',
+}
+function nomeCompleto(p) {
+  const regra = NOME_POR_CATEGORIA[p.categoria]
+  const nome = String(p.nome ?? '').trim()
+  if (!regra || regra.ja.test(semAcento(nome))) return nome
+  if (NOME_REESCRITO[nome]) return NOME_REESCRITO[nome]
+  const [primeira, ...resto] = nome.replace(/^Á /, 'À ').replace(/ À /g, ' à ').split(' ')
+  return [regra.prefixo, PROPRIO.has(primeira) ? primeira : primeira.toLowerCase(), ...resto].join(' ')
+}
 
 let base = null
 let estrutura = []
@@ -300,7 +357,6 @@ function referenciasBloqueadas(perfil) {
   for (const r of RESTRICOES) {
     if (perfil.restricoes.includes(r.id)) for (const ref of r.referencias) bloqueadas.add(ref)
   }
-  if (perfil.servico === 'infantil') bloqueadas.add('Pescados')
   return bloqueadas
 }
 
@@ -340,9 +396,10 @@ function pesoDoPadrao(p, padrao) {
    para a regra de não repetir ingrediente. */
 const LINHAS_DO_ITEM = {
   sopa: { slot: 'sopa' },
-  saladaCrua: { slot: 'salada', referencias: ['Crua', 'Mista'] },
-  saladaCozida: { slot: 'salada', referencias: ['Cozida'] },
   saladaMolho: { slot: 'salada', referencias: ['Elaborada com molho'] },
+  saladaMista: { slot: 'salada', referencias: ['Mista'] },
+  saladaCozida: { slot: 'salada', referencias: ['Cozida'] },
+  saladaCrua: { slot: 'salada', referencias: ['Crua'] },
   principal: { slot: 'principal', rodizio: true },
   tipico: { slot: 'regional' },
   acompanhamento: { slot: 'acompanhamento' },
@@ -395,6 +452,19 @@ function pratoFixo(linha) {
     espaco: linha.espaco, grupo: linha.grupo, secao: linha.secao, fixo: true,
     nome: linha.espaco, metodo: p.metodo, descricao: p.descricao,
     referencia: p.referencia, categoria: p.categoria, safra: null, alternativas: [],
+  }
+}
+
+/** O que a grade e a gaveta guardam de cada preparação. */
+function resumoDoPrato(p, safra) {
+  return {
+    id: p.id, nome: p.nome, metodo: p.metodo,
+    // a descrição é o que o livro traz de ingredientes e preparo; sem ela a
+    // grade vira uma lista de nomes soltos
+    descricao: p.descricao,
+    referencia: p.referencia, categoria: p.categoria,
+    safra: safra?.mostrar ? safra.item : null,
+    nivel: nivelDoPrato(p).nivel, nivelProvisorio: nivelDoPrato(p).provisorio,
   }
 }
 
@@ -497,15 +567,7 @@ function montar({ mes, dias, semente, perfil }) {
       }
       if (escolhida.pesado) pesadosDoDia++
 
-      const resumo = (a) => ({
-        id: a.p.id, nome: a.p.nome, metodo: a.p.metodo,
-        // a descrição é o que o livro traz de ingredientes e preparo; sem ela a
-        // grade vira uma lista de nomes soltos
-        descricao: a.p.descricao,
-        referencia: a.p.referencia, categoria: a.p.categoria,
-        safra: a.safra?.mostrar ? a.safra.item : null,
-        nivel: nivelDoPrato(a.p).nivel, nivelProvisorio: nivelDoPrato(a.p).provisorio,
-      })
+      const resumo = (a) => resumoDoPrato(a.p, a.safra)
       // na troca só aparece o que cabe no padrão, salvo quando nada cabe
       const alternativas = avaliadas.slice(1).filter((a) => noPadrao(a.p) || !noPadrao(escolhida.p))
       dia.itens.push({
@@ -1077,7 +1139,7 @@ function fichasDoPerfil() {
     ['', `${p.refeicoes} refeições/dia`],
   ]
   const q = quantidadesDo(p)
-  const saladas = q.saladaCrua + q.saladaCozida + q.saladaMolho
+  const saladas = q.saladaMolho + q.saladaMista + q.saladaCozida + q.saladaCrua
   const sobremesas = q.fruta + q.doce
   const conta = (n, um, varios) => `${n} ${n === 1 ? um : varios}`
   fichas.push(['mais', conta(q.principal, 'prato principal', 'pratos principais')])
@@ -1333,7 +1395,9 @@ function abrirPrato(di, li) {
   $('pratoDescricao').textContent = item.descricao || 'O livro não traz descrição para esta preparação.'
   $('pratoDescricao').classList.toggle('sem-texto', !item.descricao)
   $('pratoMotivos').innerHTML = motivosDoPrato(item).map((m) => `<li>${m}</li>`).join('')
-  $('contaTroca').textContent = (item.alternativas ?? []).length
+  proteinaDaTroca = ehPrincipal(item) ? item.referencia : null
+  $('contaTroca').textContent = proteinaDaTroca
+    ? opcoesDaProteina(proteinaDaTroca).length : (item.alternativas ?? []).length
   $('abaTroca').hidden = !!item.fixo
 
   mostrarAba('detalhe')
@@ -1380,8 +1444,11 @@ function motivosDoPrato(item) {
          custo dos ingredientes do nome e da descrição, porque o livro não marcou esta. Fator 1.1.`
       : `Preparação de padrão <b>${esc(rot)}</b>, como a autora classificou no Banco de Receitas. Fator 1.1.`)
   }
-  const principal = item.grupo ? item.grupo === 'principal' : item.espaco === 'Prato principal'
-  if (principal && item.referencia) {
+  const principal = ehPrincipal(item)
+  if (principal && item.trocado && item.referencia) {
+    motivos.push(`Você escolheu este prato na troca, entre as preparações de
+      <b>${esc(NOME_DA_PROTEINA[item.referencia] ?? item.referencia)}</b>.`)
+  } else if (principal && item.referencia) {
     motivos.push(`Rodízio de proteína do dia: <b>${esc(item.referencia)}</b>. É a regra 3.7,
       variedade de ingredientes, aplicada ao longo da semana.`)
   } else if (item.referencia) {
@@ -1402,10 +1469,74 @@ function motivosDoPrato(item) {
   return motivos
 }
 
+/* ------------------------------------------ troca do prato principal
+   As alternativas que o motor guarda são da proteína que o rodízio sorteou:
+   num dia de peixe, a troca só oferecia outro peixe. No prato principal a
+   lista é calculada na hora, para a proteína que a pessoa escolher. Fica
+   fora o que fere uma restrição ou já está na semana; o padrão vale enquanto
+   houver opção dentro dele, como no motor. */
+let proteinaDaTroca = null
+const ehPrincipal = (item) => (item.grupo ? item.grupo === 'principal' : item.espaco === 'Prato principal')
+
+function opcoesDaProteina(referencia) {
+  const perfil = estado.perfil
+  const bloqTermos = termosBloqueados(perfil)
+  const bloqMetodos = metodosBloqueados(perfil)
+  const usadas = new Set(estado.cardapio.flatMap((d) => d.itens).map((i) => i.id).filter(Boolean))
+  const metodosDoDia = estado.cardapio[alvoAtual.di].itens
+    .filter((_, li) => li !== alvoAtual.li).map((i) => i.metodo).filter(Boolean)
+  const itensSafra = base.sazonalidade.filter((s) => s.meses.includes(estado.mes)).map((s) => semAcento(s.item))
+
+  const cabem = base.preparacoes.filter((p) => p.slot === 'principal' && p.referencia === referencia &&
+    !usadas.has(p.id) && !temIngredienteProibido(p, bloqTermos))
+  const noPadrao = cabem.filter((p) => cabeNoPadrao(p, perfil.padrao))
+  return (noPadrao.length ? noPadrao : cabem).map((p) => {
+    const safra = naSafra(p, itensSafra)
+    // a mesma ordem de preferência do motor, sem sorteio: safra e padrão
+    // sobem, método repetido no dia e equipamento que falta descem
+    let nota = (safra?.peso ?? 0) + pesoDoPadrao(p, perfil.padrao)
+    if (p.metodo && metodosDoDia.includes(p.metodo)) nota -= 2.5
+    if (bloqMetodos.has(p.metodo)) nota -= 5
+    return { p, safra, nota }
+  }).sort((a, b) => b.nota - a.nota || a.p.nome.localeCompare(b.p.nome, 'pt-BR'))
+    .map((a) => resumoDoPrato(a.p, a.safra))
+}
+
+function pintarProteinas() {
+  const caixa = $('trocaProteinas')
+  caixa.hidden = !proteinaDaTroca
+  $('trocaNota').hidden = true
+  if (!proteinaDaTroca) return
+  // a restrição tira o tipo inteiro: quem marcou sem frutos do mar não vê o botão
+  const bloqRefs = referenciasBloqueadas(estado.perfil)
+  const tipos = RODIZIO.filter((r) => !bloqRefs.has(r))
+  caixa.querySelector('.fileira').innerHTML = tipos.map((r) => {
+    const n = opcoesDaProteina(r).length
+    const on = r === proteinaDaTroca
+    return `<button class="chip-proteina" type="button" role="radio" aria-checked="${on}"
+      tabindex="${on ? 0 : -1}" data-proteina="${esc(r)}"${n ? '' : ' disabled'}
+      aria-label="${esc(NOME_DA_PROTEINA[r])}, ${n} opções">
+      ${esc(NOME_DA_PROTEINA[r])}<span class="q" aria-hidden="true">${n}</span></button>`
+  }).join('')
+
+  // trocar para uma proteína que o dia já tem não é proibido, mas desfaz o
+  // rodízio: avisa, sem travar
+  const dia = estado.cardapio[alvoAtual.di]
+  const outro = dia.itens.find((i, li) => li !== alvoAtual.li && ehPrincipal(i) && i.referencia === proteinaDaTroca)
+  if (outro) {
+    $('trocaNota').hidden = false
+    $('trocaNota').innerHTML = `<svg aria-hidden="true"><use href="#i-atencao"></use></svg><span>
+      ${esc(dia.dia)} já tem ${esc(NOME_DA_PROTEINA[proteinaDaTroca].toLowerCase())} em
+      ${esc(outro.espaco.toLowerCase())}. O rodízio (regra 3.7) pede proteínas diferentes no mesmo dia.</span>`
+  }
+}
+
 function pintarTroca(filtro) {
   const item = itemAtual()
   const alvo = semAcento(filtro ?? '')
-  const lista = (item?.alternativas ?? []).filter((a) =>
+  pintarProteinas()
+  const opcoes = proteinaDaTroca ? opcoesDaProteina(proteinaDaTroca) : (item?.alternativas ?? [])
+  const lista = opcoes.filter((a) =>
     !alvo || semAcento(`${a.nome} ${a.descricao ?? ''}`).includes(alvo))
 
   $('trocaLista').innerHTML = lista.length
@@ -1431,6 +1562,8 @@ function trocarPor(nova) {
   const restantes = (alternativas ?? []).filter((a) => a.id !== nova.id)
   estado.cardapio[alvoAtual.di].itens[alvoAtual.li] = {
     ...nova, espaco, grupo, secao, alternativas: [antiga, ...restantes],
+    // no principal a troca pode sair do rodízio: o "por quê" passa a dizer isso
+    trocado: ehPrincipal(item),
   }
   estado.trocas = (estado.trocas ?? 0) + 1
   redesenharCelulas()
@@ -1714,6 +1847,24 @@ function ligarEventos() {
   /* --- gaveta --- */
   $('abaDetalhe').addEventListener('click', () => mostrarAba('detalhe'))
   $('abaTroca').addEventListener('click', () => mostrarAba('troca'))
+  const fileira = $('trocaProteinas').querySelector('.fileira')
+  fileira.addEventListener('click', (ev) => {
+    const chip = ev.target.closest('[data-proteina]')
+    if (!chip || chip.disabled || chip.dataset.proteina === proteinaDaTroca) return
+    proteinaDaTroca = chip.dataset.proteina
+    pintarTroca($('filtroTroca').value)
+    $('contaTroca').textContent = opcoesDaProteina(proteinaDaTroca).length
+    fileira.querySelector(`[data-proteina="${CSS.escape(proteinaDaTroca)}"]`)?.focus()
+    $('gavetaPrato').querySelector('.gaveta-corpo').scrollTo({ top: 0 })
+  })
+  fileira.addEventListener('keydown', (ev) => {
+    const direcao = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key]
+    const alvo = ev.target.closest('[role=radio]')
+    if (!direcao || !alvo) return
+    ev.preventDefault()
+    const chips = $$('[role=radio]:not(:disabled)', fileira)
+    chips[(chips.indexOf(alvo) + direcao + chips.length) % chips.length]?.click()
+  })
   // O evento close do <dialog> não chega em todo navegador; observar o atributo
   // open pega qualquer caminho de fechamento: botão, Esc, clique fora.
   const gaveta = $('gavetaPrato')
@@ -1767,6 +1918,7 @@ async function iniciar() {
 
   // Cabeçalhos das tabelas do livro que a extração trouxe como preparação
   base.preparacoes = base.preparacoes.filter((p) => !ehCabecalho(p))
+  for (const p of base.preparacoes) p.nome = nomeCompleto(p)
 
   const opcoesDeMes = MESES.map(([v, n]) =>
     `<option value="${v}"${v === estado.mes ? ' selected' : ''}>${n}</option>`).join('')

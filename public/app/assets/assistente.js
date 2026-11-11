@@ -177,7 +177,7 @@ function ehLeguminosa(p) {
 /* ------------------------------------------------ padrão de cada prato
    A autora marca o padrão receita por receita no Banco de Receitas: P
    (popular), M (médio) e L (liberal, de luxo ou executivo). O campo `padrao`
-   chega ao acervo por scripts/padroes-do-livro.py e manda. P serve em todos
+   chega ao acervo por scripts/sincronizar-livro.py e manda. P serve em todos
    os padrões, M no médio e no executivo, L só no executivo (cabeNoPadrao).
    A lista de custo abaixo só vale para o que o livro não marcou. */
 const NIVEL = { popular: 0, medio: 1, luxo: 2 }
@@ -1916,8 +1916,10 @@ async function iniciar() {
   if (!resposta.ok) return falhar('O acervo não está disponível agora. Tente de novo em instantes.')
   base = await resposta.json()
 
-  // Cabeçalhos das tabelas do livro que a extração trouxe como preparação
-  base.preparacoes = base.preparacoes.filter((p) => !ehCabecalho(p))
+  // Cabeçalhos das tabelas do livro que a extração trouxe como preparação, e
+  // receitas que saíram do livro numa versão nova (scripts/sincronizar-livro.py
+  // marca foraDoLivro em vez de apagar, para o id não ser reaproveitado)
+  base.preparacoes = base.preparacoes.filter((p) => !ehCabecalho(p) && !p.foraDoLivro)
   for (const p of base.preparacoes) p.nome = nomeCompleto(p)
 
   const opcoesDeMes = MESES.map(([v, n]) =>

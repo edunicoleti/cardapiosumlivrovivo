@@ -131,6 +131,32 @@ function arquivoLivroPdf(): string
     return pastaDados() . '/livro-vivo.pdf';
 }
 
+/**
+ * Versão do livro que o Gerador de Cardápio usa. Quem grava é
+ * scripts/sincronizar-livro.py, rodado a cada .docx novo da autora; o PDF
+ * sobe à parte, pelo admin, e por isso os dois podem ficar desencontrados.
+ */
+function versaoDoGerador(): array
+{
+    return lerJson(dirname(__DIR__) . '/acervo/versao.json');
+}
+
+/** Dia em que o PDF foi gerado (AAAA-MM-DD), lido dos metadados do arquivo. */
+function dataDoPdf(string $caminho): ?string
+{
+    if (!is_readable($caminho)) {
+        return null;
+    }
+    $bytes = (string) file_get_contents($caminho);
+    if (preg_match('/<xmp:CreateDate>(\d{4}-\d{2}-\d{2})/', $bytes, $m)) {
+        return $m[1];
+    }
+    if (preg_match('/\/CreationDate\s*\(D:(\d{4})(\d{2})(\d{2})/', $bytes, $m)) {
+        return $m[1] . '-' . $m[2] . '-' . $m[3];
+    }
+    return null;
+}
+
 /** Leitura tolerante: arquivo ausente ou corrompido devolve lista vazia. */
 function lerJson(string $caminho, array $padrao = []): array
 {

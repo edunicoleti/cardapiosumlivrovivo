@@ -221,6 +221,29 @@ abrirTela('Administração', null);
       <?php endif; ?>
       Limite do servidor: <?= e((string) ini_get('upload_max_filesize')) ?>.
     </p>
+    <?php
+      $versao = versaoDoGerador();
+      $dataPdf = dataDoPdf($pdf);
+      $livroSalvo = (string) ($versao['livroSalvoEm'] ?? '');
+      $br = fn(string $iso): string => $iso !== '' ? date('d/m/Y', (int) strtotime($iso)) : '';
+    ?>
+    <p style="margin-bottom:14px">
+      <?php if ($versao): ?>
+        Gerador de Cardápio: livro <b><?= e((string) ($versao['arquivo'] ?? '')) ?></b>
+        <?php if ($livroSalvo !== ''): ?>salvo em <?= e($br($livroSalvo)) ?>,<?php endif; ?>
+        <?= e(number_format((int) ($versao['receitasNoLivro'] ?? 0), 0, ',', '.')) ?> receitas,
+        sincronizado em <?= e($br((string) ($versao['sincronizadoEm'] ?? ''))) ?>.
+      <?php else: ?>
+        Gerador de Cardápio: versão do livro não registrada.
+      <?php endif; ?>
+    </p>
+    <?php if ($dataPdf !== null && $livroSalvo !== '' && $dataPdf > date('Y-m-d', (int) strtotime($livroSalvo . ' +1 day'))): ?>
+      <div class="aviso" style="margin-bottom:14px">
+        O PDF no ar foi gerado em <?= e($br($dataPdf)) ?>, depois da versão do livro que o
+        Gerador de Cardápio usa (<?= e($br($livroSalvo)) ?>). Se o livro mudou, o Gerador
+        ainda não sabe: mande o .docx novo para sincronizar.
+      </div>
+    <?php endif; ?>
     <label for="pdf">Arquivo PDF</label>
     <input type="file" id="pdf" name="pdf" accept="application/pdf" required>
     <button type="submit" name="enviar_pdf" value="1" class="secundario" style="width:100%">Enviar</button>

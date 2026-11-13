@@ -1397,7 +1397,7 @@ function Footer() {
           © {new Date().getFullYear()} Cardápios: Um Livro Vivo. Todos os direitos reservados.
         </p>
         <div className="mt-4 text-xs space-x-4">
-          <a href="#" className="hover:text-white transition-colors">Política de Privacidade</a>
+          <a href="/privacidade/" className="hover:text-white transition-colors">Política de Privacidade</a>
           <span>·</span>
           <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
         </div>

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { CTAButton } from './components/CTAButton';
 import { FeatureCard } from './components/FeatureCard';
+import { aoIrParaCheckout, linkDeCheckout, observarOferta } from './rastreio';
 import {
   Clock, ShieldAlert, CheckCircle2, RefreshCw, BookOpen, ChevronDown, Leaf,
   ExternalLink, CreditCard, Mail, ClipboardList, Salad, CalendarDays,
@@ -1289,7 +1290,8 @@ function CheckoutSection() {
           </div>
 
           <CTAButton
-            href={CHECKOUT_URL}
+            href={linkDeCheckout(CHECKOUT_URL)}
+            onClick={aoIrParaCheckout}
             size="lg"
             className="w-full flex items-center justify-center gap-2 !py-3.5 !text-sm sm:!py-4 sm:!text-base md:!text-lg !tracking-wide"
           >
@@ -1406,6 +1408,8 @@ function Footer() {
 
 // ─── Main App ─────────────────────────────────────────────────────────────────
 export default function App() {
+  useEffect(() => observarOferta('checkout'), []);
+
   return (
     <>
       <TickerBanner />

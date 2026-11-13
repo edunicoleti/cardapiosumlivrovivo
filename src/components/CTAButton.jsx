@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export function CTAButton({ href = '#checkout', children, className = '', size = 'md' }) {
+export function CTAButton({ href = '#checkout', children, className = '', size = 'md', onClick }) {
   const sizeClasses = {
     sm: 'px-6 py-3 text-sm',
     md: 'px-8 py-4 text-base',
@@ -10,6 +10,7 @@ export function CTAButton({ href = '#checkout', children, className = '', size =
   return (
     <motion.a
       href={href}
+      onClick={onClick}
       className={`
         inline-flex items-center justify-center font-sans font-bold tracking-wider uppercase rounded-full
         bg-[#ED8627] text-white shadow-lg cursor-pointer

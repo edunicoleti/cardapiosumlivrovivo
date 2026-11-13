@@ -1,7 +1,9 @@
 // Pixel da Meta (conjunto de dados 1671697287627598, portfolio "Cardapios: Um Livro Vivo").
 // O codigo base fica no index.html e dispara o PageView. Aqui ficam os outros
-// eventos da LP e as UTMs do anuncio, que seguem para o checkout da Cakto: a
-// compra (Purchase) e registrada pela propria Cakto, com o mesmo pixel.
+// eventos da LP e as UTMs do anuncio, que seguem para o checkout da Cakto.
+// A Cakto, com o mesmo pixel, manda InitiateCheckout quando o checkout abre e
+// Purchase quando a compra e aprovada; por isso o clique aqui e um evento
+// proprio (CliqueComprar), senao o checkout seria contado duas vezes.
 
 const ORIGEM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid']
 const CHAVE = 'lv-origem'
@@ -40,19 +42,19 @@ export function linkDeCheckout(base) {
   return url.toString()
 }
 
-export function evento(nome, dados) {
+export function evento(nome, dados, proprio = false) {
   try {
-    if (typeof window.fbq === 'function') window.fbq('track', nome, dados)
+    if (typeof window.fbq === 'function') window.fbq(proprio ? 'trackCustom' : 'track', nome, dados)
   } catch {
     // bloqueador de anuncio derruba o fbq; a pagina nao pode quebrar por isso
   }
 }
 
-// Clique em Comprar: registra o InitiateCheckout e so entao navega, para o
+// Clique em Comprar: registra o CliqueComprar e so entao navega, para o
 // evento nao ser cortado pela troca de pagina. Ctrl/Cmd+clique abre em outra
 // aba normalmente.
 export function aoIrParaCheckout(e) {
-  evento('InitiateCheckout', OFERTA)
+  evento('CliqueComprar', OFERTA, true)
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
   const destino = e.currentTarget.href
   e.preventDefault()

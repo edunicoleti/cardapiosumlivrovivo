@@ -56,6 +56,16 @@ const RECUPERACAO_ADMIN_HASH = 'f6d81712d64c982f60750e1e789038fede365a578f35ba90
 const ADMIN_TENTATIVAS = 5;
 const ADMIN_JANELA_SEG = 15 * 60;
 
+/**
+ * Login do comprador: e-mail da compra + 4 ultimos digitos do CPF (ou CNPJ),
+ * que a Cakto manda no webhook. Assim nao depende de entregar codigo nenhum:
+ * a Cakto envia o link no e-mail de compra e o comprador ja sabe os digitos.
+ * Sao so 10 mil combinacoes, entao a trava e POR E-MAIL (trocar de IP nao
+ * ajuda): 5 erros em 15 minutos bloqueiam aquele e-mail por 15 minutos.
+ */
+const LOGIN_TENTATIVAS = 5;
+const LOGIN_JANELA_SEG = 15 * 60;
+
 function convitePassou(): bool
 {
     if (CONVITE_ATE === '') {
@@ -221,21 +231,33 @@ function gerarCodigo(int $tamanho = 8): string
     return $codigo;
 }
 
+/** 4 ultimos digitos de um CPF/CNPJ, ou '' se nao houver digitos suficientes. */
+function finalDoDocumento(string $documento): string
+{
+    $digitos = preg_replace('/\D+/', '', $documento) ?? '';
+    return strlen($digitos) >= 4 ? substr($digitos, -4) : '';
+}
+
 /**
- * Cria ou reativa um comprador. Devolve o codigo em texto claro, que so existe
- * neste instante: no arquivo fica apenas o hash.
+ * Cria ou reativa um comprador. Guarda so o hash dos 4 ultimos digitos do
+ * documento (nunca o CPF). Tambem gera um codigo de reserva, para quem compra
+ * sem CPF ou para liberar a mao; ele so existe em texto claro neste instante.
  */
-function liberarAcesso(string $email, string $nome = '', string $origem = 'manual'): array
+function liberarAcesso(string $email, string $nome = '', string $origem = 'manual', string $documento = ''): array
 {
     $email = normalizarEmail($email);
     $lista = compradores();
     $codigo = gerarCodigo();
+    $final = finalDoDocumento($documento);
     $agora = date('c');
 
     $encontrado = false;
     foreach ($lista as &$comprador) {
         if (normalizarEmail($comprador['email'] ?? '') === $email) {
             $comprador['codigo_hash'] = password_hash($codigo, PASSWORD_DEFAULT);
+            if ($final !== '') {
+                $comprador['doc_hash'] = password_hash($final, PASSWORD_DEFAULT);
+            }
             $comprador['ativo'] = true;
             $comprador['nome'] = $nome !== '' ? $nome : ($comprador['nome'] ?? '');
             $comprador['atualizado_em'] = $agora;
@@ -251,6 +273,7 @@ function liberarAcesso(string $email, string $nome = '', string $origem = 'manua
             'email' => $email,
             'nome' => $nome,
             'codigo_hash' => password_hash($codigo, PASSWORD_DEFAULT),
+            'doc_hash' => $final !== '' ? password_hash($final, PASSWORD_DEFAULT) : null,
             'ativo' => true,
             'origem' => $origem,
             'criado_em' => $agora,
@@ -260,7 +283,7 @@ function liberarAcesso(string $email, string $nome = '', string $origem = 'manua
     }
 
     gravarJson(arquivoCompradores(), $lista);
-    return ['email' => $email, 'codigo' => $codigo];
+    return ['email' => $email, 'codigo' => $codigo, 'com_documento' => $final !== ''];
 }
 
 /** Usado por reembolso e chargeback: mantem o registro, corta o acesso. */
@@ -313,13 +336,54 @@ function iniciarSessao(): void
     session_start();
 }
 
+function arquivoTentativasLogin(): string
+{
+    return pastaDados() . '/login-tentativas.json';
+}
+
+function falhasRecentesLogin(string $email): array
+{
+    $todas = lerJson(arquivoTentativasLogin());
+    $limite = time() - LOGIN_JANELA_SEG;
+    return array_values(array_filter((array) ($todas[normalizarEmail($email)] ?? []), static fn($t): bool => (int) $t > $limite));
+}
+
+function loginTravado(string $email): bool
+{
+    return count(falhasRecentesLogin($email)) >= LOGIN_TENTATIVAS;
+}
+
+function registrarFalhaLogin(string $email): void
+{
+    $todas = lerJson(arquivoTentativasLogin());
+    $limite = time() - LOGIN_JANELA_SEG;
+    foreach ($todas as $chave => $lista) {
+        $todas[$chave] = array_values(array_filter((array) $lista, static fn($t): bool => (int) $t > $limite));
+        if (!$todas[$chave]) {
+            unset($todas[$chave]);
+        }
+    }
+    $todas[normalizarEmail($email)][] = time();
+    gravarJson(arquivoTentativasLogin(), $todas);
+}
+
+/**
+ * Confere e-mail + segredo. O segredo e, de preferencia, os 4 ultimos digitos
+ * do CPF; um codigo de reserva gerado pelo admin tambem vale.
+ */
 function autenticar(string $email, string $codigo): bool
 {
     $comprador = acharComprador($email);
+    $codigo = trim($codigo);
+    $digitos = preg_replace('/\D+/', '', $codigo) ?? '';
     // password_verify contra um hash falso mantem o tempo de resposta parecido
     // com o de um e-mail que existe, para nao entregar quem esta cadastrado.
-    $hash = $comprador['codigo_hash'] ?? '$2y$10$invalidoinvalidoinvalidoinvalidoinvalidoinvalidoinvalido';
-    $confere = password_verify(trim($codigo), $hash);
+    $falso = '$2y$10$invalidoinvalidoinvalidoinvalidoinvalidoinvalidoinvalido';
+    if (strlen($digitos) === 4 && $digitos === $codigo) {
+        $confere = password_verify($digitos, (string) ($comprador['doc_hash'] ?? $falso));
+    } else {
+        $confere = password_verify(strtoupper($codigo), (string) ($comprador['codigo_hash'] ?? $falso));
+    }
 
     if (!$confere || $comprador === null || ($comprador['ativo'] ?? false) !== true) {
         return false;

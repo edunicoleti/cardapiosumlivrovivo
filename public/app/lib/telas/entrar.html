@@ -31,7 +31,7 @@
       </div>
 
       <h1>Sua área do Livro Vivo</h1>
-      <p class="linha-apoio">Entre com o e-mail da compra e o código de acesso que você recebeu.</p>
+      <p class="linha-apoio">Entre com o e-mail e os 4 últimos dígitos do CPF que você informou na compra.</p>
 
       <form method="post" action="/app/?retorno={{RETORNO}}">
         {{ERRO}}
@@ -41,15 +41,16 @@
                  inputmode="email" autocapitalize="off" spellcheck="false" value="{{EMAIL}}">
         </div>
         <div>
-          <label class="rot" for="codigo">Código de acesso</label>
-          <input type="text" id="codigo" name="codigo" required autocomplete="one-time-code"
-                 placeholder="XXXXXXXX" maxlength="16" autocapitalize="characters" spellcheck="false">
+          <label class="rot" for="codigo">4 últimos dígitos do CPF</label>
+          <input type="text" id="codigo" name="codigo" required autocomplete="off"
+                 inputmode="numeric" placeholder="0000" maxlength="16" autocapitalize="characters" spellcheck="false">
         </div>
         <button class="bt bt-prim" type="submit">Entrar na plataforma</button>
       </form>
 
       <p class="ajuda-pe">
-        Perdeu o código? Responda o e-mail da compra que a gente reenvia.<br>
+        Acabou de comprar? O acesso é liberado em até 1 minuto.<br>
+        Não consegue entrar? Fale com a gente no Instagram <a href="https://www.instagram.com/luciachaiseborjes/" target="_blank" rel="noopener">@luciachaiseborjes</a>.<br>
         Ainda não tem acesso? <a href="/">Conheça o livro</a>.
       </p>
     </div>

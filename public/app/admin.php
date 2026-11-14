@@ -102,8 +102,11 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $erro = 'E-mail inválido.';
         } else {
-            $codigoGerado = liberarAcesso($email, trim((string) ($_POST['nome'] ?? '')), 'manual');
-            $ok = 'Acesso liberado. Envie o código abaixo para a pessoa: ele não aparece de novo.';
+            $codigoGerado = liberarAcesso($email, trim((string) ($_POST['nome'] ?? '')), 'manual',
+                (string) ($_POST['documento'] ?? ''));
+            $ok = $codigoGerado['com_documento']
+                ? 'Acesso liberado. A pessoa entra com o e-mail e os 4 últimos dígitos do CPF.'
+                : 'Acesso liberado sem CPF. Envie o código abaixo para a pessoa: ele não aparece de novo.';
         }
     }
     if (isset($_POST['revogar'])) {
@@ -183,7 +186,7 @@ abrirTela('Administração', null);
 
 <?php if ($codigoGerado !== null): ?>
   <div class="aviso">
-    <strong>Código de <?= e($codigoGerado['email']) ?>:</strong>
+    <strong>Código de reserva de <?= e($codigoGerado['email']) ?>:</strong>
     <code style="font-size:1.15em;letter-spacing:.12em"><?= e($codigoGerado['codigo']) ?></code><br>
     Guardamos apenas o hash, então este código não pode ser consultado depois.
     Se a pessoa perder, gere outro liberando o mesmo e-mail de novo.
@@ -193,12 +196,14 @@ abrirTela('Administração', null);
 <div class="cartoes" style="margin-bottom:26px">
   <form class="cartao" method="post">
     <h3>Liberar acesso</h3>
-    <p style="margin-bottom:14px">Para quem comprou e ainda não tem código.</p>
+    <p style="margin-bottom:14px">Para quem comprou e não consegue entrar. Compras na Cakto são liberadas sozinhas.</p>
     <label for="email">E-mail da compra</label>
     <input type="email" id="email" name="email" required>
+    <label for="documento">4 últimos dígitos do CPF (opcional)</label>
+    <input type="text" id="documento" name="documento" inputmode="numeric" maxlength="18" placeholder="0000">
     <label for="nome">Nome (opcional)</label>
     <input type="text" id="nome" name="nome">
-    <button type="submit" name="liberar" value="1">Gerar código</button>
+    <button type="submit" name="liberar" value="1">Liberar acesso</button>
   </form>
 
   <form class="cartao" method="post">

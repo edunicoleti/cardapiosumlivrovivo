@@ -55,6 +55,7 @@ const CAMPOS_SEGREDO = ['secret', 'segredo', 'token'];
 const CAMPOS_EMAIL   = ['email', 'customer_email', 'buyer_email', 'e-mail'];
 const CAMPOS_NOME    = ['name', 'nome', 'customer_name', 'buyer_name'];
 const CAMPOS_EVENTO  = ['event', 'evento', 'status', 'type', 'tipo'];
+const CAMPOS_DOC     = ['docNumber', 'doc_number', 'document', 'cpf', 'cnpj'];
 
 $segredoEsperado = segredoWebhook();
 $segredoRecebido = buscar($dados, CAMPOS_SEGREDO) ?? '';
@@ -71,6 +72,7 @@ if ($segredoEsperado === '' || !hash_equals($segredoEsperado, $segredoRecebido))
 
 $email = buscar($dados, CAMPOS_EMAIL);
 $nome = buscar($dados, CAMPOS_NOME) ?? '';
+$documento = buscar($dados, CAMPOS_DOC) ?? '';
 $evento = strtolower(buscar($dados, CAMPOS_EVENTO) ?? '');
 
 if ($email === null || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -96,7 +98,8 @@ if ($acao === 'ignorado') {
         if (str_contains($evento, $marca)) {
             // o codigo em texto claro so existe aqui; fica no log para a Lucia
             // reenviar caso a entrega automatica ainda nao esteja pronta
-            $resultado = liberarAcesso($email, $nome, 'cakto: ' . $evento);
+            $resultado = liberarAcesso($email, $nome, 'cakto: ' . $evento, $documento);
+            // so o codigo de reserva vai para o log; o CPF nunca e gravado
             registrarLog('acessos-liberados.log', $resultado);
             $acao = 'liberado';
             break;

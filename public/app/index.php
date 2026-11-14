@@ -21,7 +21,9 @@ $usuario = usuarioLogado();
 if ($usuario === null && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     $email = (string) ($_POST['email'] ?? '');
     $codigo = (string) ($_POST['codigo'] ?? '');
-    if (autenticar($email, $codigo)) {
+    if (loginTravado($email)) {
+        $erro = 'Muitas tentativas com este e-mail. Aguarde 15 minutos e tente de novo.';
+    } elseif (autenticar($email, $codigo)) {
         // o destino viaja na query, nao no corpo: o campo escondido chegava
         // vazio neste servidor, provavelmente filtrado por parecer um caminho
         $retorno = (string) ($_GET['retorno'] ?? ($_POST['retorno'] ?? '/app/'));
@@ -31,9 +33,12 @@ if ($usuario === null && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         }
         header('Location: ' . $retorno);
         exit;
+    } else {
+        registrarFalhaLogin($email);
+        $erro = 'E-mail ou dígitos não conferem. Use o e-mail e o CPF informados na compra. '
+            . 'Se acabou de comprar, aguarde um minuto e tente de novo.';
+        registrarLog('acessos-negados.log', ['email' => normalizarEmail($email)]);
     }
-    $erro = 'E-mail ou código não confere. Confira o e-mail usado na compra.';
-    registrarLog('acessos-negados.log', ['email' => normalizarEmail($email)]);
 }
 
 // ------------------------------------------------------------- nao logado

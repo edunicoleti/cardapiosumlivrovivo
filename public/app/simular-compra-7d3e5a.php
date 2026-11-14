@@ -81,6 +81,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
 
     $email = trim((string) ($_POST['email'] ?? ''));
     $nome = trim((string) ($_POST['nome'] ?? ''));
+    $cpf = trim((string) ($_POST['cpf'] ?? '')) ?: '12345678909';
     $evento = (string) ($_POST['evento'] ?? 'purchase_approved');
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -97,7 +98,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
                 'id' => 'sim_' . bin2hex(random_bytes(6)),
                 'amount' => VALOR,
                 'product' => ['name' => PRODUTO],
-                'customer' => ['name' => $nome, 'email' => $email],
+                'customer' => ['name' => $nome, 'email' => $email, 'phone' => '34999999999', 'docNumber' => $cpf],
             ],
             'simulado' => true,
         ];
@@ -112,7 +113,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             if (str_contains($evento, 'refund') || str_contains($evento, 'chargeback')) {
                 revogarAcesso($email, 'simulado: ' . $evento);
             } else {
-                $resultado = liberarAcesso($email, $nome, 'simulado direto');
+                $resultado = liberarAcesso($email, $nome, 'simulado direto', $cpf);
             }
         }
 
@@ -166,9 +167,8 @@ abrirTela('Simulação de compra', null);
   <div class="ok">
     <strong>Compra simulada com sucesso<?= $viaWebhook ? ' pelo webhook' : ' (chamada direta)' ?>.</strong><br>
     Acesso liberado para <?= e((string) $resultado['email']) ?>.
-    Código: <code style="font-size:1.15em;letter-spacing:.12em"><?= e((string) $resultado['codigo']) ?></code><br>
-    Entre em <a href="/app/">/app/</a> com esse e-mail e código para ver a plataforma
-    como o comprador vê.
+    Entre em <a href="/app/">/app/</a> com esse e-mail e os 4 últimos dígitos do CPF
+    (<code><?= e(finalDoDocumento($cpf ?? '')) ?></code>) para ver a plataforma como o comprador vê.
   </div>
   <?php if (!$viaWebhook): ?>
     <div class="aviso">
@@ -204,6 +204,8 @@ abrirTela('Simulação de compra', null);
     <input type="text" id="nome" name="nome" placeholder="Maria da Silva" required>
     <label for="email">E-mail</label>
     <input type="email" id="email" name="email" placeholder="maria@exemplo.com.br" required>
+    <label for="cpf">CPF (fictício serve)</label>
+    <input type="text" id="cpf" name="cpf" inputmode="numeric" placeholder="123.456.789-09">
     <label for="evento">O que simular</label>
     <select id="evento" name="evento" style="width:100%;font-family:var(--corpo);font-size:15px;
             padding:10px 12px;border:1px solid var(--linha);border-radius:8px;margin-bottom:16px">

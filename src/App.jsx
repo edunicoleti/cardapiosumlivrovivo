@@ -67,7 +67,7 @@ function Ilustra({ n, w, h = w, tom = 'verde' }) {
 
 // ─── Ticker Banner ────────────────────────────────────────────────────────────
 function TickerBanner() {
-  const items = Array(12).fill('✦ Novo · E-book em PDF + Gerador de Cardápio · De R$ 160 por R$ 120 · em até 12x no cartão ');
+  const items = Array(12).fill('✦ Novo · E-book em PDF + Gerador de Cardápio · De R$ 160 por R$ 120 · pagamento único ');
   return (
     <div className="bg-[#ED8627] overflow-hidden py-2.5 border-b border-[#D67822]">
       <div className="flex whitespace-nowrap animate-ticker">
@@ -272,7 +272,7 @@ function HeroSection() {
                 Quero o livro e o Gerador de Cardápio
               </CTAButton>
               <p className="text-center text-xs text-[#5A5A5A]">
-                De <s>R$ 160</s> por <strong className="text-[#448D76]">R$ 120</strong> · ou 12x de R$ 10
+                De <s>R$ 160</s> por <strong className="text-[#448D76]">R$ 120</strong> · pagamento único
               </p>
             </motion.div>
 
@@ -320,7 +320,7 @@ function HeroSection() {
                 Quero o livro e o Gerador de Cardápio
               </CTAButton>
               <p className="text-sm text-[#5A5A5A] pl-2">
-                De <s>R$ 160</s> por <strong className="text-[#448D76] text-base">R$ 120</strong> · ou 12x de R$ 10
+                De <s>R$ 160</s> por <strong className="text-[#448D76] text-base">R$ 120</strong> · pagamento único
               </p>
             </motion.div>
 
@@ -1141,7 +1141,7 @@ function DeliverySection() {
     {
       icon: <CreditCard size={24} />,
       titulo: 'Você compra',
-      desc: 'Pagamento único e seguro pela Cakto: R$ 120 à vista ou em até 12x de R$ 10 no cartão.',
+      desc: 'Pagamento único e seguro pela Cakto: R$ 120 no Pix ou no cartão, com opção de parcelar.',
     },
     {
       icon: <Mail size={24} />,
@@ -1266,7 +1266,7 @@ function CheckoutSection() {
               <span className="text-[#5A5A5A] text-base md:text-lg mb-1.5 md:mb-2">,00</span>
             </div>
             <div className="text-gray-500 text-sm mt-3">
-              ou em até 12x de R$ 10 no cartão
+              no Pix ou no cartão, com opção de parcelar
             </div>
             <div className="inline-block bg-white text-[#0C718B] text-xs font-semibold rounded-full px-3 py-1 mt-3 border border-[#E2E5BE]">
               Pagamento único, não é assinatura
@@ -1313,7 +1313,7 @@ function CheckoutSection() {
 const PERGUNTAS = [
   [
     'É uma assinatura?',
-    'Não. Você paga uma vez, R$ 120 à vista ou em até 12x de R$ 10 no cartão, e não existe cobrança mensal depois disso.',
+    'Não. Você paga uma vez, R$ 120, e não existe cobrança mensal depois disso. No cartão, dá para parcelar.',
   ],
   [
     'Por quanto tempo posso usar o Gerador de Cardápio?',

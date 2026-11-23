@@ -4,11 +4,11 @@ declare(strict_types=1);
 /**
  * Recebe o aviso de compra da Cakto e libera ou revoga acesso.
  *
- * PENDENTE: o mapeamento dos campos. A Cakto envia o payload no formato dela e
- * eu ainda nao vi um exemplo real, entao a leitura abaixo tenta os nomes mais
- * provaveis e, quando nao encontra, grava o corpo inteiro em
- * webhook-nao-mapeado.log. Basta abrir esse arquivo depois da primeira compra
- * de teste para descobrir os nomes certos e ajustar CAMPOS_EMAIL/NOME/EVENTO.
+ * Mapeamento: le data.customer.{email,name,docNumber} e event, que e o formato
+ * real da Cakto. Se esses caminhos faltarem, cai na busca generica por nome de
+ * chave; e se nem assim achar o e-mail, grava o corpo em webhook-nao-mapeado.log.
+ * O "secret" e gerado pela Cakto (engrenagem do webhook) e precisa ser colado
+ * igual no admin; se nao bater, o webhook responde 403.
  *
  * SEGURANCA: o "secret" da Cakto nao e assinatura HMAC, e sim um valor que volta
  * dentro do proprio payload. Isso significa que quem descobrir esta URL pode
@@ -53,7 +53,8 @@ function buscar(array $dados, array $chaves): ?string
 
 const CAMPOS_SEGREDO = ['secret', 'segredo', 'token'];
 const CAMPOS_EMAIL   = ['email', 'customer_email', 'buyer_email', 'e-mail'];
-const CAMPOS_NOME    = ['name', 'nome', 'customer_name', 'buyer_name'];
+// sem 'name' solto: no payload da Cakto ele casa primeiro com o nome do produto
+const CAMPOS_NOME    = ['customer_name', 'buyer_name', 'nome'];
 const CAMPOS_EVENTO  = ['event', 'evento', 'status', 'type', 'tipo'];
 const CAMPOS_DOC     = ['docNumber', 'doc_number', 'document', 'cpf', 'cnpj'];
 
@@ -70,10 +71,27 @@ if ($segredoEsperado === '' || !hash_equals($segredoEsperado, $segredoRecebido))
     exit;
 }
 
-$email = buscar($dados, CAMPOS_EMAIL);
-$nome = buscar($dados, CAMPOS_NOME) ?? '';
-$documento = buscar($dados, CAMPOS_DOC) ?? '';
-$evento = strtolower(buscar($dados, CAMPOS_EVENTO) ?? '');
+/** Le um valor num caminho exato do payload (ex.: data > customer > name). */
+function campo(array $dados, string ...$caminho): ?string
+{
+    $atual = $dados;
+    foreach ($caminho as $chave) {
+        if (!is_array($atual) || !array_key_exists($chave, $atual)) {
+            return null;
+        }
+        $atual = $atual[$chave];
+    }
+    return is_scalar($atual) && (string) $atual !== '' ? trim((string) $atual) : null;
+}
+
+// Formato real da Cakto (visto na venda de 23/11/2026): a compradora fica em
+// data.customer e o evento no topo. Le esses caminhos primeiro, porque a busca
+// generica acha antes o data.offer.name (nome do produto) e gravava o produto
+// como nome da cliente. A busca generica so entra se o formato mudar.
+$email = campo($dados, 'data', 'customer', 'email') ?? buscar($dados, CAMPOS_EMAIL);
+$nome = campo($dados, 'data', 'customer', 'name') ?? buscar($dados, CAMPOS_NOME) ?? '';
+$documento = campo($dados, 'data', 'customer', 'docNumber') ?? buscar($dados, CAMPOS_DOC) ?? '';
+$evento = strtolower(campo($dados, 'event') ?? buscar($dados, CAMPOS_EVENTO) ?? '');
 
 if ($email === null || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     registrarLog('webhook-nao-mapeado.log', ['corpo' => $bruto]);
